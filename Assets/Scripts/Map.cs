@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.Callbacks;
 #endif
 
 public class Map : MonoBehaviour {
@@ -17,11 +19,11 @@ public class Map : MonoBehaviour {
 					_instance = container.AddComponent<Map>();  
 				}  
 			}  
-
 			return _instance;  
 		}  
 	}
 
+	[ReadOnly]
 	public bool editMode;
 	public int stage;
 	public int level;
@@ -29,16 +31,17 @@ public class Map : MonoBehaviour {
 	public int height;
 	[Range(0.0f, 1.0f)]
 	public float blockSlotScale;
-	private MapTile[] mapTiles;
-	//public List<Block> blocks;
 
+	public Transform tiles;
+	public Transform blocks;
+	public Transform hints;
 	public MapTile mapTilePrefab;
 	public Block[] blockPrefabs;
 
-    public Transform tiles;
-	public Transform blocks;
-	public Transform hints;
-
+	private MapTile[] mapTiles;
+	#if UNITY_EDITOR
+	public string dataPath;
+	#endif
 	void Start()
 	{
 		Init (null);
@@ -46,49 +49,51 @@ public class Map : MonoBehaviour {
 
 	public void Init(MapSaveData info)
 	{
-		if (null == info) {
-			info = ScriptableObject.CreateInstance<MapSaveData> ();
-			info.level = Map.Instance.stage;
-			info.stage = Map.Instance.level;
-			info.width = Map.Instance.width;
-			info.height = Map.Instance.height;
-			info.tiles = new int[info.width * info.height];
+		editMode = false;
+		if ("Editor" == SceneManager.GetActiveScene ().name) {
+			editMode = true;
 		}
+
+		if (null == info) {
+			#if UNITY_EDITOR
+			dataPath = "none";
+			#endif
+			info = ScriptableObject.CreateInstance<MapSaveData> ();
+			info.stage = stage;
+			info.level = level;
+			info.width = Mathf.Max(Map.Instance.width, 3);
+			info.height = Mathf.Max(Map.Instance.height, 3);
+			info.tiles = new int[info.width * info.height];
+			info.blockSlotScale = 1.0f;
+		}
+		#if UNITY_EDITOR
+		else {
+			dataPath = info.stage + "_" + info.level;
+		}
+		#endif
 
 		while (0 < tiles.childCount) {
-			Transform trMapTile = tiles.GetChild (0);
-			trMapTile.SetParent (null);
-			DestroyImmediate (trMapTile.gameObject);
+			Transform tile = tiles.GetChild (0);
+			tile.SetParent (null);
+			DestroyImmediate (tile.gameObject);
 		}
-		while (0 < blocks.childCount) {
-			Block block = blocks.GetChild (0).GetComponent<Block>();
-			block.blockSlot.transform.SetParent (null);
-			DestroyImmediate (block.blockSlot.gameObject);
 
-			block.transform.SetParent (null);
+		while (0 < blocks.childCount) {
+			Transform block = blocks.GetChild (0);
+			block.SetParent (null);
 			DestroyImmediate (block.gameObject);
 		}
-        while (0 < hints.childCount)
-        {
-            Transform hint = hints.GetChild(0);
-            hint.SetParent(null);
-            DestroyImmediate(hint.gameObject);
-        }
-
-		if (null == info) {
-			throw new System.Exception ("null level info");
-		}
+      
 		stage = info.stage;
 		level = info.level;
 		width = info.width;
 		height = info.height;
-
+		blockSlotScale = info.blockSlotScale;
 		if (0 == width || 0 == height) {
-			return;
+			throw new System.Exception ("zero size map");
 		}
 
 		mapTiles = new MapTile[width * height];
-
 		for(int y = 0; y<height; y++)	{
 			for (int x = 0; x<width; x++) {
 				MapTile mapTile = GameObject.Instantiate<MapTile> (mapTilePrefab);
@@ -128,10 +133,11 @@ public class Map : MonoBehaviour {
 				if (blockSaveData.slotPosition != blockSaveData.hintPosition) {
                     block.CreateHint();
                     block.hint.transform.position = blockSaveData.hintPosition;
-                    if(true == editMode)
-                    {
-                        block.transform.position = blockSaveData.hintPosition;
-                    }
+					if (true == editMode) {
+						block.transform.position = blockSaveData.hintPosition;
+					} else {
+						block.hint.SetActive (false);
+					}
 				}
 			}
 		}
@@ -171,10 +177,17 @@ public class Map : MonoBehaviour {
 
 		return saveData;
 	}
-
+	#if UNITY_EDITOR
     private void OnGUI()
     {
+		string text = "";
+		text += "Stage : " + Map.Instance.stage + ", Level : " + Map.Instance.level + "\n";
+		text += "Data file path : " + Map.Instance.dataPath + "\n";
+		text += "Mode : " + (true == editMode ? "Edit" : "Game") + "\n";
+		text += "Map Size :" + Map.Instance.width + " x " + Map.Instance.height + "\n";
+		GUI.Label (new Rect (0, 0, 400, 100), text);
     }
+	#endif
 }
 
 #if UNITY_EDITOR
@@ -201,6 +214,7 @@ public class MapEditor : Editor {
 			}
 			AssetDatabase.SaveAssets ();
 			AssetDatabase.Refresh ();
+			Map.Instance.dataPath = saveData.stage + "_" + saveData.level;
 		}
 
 		if(GUILayout.Button("Load"))
@@ -208,6 +222,28 @@ public class MapEditor : Editor {
 			MapSaveData data = Resources.Load<MapSaveData> (Map.Instance.stage + "_" + Map.Instance.level);
 			Map.Instance.Init (data);
 		}
+
+		for (int i = 0; i < Map.Instance.blocks.childCount; i++) {
+			Block block = Map.Instance.blocks.GetChild (i).GetComponent<Block>();
+			block.blockSlot.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
+
+			if (block.transform.position == block.blockSlot.transform.position) {
+				block.transform.localScale = block.blockSlot.transform.localScale;
+			}
+		}
 	}
+	/*
+	[OnOpenAssetAttribute(1)]
+	public static bool AutoOpen(int instanceID, int line)
+	{
+		if (Selection.activeObject != null && Selection.activeObject.GetType() == typeof(BlockSaveData))
+		{
+			string path = AssetDatabase.GetAssetPath(instanceID);
+			Debug.Log ("open asset");
+			return true;
+		}
+		return false;
+	}
+	*/
 }
 #endif

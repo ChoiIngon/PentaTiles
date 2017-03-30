@@ -40,7 +40,7 @@ public class BlockTile : MonoBehaviour {
 		if ("MapTile" == coll.gameObject.tag) {
 			MapTile markedMapTile = coll.gameObject.GetComponent<MapTile> ();
 
-			if (false == block.editMode && 0 == markedMapTile.id) {
+			if (false == Map.Instance.editMode && 0 == markedMapTile.id) {
 				return;
 			}
 				
@@ -64,7 +64,7 @@ public class BlockTile : MonoBehaviour {
 	void OnTriggerExit(Collider coll) {
 		if ("MapTile" == coll.gameObject.tag) {
 			MapTile markedMapTile = coll.gameObject.GetComponent<MapTile> ();
-			if (false == block.editMode && 0 == markedMapTile.id) {
+			if (false == Map.Instance.editMode && 0 == markedMapTile.id) {
 				return;
 			}
 			if (this == markedMapTile.blockTile) {

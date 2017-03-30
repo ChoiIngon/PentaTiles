@@ -6,10 +6,7 @@ using UnityEditor;
 #endif
 
 public class BlockSlots : MonoBehaviour {
-	//public bool editMode;
-	[Range(0.0f, 1.0f)]
-	public float scale;
-
+	
 	// Use this for initialization
 	void Start () {
 		Transform trBlocks = transform.FindChild ("Blocks");
@@ -18,8 +15,6 @@ public class BlockSlots : MonoBehaviour {
 			if (null == block) {
 				continue;
 			} 
-			block.scale = scale;
-			block.transform.localScale = new Vector3 (scale, scale, 1.0f);
 		}
 	}
 }
@@ -45,8 +40,7 @@ public class BlockSlotsEditor : Editor
 			if (null == block) {
 				continue;
 			} 
-			block.scale = blockSlots.scale;
-			block.transform.localScale = new Vector3 (blockSlots.scale, blockSlots.scale, 1.0f);
+
 		}
 	}
 }

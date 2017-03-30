@@ -24,8 +24,9 @@ public class Game : MonoBehaviour {
 
 	void Start()
 	{
-		resultPanel.gameObject.SetActive (false);
-		map.Init (null);
+		if (null != resultPanel) {
+			resultPanel.gameObject.SetActive (false);
+		}
 	}
 
 	public IEnumerator CheckCompleteStage() {

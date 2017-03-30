@@ -4,7 +4,8 @@ using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-[ExecuteInEditMode]
+
+//[ExecuteInEditMode]
 public class Block : MonoBehaviour {
 	public enum SortingOrder
 	{
@@ -14,9 +15,7 @@ public class Block : MonoBehaviour {
 		PutOnTheMap,
 		Select
 	}
-	public bool editMode;
 	public int id;
-	[HideInInspector] public float scale;
 
 	public Vector3 initPosition;
 	public List<BlockTile> blockTiles;
@@ -33,11 +32,22 @@ public class Block : MonoBehaviour {
 		Init ();
 	}
 
+	void OnDestroy()
+	{
+		if (null != blockSlot) {
+			blockSlot.transform.SetParent (null);
+			DestroyImmediate (blockSlot);
+		}
+
+		if (null != hint) {
+			hint.transform.SetParent (null);
+			DestroyImmediate (hint);
+		}
+	}
+
 	public void Init()
 	{
 		transform.SetParent (Map.Instance.blocks, false);
-		editMode = Map.Instance.editMode;
-		scale = Map.Instance.blockSlotScale;
 		initPosition = transform.position;
 		blockTiles = new List<BlockTile> ();
 		for (int i = 0; i < transform.childCount; i++) {
@@ -75,37 +85,47 @@ public class Block : MonoBehaviour {
 
 		if (true == returnToOrigialPosition) {
 			transform.position = blockSlot.transform.position;		
+			transform.localScale = blockSlot.transform.localScale;
 			initPosition = transform.position;
 			foreach(MapTile mapTile in mapTiles)
 			{
 				mapTile.block = null;
-				mapTile.id = 0;
+				if (true == Map.Instance.editMode) {
+					mapTile.id = 0;
+				}
 			}
 			mapTiles = new List<MapTile> ();
-            if(null != hint)
+			if(true == Map.Instance.editMode && null != hint)
             {
                 DestroyImmediate(hint);
                 hint = null;
             }
+
 			return;
 		}
 
 		foreach(BlockTile blockTile in blockTiles) {
 			if (null == blockTile.mapTile) {
 				transform.position = initPosition;
-				transform.localScale = new Vector3 (scale, scale, 1.0f);
+				if (transform.position == blockSlot.transform.position) {
+					transform.localScale = blockSlot.transform.localScale;
+				}
 				return;
 			}
 
 			MapTile mapTile = blockTile.mapTile;
-			if (false == editMode && 0 == mapTile.id) {
+			if (false == Map.Instance.editMode && 0 == mapTile.id) {
 				transform.position = initPosition;
-				transform.localScale = new Vector3 (scale, scale, 1.0f);
+				if (transform.position == blockSlot.transform.position) {
+					transform.localScale = blockSlot.transform.localScale;
+				}
 				return;
 			}
 			if (null != mapTile.block && this != mapTile.block) {
 				transform.position = initPosition;
-				transform.localScale = new Vector3 (scale, scale, 1.0f);
+				if (transform.position == blockSlot.transform.position) {
+					transform.localScale = blockSlot.transform.localScale;
+				}
 				return;
 			}
 		}
@@ -126,11 +146,11 @@ public class Block : MonoBehaviour {
 		initPosition = position;
 		transform.position = position;
 
-        if (true == editMode)
+		if (true == Map.Instance.editMode)
         {
             CreateHint();
         }
-        if (false == editMode) {
+		if (false == Map.Instance.editMode) {
 			StartCoroutine (Game.Instance.CheckCompleteStage ());
 		}
 	}
@@ -157,7 +177,7 @@ public class Block : MonoBehaviour {
             blockSlot = CloneTiles((int)SortingOrder.Slot);
 			blockSlot.name = "BlockSlot";
 		}
-		blockSlot.transform.localScale = new Vector3 (scale, scale, 1.0f);
+		blockSlot.transform.localScale = transform.localScale;
 		blockSlot.transform.position = transform.position;
 	}
 
@@ -209,25 +229,12 @@ public class BlockEditor : Editor
 		//EditorGUILayout.PropertyField(lookAtPoint);
 		serializedObject.ApplyModifiedProperties();
 		if (GUILayout.Button ("Init")) {
-			Map map = block.transform.GetComponentInParent<Map> ();
-			if (null != map) {
-				block.editMode = map.editMode;
+			if (null != block.hint) {
+				return;
 			}
-
-			BlockSlots blockSlots = block.transform.GetComponentInParent<BlockSlots> ();
-			if (null != blockSlots) {
-				block.scale = blockSlots.scale;
-				block.initPosition = block.transform.position;
-				block.blockSlot.transform.position = block.transform.position;
-				block.blockSlot.transform.localScale = new Vector3 (block.scale, block.scale, 1.0f);
-			}
-		}
-
-		if (GUILayout.Button ("OnDrop")) {
-			foreach (BlockTile blockTile in block.blockTiles) {
-				blockTile.spriteRenderer.sortingOrder += 1;
-			}
-			block.OnDrop (block.transform.position);
+			block.initPosition = block.transform.position;
+			block.blockSlot.transform.position = block.transform.position;
+			block.blockSlot.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
 		}
 	}
 }
