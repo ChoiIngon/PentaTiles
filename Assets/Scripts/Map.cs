@@ -35,6 +35,7 @@ public class Map : MonoBehaviour {
 	public MapTile mapTilePrefab;
 	public Block[] blockPrefabs;
 
+    public Transform tiles;
 	public Transform blocks;
 	public Transform hints;
 
@@ -42,6 +43,7 @@ public class Map : MonoBehaviour {
 	{
 		Init (null);
 	}
+
 	public void Init(MapSaveData info)
 	{
 		if (null == info) {
@@ -53,13 +55,11 @@ public class Map : MonoBehaviour {
 			info.tiles = new int[info.width * info.height];
 		}
 
-		Transform trMapTiles = transform.FindChild ("MapTiles");
-		while (0 < trMapTiles.childCount) {
-			Transform trMapTile = trMapTiles.GetChild (0);
+		while (0 < tiles.childCount) {
+			Transform trMapTile = tiles.GetChild (0);
 			trMapTile.SetParent (null);
 			DestroyImmediate (trMapTile.gameObject);
 		}
-
 		while (0 < blocks.childCount) {
 			Block block = blocks.GetChild (0).GetComponent<Block>();
 			block.blockSlot.transform.SetParent (null);
@@ -68,14 +68,12 @@ public class Map : MonoBehaviour {
 			block.transform.SetParent (null);
 			DestroyImmediate (block.gameObject);
 		}
-		/*
-		if (null != blocks) {
-			foreach (Block block in blocks) {
-				block.transform.SetParent (null);
-				DestroyImmediate (block.gameObject);
-			}
-		}
-		*/
+        while (0 < hints.childCount)
+        {
+            Transform hint = hints.GetChild(0);
+            hint.SetParent(null);
+            DestroyImmediate(hint.gameObject);
+        }
 
 		if (null == info) {
 			throw new System.Exception ("null level info");
@@ -95,7 +93,7 @@ public class Map : MonoBehaviour {
 			for (int x = 0; x<width; x++) {
 				MapTile mapTile = GameObject.Instantiate<MapTile> (mapTilePrefab);
 				mapTile.name = "MapTile_" + x + "_" + y;
-				mapTile.transform.SetParent (trMapTiles, false);
+				mapTile.transform.SetParent (tiles, false);
 				mapTile.transform.localPosition = new Vector3 (x, height - y, 0.0f);
 				mapTile.editMode = editMode;
 				if (false == editMode) {
@@ -112,10 +110,8 @@ public class Map : MonoBehaviour {
 			transform.position = position;
 		}
 
-		//blocks = new List<Block>();
 		{
 			Transform blockSlots = transform.FindChild ("BlockSlots");
-			//blockSlots.GetComponent<BlockSlots> ().editMode = editMode;
 			Vector3 position = blockSlots.position;
 			position.x = 0.0f;
 			blockSlots.transform.position = position;
@@ -127,9 +123,15 @@ public class Map : MonoBehaviour {
 				block.name = "Block_" + blockSaveData.id;
 				block.transform.SetParent (blocks, false);
 				block.transform.position = blockSaveData.slotPosition;
-				block.Init ();
+				block.Init ();                
 
-				if (null != blockSaveData.hintPosition) {
+				if (blockSaveData.slotPosition != blockSaveData.hintPosition) {
+                    block.CreateHint();
+                    block.hint.transform.position = blockSaveData.hintPosition;
+                    if(true == editMode)
+                    {
+                        block.transform.position = blockSaveData.hintPosition;
+                    }
 				}
 			}
 		}
@@ -151,6 +153,7 @@ public class Map : MonoBehaviour {
 		saveData.level = level;
 		saveData.width = width;
 		saveData.height = height;
+        saveData.blockSlotScale = blockSlotScale;
 		saveData.tiles = new int[mapTiles.Length];
 		for(int i=0; i<mapTiles.Length; i++)
 		{
@@ -166,9 +169,12 @@ public class Map : MonoBehaviour {
 			saveData.blocks [i] = blocks.GetChild(i).GetComponent<Block>().GetSaveData();
 		}
 
-		Debug.Log (JsonUtility.ToJson (saveData).ToString ());
 		return saveData;
 	}
+
+    private void OnGUI()
+    {
+    }
 }
 
 #if UNITY_EDITOR
@@ -199,11 +205,8 @@ public class MapEditor : Editor {
 
 		if(GUILayout.Button("Load"))
 		{
-			//SaveData data = AssetDatabase.LoadAssetAtPath<SaveData>("Assets/Resources/" + Map.Instance.stage + "_" + Map.Instance.level + ".asset");
 			MapSaveData data = Resources.Load<MapSaveData> (Map.Instance.stage + "_" + Map.Instance.level);
 			Map.Instance.Init (data);
-			//Resources.UnloadAsset (data);
-
 		}
 	}
 }

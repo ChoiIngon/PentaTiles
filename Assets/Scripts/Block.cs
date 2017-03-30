@@ -8,7 +8,7 @@ using UnityEditor;
 public class Block : MonoBehaviour {
 	public enum SortingOrder
 	{
-		BlockSlot,
+		Slot,
 		Hint,
 		Idle,
 		PutOnTheMap,
@@ -21,9 +21,15 @@ public class Block : MonoBehaviour {
 	public Vector3 initPosition;
 	public List<BlockTile> blockTiles;
 	private List<MapTile> mapTiles;
+
 	public GameObject blockSlot;
+    public GameObject hint;
 
 	void Start () {
+        if (Map.Instance.blocks == transform.parent)
+        {
+            return;
+        }
 		Init ();
 	}
 
@@ -38,6 +44,7 @@ public class Block : MonoBehaviour {
 			if (true == transform.GetChild (i).gameObject.activeSelf) {
 				BlockTile blockTile = transform.GetChild (i).GetComponent<BlockTile> ();
 				blockTile.Init ();
+                blockTile.spriteRenderer.sortingOrder = (int)SortingOrder.Idle;
 				blockTiles.Add (blockTile);
 			}
 		}
@@ -49,14 +56,14 @@ public class Block : MonoBehaviour {
 		transform.localScale = new Vector3 (1.0f, 1.0f, 1.0f);
 		transform.position = new Vector3 (transform.position.x, transform.position.y + 1.0f, transform.position.z);
 		foreach (BlockTile blockTile in blockTiles) {
-			blockTile.spriteRenderer.sortingOrder += 1;
-		}
+            blockTile.spriteRenderer.sortingOrder = (int)SortingOrder.Select;
+        }
 	}
 
 	public void OnDrop(Vector3 position) {
 		foreach (BlockTile blockTile in blockTiles) {
-			blockTile.spriteRenderer.sortingOrder -= 1;
-		}
+            blockTile.spriteRenderer.sortingOrder = (int)SortingOrder.Idle;
+        }
 
 		bool returnToOrigialPosition = true;
 		foreach(BlockTile blockTile in blockTiles) {
@@ -67,7 +74,6 @@ public class Block : MonoBehaviour {
 		}
 
 		if (true == returnToOrigialPosition) {
-			
 			transform.position = blockSlot.transform.position;		
 			initPosition = transform.position;
 			foreach(MapTile mapTile in mapTiles)
@@ -76,6 +82,11 @@ public class Block : MonoBehaviour {
 				mapTile.id = 0;
 			}
 			mapTiles = new List<MapTile> ();
+            if(null != hint)
+            {
+                DestroyImmediate(hint);
+                hint = null;
+            }
 			return;
 		}
 
@@ -98,7 +109,7 @@ public class Block : MonoBehaviour {
 				return;
 			}
 		}
-			
+
 		foreach(MapTile mapTile in mapTiles)
 		{
 			mapTile.block = null;
@@ -114,7 +125,12 @@ public class Block : MonoBehaviour {
 
 		initPosition = position;
 		transform.position = position;
-		if (false == editMode) {
+
+        if (true == editMode)
+        {
+            CreateHint();
+        }
+        if (false == editMode) {
 			StartCoroutine (Game.Instance.CheckCompleteStage ());
 		}
 	}
@@ -125,34 +141,59 @@ public class Block : MonoBehaviour {
 		saveData.name = name;
 		saveData.id = id;
 		saveData.slotPosition = blockSlot.transform.position;
-		saveData.hintPosition = transform.position;
+        if (null != hint)
+        {
+            saveData.hintPosition = hint.transform.position;
+        }
+        else
+        {
+            saveData.hintPosition = blockSlot.transform.position;
+        }
 		return saveData;
 	}
 
 	private void CreateBlockSlot() {
 		if (null == blockSlot) {
-			blockSlot = new GameObject ();
+            blockSlot = CloneTiles((int)SortingOrder.Slot);
 			blockSlot.name = "BlockSlot";
-			foreach (BlockTile blockTile in blockTiles) {
-				GameObject slotTile = new GameObject ();
-				slotTile.name = "BlockSlotTile";
-				slotTile.transform.localPosition = blockTile.transform.localPosition;
-				SpriteRenderer spriteRenderer = slotTile.AddComponent<SpriteRenderer> ();
-				spriteRenderer.sprite = blockTile.spriteRenderer.sprite;
-				spriteRenderer.color = new Color (
-					blockTile.spriteRenderer.color.r / 2, 
-					blockTile.spriteRenderer.color.g / 2, 
-					blockTile.spriteRenderer.color.b / 2, 
-					1.0f
-				);
-				spriteRenderer.sortingLayerID = blockTile.spriteRenderer.sortingLayerID;
-				spriteRenderer.sortingOrder = blockTile.spriteRenderer.sortingOrder - 1;
-				slotTile.transform.SetParent (blockSlot.transform, false);
-			}
 		}
 		blockSlot.transform.localScale = new Vector3 (scale, scale, 1.0f);
 		blockSlot.transform.position = transform.position;
 	}
+
+    public void CreateHint()
+    {
+        if (null == hint)
+        {
+            hint = CloneTiles((int)SortingOrder.Hint);
+            hint.name = name + "_Hint";
+            hint.transform.SetParent(Map.Instance.hints);
+        }
+        hint.transform.position = transform.position;
+    }
+
+    private GameObject CloneTiles(int sortingOrder)
+    {
+        GameObject cloneBlock = new GameObject();
+        foreach (BlockTile blockTile in blockTiles)
+        {
+            GameObject hintTile = new GameObject();
+            hintTile.name = "Tile";
+            hintTile.transform.localPosition = blockTile.transform.localPosition;
+            hintTile.transform.SetParent(cloneBlock.transform, false);
+            SpriteRenderer spriteRenderer = hintTile.AddComponent<SpriteRenderer>();
+            spriteRenderer.sprite = blockTile.spriteRenderer.sprite;
+            spriteRenderer.color = new Color(
+                blockTile.spriteRenderer.color.r / 2,
+                blockTile.spriteRenderer.color.g / 2,
+                blockTile.spriteRenderer.color.b / 2,
+                1.0f
+            );
+            spriteRenderer.sortingLayerID = blockTile.spriteRenderer.sortingLayerID;
+            spriteRenderer.sortingOrder = sortingOrder;
+        }
+        return cloneBlock;
+    }
 }
 
 #if UNITY_EDITOR

@@ -11,6 +11,7 @@ public class MapSaveData : ScriptableObject {
 	public int height;
 
 	public int[] tiles;
-	public BlockSaveData[] blocks;
 
+    public float blockSlotScale;
+	public BlockSaveData[] blocks;
 }
