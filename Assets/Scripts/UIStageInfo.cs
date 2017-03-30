@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIStartLevel : MonoBehaviour {
+public class UIStageInfo : MonoBehaviour {
 	Button button;
 	Text text;
-	int level;
+	int stage;
 
-	public void Init(int level, string title)
+	public void Init(int stage, string title)
 	{
 		button = GetComponent<Button> ();
 		button.onClick.AddListener (() => {
-			UILevelPanel.Instance.gameObject.SetActive(false);
-			Game.Instance.gameObject.SetActive(true);
+			Game.Instance.stagePanel.gameObject.SetActive(false);
+			Game.Instance.levelPanel.Init(stage);
 		});
 		text = transform.FindChild ("Text").GetComponent<Text> ();
 
-		this.level = level;
-		text.text = "Level:" + level + "\n" + title; 
+		this.stage = stage;
+		text.text = "Stage:" + stage + "\n" + title; 
 	}
 }

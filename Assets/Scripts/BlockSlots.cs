@@ -18,30 +18,4 @@ public class BlockSlots : MonoBehaviour {
 		}
 	}
 }
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(BlockSlots))]
-public class BlockSlotsEditor : Editor 
-{
-	void OnEnable()
-	{
-		BlockSlots blockSlots = (BlockSlots)target;
-
-	}
-
-	public override void OnInspectorGUI()
-	{
-		BlockSlots blockSlots = (BlockSlots)target;
-		DrawDefaultInspector ();
-
-		Transform trBlocks = blockSlots.transform.FindChild ("Blocks");
-		for (int i = 0; i < trBlocks.childCount; i++) {
-			Block block = trBlocks.GetChild (i).GetComponent<Block> ();
-			if (null == block) {
-				continue;
-			} 
-
-		}
-	}
-}
-#endif
+	

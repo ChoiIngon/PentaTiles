@@ -34,6 +34,7 @@ public class Map : MonoBehaviour {
 
 	public Transform tiles;
 	public Transform blocks;
+	public Transform slots;
 	public Transform hints;
 	public MapTile mapTilePrefab;
 	public Block[] blockPrefabs;
@@ -42,10 +43,6 @@ public class Map : MonoBehaviour {
 	#if UNITY_EDITOR
 	public string dataPath;
 	#endif
-	void Start()
-	{
-		Init (null);
-	}
 
 	public void Init(MapSaveData info)
 	{
@@ -83,6 +80,18 @@ public class Map : MonoBehaviour {
 			block.SetParent (null);
 			DestroyImmediate (block.gameObject);
 		}
+
+		while (0 < slots.childCount) {
+			Transform slot = slots.GetChild (0);
+			slot.SetParent (null);
+			DestroyImmediate (slot.gameObject);
+		}
+
+		while (0 < hints.childCount) {
+			Transform hint = hints.GetChild (0);
+			hint.SetParent (null);
+			DestroyImmediate (hint.gameObject);
+		}
       
 		stage = info.stage;
 		level = info.level;
@@ -116,7 +125,7 @@ public class Map : MonoBehaviour {
 		}
 
 		{
-			Transform blockSlots = transform.FindChild ("BlockSlots");
+			Transform blockSlots = transform.FindChild("BlockSlots");
 			Vector3 position = blockSlots.position;
 			position.x = 0.0f;
 			blockSlots.transform.position = position;
@@ -126,18 +135,23 @@ public class Map : MonoBehaviour {
 			foreach (BlockSaveData blockSaveData in info.blocks) {
 				Block block = GameObject.Instantiate<Block> (blockPrefabs [blockSaveData.id - 1]);
 				block.name = "Block_" + blockSaveData.id;
+				block.Init ();
 				block.transform.SetParent (blocks, false);
 				block.transform.position = blockSaveData.slotPosition;
-				block.Init ();                
+				block.blockSlot.transform.position = blockSaveData.slotPosition;
+				block.blockSlot.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
 
 				if (blockSaveData.slotPosition != blockSaveData.hintPosition) {
-                    block.CreateHint();
-                    block.hint.transform.position = blockSaveData.hintPosition;
-					if (true == editMode) {
-						block.transform.position = blockSaveData.hintPosition;
-					} else {
-						block.hint.SetActive (false);
+					block.CreateHint();
+					block.hint.transform.position = blockSaveData.hintPosition;
+					block.hint.SetActive (false);
+				}
+
+				if (true == editMode) {
+					if (blockSaveData.slotPosition == blockSaveData.hintPosition) {
+						block.transform.localScale = block.blockSlot.transform.localScale;
 					}
+					block.transform.position = blockSaveData.hintPosition;
 				}
 			}
 		}

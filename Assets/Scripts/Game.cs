@@ -19,23 +19,25 @@ public class Game : MonoBehaviour {
 		}  
 	}
 
-	public Map map;
+	public UIStagePanel stagePanel;
+	public UILevelPanel levelPanel;
 	public UIResultPanel resultPanel;
 
 	void Start()
 	{
-		if (null != resultPanel) {
-			resultPanel.gameObject.SetActive (false);
-		}
+		stagePanel.gameObject.SetActive (true);
+		levelPanel.gameObject.SetActive (false);
+		Map.Instance.gameObject.SetActive (false);
+		resultPanel.gameObject.SetActive (false);
 	}
 
 	public IEnumerator CheckCompleteStage() {
-		if (true == map.CheckComplete ()) {
+		if (true == Map.Instance.CheckComplete ()) {
 			yield return StartCoroutine(resultPanel.Activate ());
 			//if (true == resultPanel.isNext) {
 
 			//}
-			map.Init (null);
+			Map.Instance.Init (null);
 		}
 		yield break;
 	}

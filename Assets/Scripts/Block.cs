@@ -31,20 +31,6 @@ public class Block : MonoBehaviour {
         }
 		Init ();
 	}
-
-	void OnDestroy()
-	{
-		if (null != blockSlot) {
-			blockSlot.transform.SetParent (null);
-			DestroyImmediate (blockSlot);
-		}
-
-		if (null != hint) {
-			hint.transform.SetParent (null);
-			DestroyImmediate (hint);
-		}
-	}
-
 	public void Init()
 	{
 		transform.SetParent (Map.Instance.blocks, false);
@@ -167,7 +153,7 @@ public class Block : MonoBehaviour {
         }
         else
         {
-            saveData.hintPosition = blockSlot.transform.position;
+			saveData.hintPosition = saveData.slotPosition;
         }
 		return saveData;
 	}
@@ -176,6 +162,7 @@ public class Block : MonoBehaviour {
 		if (null == blockSlot) {
             blockSlot = CloneTiles((int)SortingOrder.Slot);
 			blockSlot.name = "BlockSlot";
+			blockSlot.transform.SetParent (Map.Instance.slots);
 		}
 		blockSlot.transform.localScale = transform.localScale;
 		blockSlot.transform.position = transform.position;
@@ -220,7 +207,6 @@ public class Block : MonoBehaviour {
 [CustomEditor(typeof(Block)), CanEditMultipleObjects]
 public class BlockEditor : Editor 
 {
-	
 	public override void OnInspectorGUI()
 	{
 		Block block = (Block)target;
@@ -232,9 +218,12 @@ public class BlockEditor : Editor
 			if (null != block.hint) {
 				return;
 			}
-			block.initPosition = block.transform.position;
+			block.Init ();
 			block.blockSlot.transform.position = block.transform.position;
 			block.blockSlot.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
+			if (null != block.hint) {
+				block.transform.localScale = block.blockSlot.transform.localScale;
+			}
 		}
 	}
 }
