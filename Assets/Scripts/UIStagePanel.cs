@@ -5,11 +5,9 @@ using UnityEngine.UI;
 
 public class UIStagePanel : MonoBehaviour {
 	public UIStageInfo stageInfoPrefab;
-	private Transform content;
+	public Transform content;
 	// Use this for initialization
 	void Start () {
-		content = transform.FindChild ("Viewport/Content");
-
 		for (int i = 0; i < 10; i++) {
 			UIStageInfo stageInfo = GameObject.Instantiate<UIStageInfo> (stageInfoPrefab);
 			stageInfo.transform.SetParent (content, false);

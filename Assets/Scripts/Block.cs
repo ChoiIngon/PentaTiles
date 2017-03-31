@@ -75,9 +75,9 @@ public class Block : MonoBehaviour {
 			foreach(MapTile mapTile in mapTiles)
 			{
 				mapTile.block = null;
-				if (true == Map.Instance.editMode) {
-					mapTile.id = 0;
-				}
+				//if (true == Map.Instance.editMode) {
+				//	mapTile.id = 0;
+				//}
 			}
 			mapTiles = new List<MapTile> ();
 			if(true == Map.Instance.editMode && null != hint)
@@ -118,6 +118,9 @@ public class Block : MonoBehaviour {
 		foreach(MapTile mapTile in mapTiles)
 		{
 			mapTile.block = null;
+			//if (true == Map.Instance.editMode) {
+			//	mapTile.id = 0;
+			//}
 		}
 		mapTiles = new List<MapTile> ();
 
@@ -149,6 +152,7 @@ public class Block : MonoBehaviour {
         if (null != hint)
         {
             saveData.hintPosition = hint.transform.position;
+			OnDrop (transform.position);
         }
         else
         {

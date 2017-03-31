@@ -13,17 +13,17 @@ public class UILevelInfo : MonoBehaviour {
 	{
 		button = GetComponent<Button> ();
 		button.onClick.AddListener (() => {
-			Game.Instance.levelPanel.gameObject.SetActive(false);
 			Map.Instance.gameObject.SetActive(true);
 			stage = 1;
-			level = 3;
+			level = 1;
 			MapSaveData mapSaveData = Resources.Load<MapSaveData> (stage + "_" + level);
 			Map.Instance.Init(mapSaveData);
+			Game.Instance.ScrollScreen(-1.0f);
 		});
 		text = transform.FindChild ("Text").GetComponent<Text> ();
 
 		this.stage = stage;
 		this.level = level;
-		text.text = "Level:" + level; 
+		text.text = level.ToString (); 
 	}
 }

@@ -110,11 +110,7 @@ public class Map : MonoBehaviour {
 				mapTile.transform.SetParent (tiles, false);
 				mapTile.transform.localPosition = new Vector3 (x, height - y, 0.0f);
 				mapTile.editMode = editMode;
-				if (false == editMode) {
-					mapTile.Init (info.tiles [x + y * width]);
-				} else {
-					mapTile.Init (0);
-				}
+				mapTile.Init (info.tiles [x + y * width]);
 				mapTiles [x + y * width] = mapTile;
 			}
 		}
@@ -135,9 +131,11 @@ public class Map : MonoBehaviour {
 			foreach (BlockSaveData blockSaveData in info.blocks) {
 				Block block = GameObject.Instantiate<Block> (blockPrefabs [blockSaveData.id - 1]);
 				block.name = "Block_" + blockSaveData.id;
-				block.Init ();
 				block.transform.SetParent (blocks, false);
 				block.transform.position = blockSaveData.slotPosition;
+				block.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
+				block.Init ();
+
 				block.blockSlot.transform.position = blockSaveData.slotPosition;
 				block.blockSlot.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
 
@@ -148,10 +146,10 @@ public class Map : MonoBehaviour {
 				}
 
 				if (true == editMode) {
-					if (blockSaveData.slotPosition == blockSaveData.hintPosition) {
-						block.transform.localScale = block.blockSlot.transform.localScale;
+					if (blockSaveData.slotPosition != blockSaveData.hintPosition) {
+						block.transform.localScale = Vector3.one;
+						block.transform.position = blockSaveData.hintPosition;
 					}
-					block.transform.position = blockSaveData.hintPosition;
 				}
 			}
 		}
@@ -175,6 +173,10 @@ public class Map : MonoBehaviour {
 		saveData.height = height;
         saveData.blockSlotScale = blockSlotScale;
 		saveData.tiles = new int[mapTiles.Length];
+		saveData.blocks = new BlockSaveData[blocks.childCount];
+		for (int i = 0; i < blocks.childCount; i++) {
+			saveData.blocks [i] = blocks.GetChild(i).GetComponent<Block>().GetSaveData();
+		}
 		for(int i=0; i<mapTiles.Length; i++)
 		{
 			if (null != mapTiles [i].block) {
@@ -183,12 +185,6 @@ public class Map : MonoBehaviour {
 				saveData.tiles [i] = 0;
 			}
 		}
-			
-		saveData.blocks = new BlockSaveData[blocks.childCount];
-		for (int i = 0; i < blocks.childCount; i++) {
-			saveData.blocks [i] = blocks.GetChild(i).GetComponent<Block>().GetSaveData();
-		}
-
 		return saveData;
 	}
 	#if UNITY_EDITOR

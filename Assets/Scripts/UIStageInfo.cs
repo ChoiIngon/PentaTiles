@@ -12,8 +12,9 @@ public class UIStageInfo : MonoBehaviour {
 	{
 		button = GetComponent<Button> ();
 		button.onClick.AddListener (() => {
-			Game.Instance.stagePanel.gameObject.SetActive(false);
 			Game.Instance.levelPanel.Init(stage);
+			//Game.Instance.stagePanel.gameObject.SetActive(false);
+			Game.Instance.ScrollScreen(-1.0f);
 		});
 		text = transform.FindChild ("Text").GetComponent<Text> ();
 
