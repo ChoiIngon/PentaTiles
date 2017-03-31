@@ -37,12 +37,11 @@ public class Block : MonoBehaviour {
 		initPosition = transform.position;
 		blockTiles = new List<BlockTile> ();
 		for (int i = 0; i < transform.childCount; i++) {
-			if (true == transform.GetChild (i).gameObject.activeSelf) {
-				BlockTile blockTile = transform.GetChild (i).GetComponent<BlockTile> ();
+            BlockTile blockTile = transform.GetChild(i).GetComponent<BlockTile>();
+            if (true == blockTile.gameObject.activeSelf) {
 				blockTile.Init ();
-                blockTile.spriteRenderer.sortingOrder = (int)SortingOrder.Idle;
 				blockTiles.Add (blockTile);
-			}
+			}       
 		}
 		mapTiles = new List<MapTile> ();
 		CreateBlockSlot ();

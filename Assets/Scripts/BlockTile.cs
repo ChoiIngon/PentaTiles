@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class BlockTile : MonoBehaviour {
 	[HideInInspector]
@@ -13,8 +16,8 @@ public class BlockTile : MonoBehaviour {
 	public void Init () {
 		block = GetComponentInParent<Block> ();
 		spriteRenderer = GetComponent<SpriteRenderer> ();
-		spriteRenderer.sortingOrder = 1;
-		markingColor = spriteRenderer.color / 2;
+        spriteRenderer.sortingOrder = (int)Block.SortingOrder.Idle;
+        markingColor = spriteRenderer.color / 2;
 		touchInput = GetComponent<TouchInput> ();
 		touchInput.onTouchDown = null;
 		touchInput.onTouchDrag = null;
@@ -36,7 +39,21 @@ public class BlockTile : MonoBehaviour {
 		};
 	}
 
-	void OnTriggerStay(Collider coll) {
+    private void Update()
+    {
+#if UNITY_EDITOR
+/*
+         if (true == Map.Instance.editMode)
+        {
+            if (gameObject == Selection.activeGameObject)
+            {
+                Selection.activeGameObject = block.gameObject;
+            }
+        }
+        */
+#endif
+    }
+    void OnTriggerStay(Collider coll) {
 		if ("MapTile" == coll.gameObject.tag) {
 			MapTile markedMapTile = coll.gameObject.GetComponent<MapTile> ();
 
@@ -76,3 +93,25 @@ public class BlockTile : MonoBehaviour {
 		}
 	}
 }
+
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(BlockTile))]
+public class BlockTileEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        BlockTile blockTile = (BlockTile)target;
+        DrawDefaultInspector();
+        if (true == Map.Instance.editMode)
+        {
+            if (blockTile.gameObject == Selection.activeGameObject)
+            {
+                Selection.activeGameObject = blockTile.block.gameObject;
+            }
+        }
+        serializedObject.Update();
+        serializedObject.ApplyModifiedProperties();
+    }
+}
+#endif
