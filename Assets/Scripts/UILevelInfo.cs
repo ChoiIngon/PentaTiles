@@ -15,7 +15,7 @@ public class UILevelInfo : MonoBehaviour {
 		button.onClick.AddListener (() => {
 			Map.Instance.gameObject.SetActive(true);
 			stage = 1;
-			level = 1;
+			level = 2;
 			MapSaveData mapSaveData = Resources.Load<MapSaveData> (stage + "_" + level);
 			Map.Instance.Init(mapSaveData);
 			Game.Instance.ScrollScreen(-1.0f);
