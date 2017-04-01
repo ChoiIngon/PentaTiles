@@ -136,23 +136,25 @@ public class Map : MonoBehaviour {
 				Block block = GameObject.Instantiate<Block> (blockPrefabs [blockSaveData.id - 1]);
 				block.name = "Block_" + blockSaveData.id;
 				block.transform.SetParent (blocks, false);
-				block.transform.position = blockSaveData.slotPosition;
-				block.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
 				block.Init ();
 
-				block.blockSlot.transform.position = blockSaveData.slotPosition;
+				block.blockSlot.transform.localPosition = blockSaveData.slotPosition;
 				block.blockSlot.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
+
+				block.initPosition = block.blockSlot.transform.position;
+				block.transform.position = block.blockSlot.transform.position;
+				block.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
 
 				if (blockSaveData.slotPosition != blockSaveData.hintPosition) {
 					block.CreateHint();
-					block.hint.transform.position = blockSaveData.hintPosition;
+					block.hint.transform.localPosition = blockSaveData.hintPosition;
 					block.hint.SetActive (false);
 				}
 
 				if (true == editMode) {
 					if (blockSaveData.slotPosition != blockSaveData.hintPosition) {
 						block.transform.localScale = Vector3.one;
-						block.transform.position = blockSaveData.hintPosition;
+						block.transform.localPosition = blockSaveData.hintPosition;
 					}
 				}
 			}

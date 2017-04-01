@@ -150,14 +150,12 @@ public class Block : MonoBehaviour {
 		BlockSaveData saveData = ScriptableObject.CreateInstance<BlockSaveData> ();
 		saveData.name = name;
 		saveData.id = id;
-		saveData.slotPosition = blockSlot.transform.position;
-        if (null != hint)
-        {
-            saveData.hintPosition = hint.transform.position;
+		saveData.slotPosition = blockSlot.transform.localPosition;
+        if (null != hint) {
+			saveData.hintPosition = hint.transform.localPosition;
 			OnDrop (transform.position);
         }
-        else
-        {
+        else {
 			saveData.hintPosition = saveData.slotPosition;
         }
 		return saveData;
