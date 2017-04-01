@@ -51,10 +51,11 @@ public class Block : MonoBehaviour {
 
 	public void OnClick() {
 		transform.localScale = Vector3.one;
-		transform.position = new Vector3 (transform.position.x, transform.position.y + 1.0f, transform.position.z);
+		transform.position = new Vector3 (transform.position.x, transform.position.y + 1.5f, transform.position.z);
 		foreach (BlockTile blockTile in blockTiles) {
             blockTile.spriteRenderer.sortingOrder = (int)SortingOrder.Select;
         }
+		AudioManager.Instance.Play("BlockSelect");
 	}
 
 	public void OnDrop(Vector3 position) {
@@ -88,6 +89,7 @@ public class Block : MonoBehaviour {
                 hint = null;
             }
 
+			AudioManager.Instance.Play("BlockOut");
 			return;
 		}
 
@@ -97,6 +99,7 @@ public class Block : MonoBehaviour {
 				if (transform.position == blockSlot.transform.position) {
 					transform.localScale = blockSlot.transform.localScale;
 				}
+				AudioManager.Instance.Play("BlockOut");
 				return;
 			}
 
@@ -106,6 +109,7 @@ public class Block : MonoBehaviour {
 				if (transform.position == blockSlot.transform.position) {
 					transform.localScale = blockSlot.transform.localScale;
 				}
+				AudioManager.Instance.Play("BlockOut");
 				return;
 			}
 			if (null != mapTile.block && this != mapTile.block) {
@@ -113,6 +117,7 @@ public class Block : MonoBehaviour {
 				if (transform.position == blockSlot.transform.position) {
 					transform.localScale = blockSlot.transform.localScale;
 				}
+				AudioManager.Instance.Play("BlockOut");
 				return;
 			}
 		}
@@ -120,9 +125,6 @@ public class Block : MonoBehaviour {
 		foreach(MapTile mapTile in mapTiles)
 		{
 			mapTile.block = null;
-			//if (true == Map.Instance.editMode) {
-			//	mapTile.id = 0;
-			//}
 		}
 		mapTiles = new List<MapTile> ();
 
@@ -141,8 +143,9 @@ public class Block : MonoBehaviour {
             CreateHint();
         }
 		if (false == Map.Instance.editMode) {
-			StartCoroutine (Game.Instance.CheckCompleteStage ());
+			StartCoroutine (Game.Instance.CompleteLevel ());
 		}
+		AudioManager.Instance.Play("BlockDrop");
 	}
 
 	public BlockSaveData GetSaveData()

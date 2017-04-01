@@ -21,9 +21,11 @@ public class UIStageInfo : MonoBehaviour {
 	{
 		button = GetComponent<Button> ();
 		button.onClick.AddListener (() => {
-			Game.Instance.levelPanel.Init(info);
+			Game.Instance.levelPanel.Init(this.info);
 			Game.Instance.playData.current_stage = info;
 			Game.Instance.ScrollScreen(-1.0f);
+
+			AudioManager.Instance.Play("ButtonClick");
 		});
 		title = transform.FindChild ("Text").GetComponent<Text> ();
 		star = transform.FindChild ("Star/Text").GetComponent<Text> ();
@@ -31,6 +33,13 @@ public class UIStageInfo : MonoBehaviour {
 		this.info = info;
 		title.text = "<size=50>" + info.name + "</size>\n" + 
 			"<size=40>" + info.description + "</size>";
-		star.text = "0" + "/" + info.total_level; 
+
+		PlayData.StageData stageData = Game.Instance.playData.stageDatas [info.stage - 1];
+
+		SetOpenLevel (stageData.level);
+	}
+
+	public void SetOpenLevel(int level) {
+		star.text = level + "/" + info.total_level; 
 	}
 }

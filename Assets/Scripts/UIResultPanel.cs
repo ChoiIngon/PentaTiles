@@ -26,9 +26,9 @@ public class UIResultPanel : MonoBehaviour {
 			else
 			{
 				int currentStage = Game.Instance.playData.current_stage.stage;
-				if(currentStage < Game.Instance.stagePanel.stageInfos.stage_infos.Length)
+				if(currentStage < Game.Instance.stageInfos.stage_infos.Length)
 				{
-					Game.Instance.playData.current_stage = Game.Instance.stagePanel.stageInfos.stage_infos[currentStage];
+					Game.Instance.playData.current_stage = Game.Instance.stageInfos.stage_infos[currentStage];
 					Game.Instance.playData.current_level = 1;
 				}
 			}

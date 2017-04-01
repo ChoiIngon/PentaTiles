@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 4302c7735c33040d89541259bde06674
-timeCreated: 1491039060
+timeCreated: 1491046258
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -28,11 +28,11 @@ TextureImporter:
     21300042: Button_21
     21300044: Button_22
     21300046: Button_23
-    21300048: Button@Level
+    21300048: Button@UnlockedLevel
     21300050: Button_25
     21300052: Button_26
     21300054: Button_27
-    21300056: Button_28
+    21300056: Button@LockedLevel
     21300058: Button_29
     21300060: Button_30
     21300062: Button_31
@@ -583,7 +583,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Button@Level
+      name: Button@UnlockedLevel
       rect:
         serializedVersion: 2
         x: 546
@@ -635,7 +635,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Button_28
+      name: Button@LockedLevel
       rect:
         serializedVersion: 2
         x: 1387

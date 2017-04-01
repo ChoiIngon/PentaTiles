@@ -184,6 +184,7 @@ public class Map : MonoBehaviour {
 			return false;
 		}
 		candidates [Random.Range (0, candidates.Count)].SetActive (true);
+		AudioManager.Instance.Play ("HintUse");
 		return true;
 	}
 

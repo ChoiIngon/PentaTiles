@@ -4,25 +4,29 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIStagePanel : MonoBehaviour {
-	[System.Serializable]
-	public class StageInfos {
-		public UIStageInfo.Info[] stage_infos;
-	}
-	public StageInfos stageInfos;
+	
 	public UIStageInfo stageInfoPrefab;
+	public List<UIStageInfo> stageInfos;
 	public Transform content;
 	// Use this for initialization
-	void Start () {
-		TextAsset json = Resources.Load<TextAsset> ("StageInfo");
-		stageInfos = JsonUtility.FromJson<StageInfos> (json.text);
-
-		foreach(UIStageInfo.Info info in stageInfos.stage_infos)
+	public void Init () {
+		stageInfos = new List<UIStageInfo> ();
+		foreach(UIStageInfo.Info info in Game.Instance.stageInfos.stage_infos)
 		{	
 			UIStageInfo stageInfo = GameObject.Instantiate<UIStageInfo> (stageInfoPrefab);
 			stageInfo.transform.SetParent (content, false);
 			stageInfo.Init (info);
+			stageInfos.Add (stageInfo);
 		}
 
 		Map.Instance.gameObject.SetActive (false);
+	}
+
+	public UIStageInfo GetStageInfo(int stage)
+	{
+		if (0 >= stage || stageInfos.Count < stage) {
+			throw new System.Exception ("invalid stage id:" + stage);
+		}
+		return stageInfos [stage - 1];
 	}
 }
