@@ -91,7 +91,7 @@ public class BlockTileEditor : Editor
         DrawDefaultInspector();
         if (true == Map.Instance.editMode)
         {
-            if (blockTile.gameObject == Selection.activeGameObject)
+			if (blockTile.gameObject == Selection.activeGameObject && null != blockTile.block)
             {
                 Selection.activeGameObject = blockTile.block.gameObject;
             }
