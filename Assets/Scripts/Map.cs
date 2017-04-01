@@ -168,6 +168,23 @@ public class Map : MonoBehaviour {
 		return true;
 	}
 
+	public bool UseHint()
+	{
+		List<GameObject> candidates = new List<GameObject> ();
+		for (int i = 0; i < hints.childCount; i++) {
+			Transform candidate = hints.GetChild (i);
+			if (false == candidate.gameObject.activeSelf) {
+				candidates.Add (candidate.gameObject);
+			}
+		}
+
+		if (0 == candidates.Count) {
+			return false;
+		}
+		candidates [Random.Range (0, candidates.Count)].SetActive (true);
+		return true;
+	}
+
 	public MapSaveData GetSaveData()
 	{
 		MapSaveData saveData = ScriptableObject.CreateInstance<MapSaveData> ();

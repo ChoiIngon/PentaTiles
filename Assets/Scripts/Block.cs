@@ -34,6 +34,8 @@ public class Block : MonoBehaviour {
 	public void Init()
 	{
 		transform.SetParent (Map.Instance.blocks, false);
+		transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
+
 		initPosition = transform.position;
 		blockTiles = new List<BlockTile> ();
 		for (int i = 0; i < transform.childCount; i++) {
@@ -48,7 +50,7 @@ public class Block : MonoBehaviour {
 	}
 
 	public void OnClick() {
-		transform.localScale = new Vector3 (1.0f, 1.0f, 1.0f);
+		transform.localScale = Vector3.one;
 		transform.position = new Vector3 (transform.position.x, transform.position.y + 1.0f, transform.position.z);
 		foreach (BlockTile blockTile in blockTiles) {
             blockTile.spriteRenderer.sortingOrder = (int)SortingOrder.Select;

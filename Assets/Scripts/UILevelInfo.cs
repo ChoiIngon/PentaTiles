@@ -14,8 +14,7 @@ public class UILevelInfo : MonoBehaviour {
 		button = GetComponent<Button> ();
 		button.onClick.AddListener (() => {
 			Game.Instance.playData.current_level = level;
-			Map.Instance.gameObject.SetActive(true);
-			Map.Instance.Init(stage, level);
+			Game.Instance.StartLevel(stage, level);
 			Game.Instance.ScrollScreen(-1.0f);
 		});
 		text = transform.FindChild ("Text").GetComponent<Text> ();

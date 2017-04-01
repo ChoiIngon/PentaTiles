@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 4302c7735c33040d89541259bde06674
-timeCreated: 1490983220
+timeCreated: 1491033300
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -69,11 +69,11 @@ TextureImporter:
     21300124: Button_62
     21300126: Button_63
     21300128: Button_64
-    21300130: Button_65
+    21300130: Button@Help
     21300132: Button_66
     21300134: Button_67
     21300136: Button_68
-    21300138: Button@Help
+    21300138: Button@Hint
     21300140: Button_70
     21300142: Button_71
     21300144: Button_72
@@ -1116,7 +1116,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Button_65
+      name: Button@Help
       rect:
         serializedVersion: 2
         x: 1139
@@ -1168,7 +1168,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Button@Help
+      name: Button@Hint
       rect:
         serializedVersion: 2
         x: 2145

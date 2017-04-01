@@ -14,7 +14,7 @@ public class UIResultPanel : MonoBehaviour {
 		redo.onClick.AddListener (() => {
 			isNext = false;
 			gameObject.SetActive(false);
-			Map.Instance.Init(Game.Instance.playData.current_stage.stage, Game.Instance.playData.current_level);
+			Game.Instance.StartLevel(Game.Instance.playData.current_stage.stage, Game.Instance.playData.current_level);
 		});
 		next.onClick.AddListener (() => {
 			isNext = true;
@@ -32,7 +32,7 @@ public class UIResultPanel : MonoBehaviour {
 					Game.Instance.playData.current_level = 1;
 				}
 			}
-			Map.Instance.Init(Game.Instance.playData.current_stage.stage, Game.Instance.playData.current_level);
+			Game.Instance.StartLevel(Game.Instance.playData.current_stage.stage, Game.Instance.playData.current_level);
 		});
 	}
 

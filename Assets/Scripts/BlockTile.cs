@@ -39,20 +39,6 @@ public class BlockTile : MonoBehaviour {
 		};
 	}
 
-    private void Update()
-    {
-#if UNITY_EDITOR
-/*
-         if (true == Map.Instance.editMode)
-        {
-            if (gameObject == Selection.activeGameObject)
-            {
-                Selection.activeGameObject = block.gameObject;
-            }
-        }
-        */
-#endif
-    }
     void OnTriggerStay(Collider coll) {
 		if ("MapTile" == coll.gameObject.tag) {
 			MapTile markedMapTile = coll.gameObject.GetComponent<MapTile> ();

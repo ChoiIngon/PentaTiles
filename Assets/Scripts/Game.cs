@@ -15,6 +15,7 @@ public class Game : MonoBehaviour {
 		public UIStageInfo.Info current_stage;
 		public int current_level;
 		public StageData[] stageDatas;
+		public int hint;
 	}
 	private static Game _instance;  
 	public static Game Instance {  
@@ -47,8 +48,6 @@ public class Game : MonoBehaviour {
 	{
 		//iTween.ShakePosition (background, new Vector3 (3.0f, 3.0f, 3.0f), 60.0f);
 		uiWidth = canvasScaler.referenceResolution.x;
-		//stagePanel.gameObject.SetActive (true);
-		//levelPanel.gameObject.SetActive (false);
 		Map.Instance.gameObject.SetActive (false);
 	}
 
@@ -74,8 +73,6 @@ public class Game : MonoBehaviour {
 	}
 	private IEnumerator _ScrollScreen(float direction)
 	{
-		Debug.Log ("call ScrollScreen");
-
 		float moveDistance = uiWidth;
 		Vector2 position = uiRoot.anchoredPosition;
 		float originalPosition = position.x;
@@ -90,5 +87,12 @@ public class Game : MonoBehaviour {
 		uiRoot.anchoredPosition = new Vector2 (originalPosition + uiWidth * direction, uiRoot.anchoredPosition.y);
 
 		scrollScreenCoroutine = null;
+	}
+
+	public void StartLevel(int stage, int level)
+	{
+		gamePanel.level.text = "Level - " + level;
+		Map.Instance.gameObject.SetActive(true);
+		Map.Instance.Init(stage, level);
 	}
 }
