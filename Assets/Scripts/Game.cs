@@ -4,6 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Game : MonoBehaviour {
+	[System.Serializable]
+	public class StageData {
+		public int stage;
+		public int level;
+	}
+	[System.Serializable]
+	public class PlayData
+	{
+		public UIStageInfo.Info current_stage;
+		public int current_level;
+		public StageData[] stageDatas;
+	}
 	private static Game _instance;  
 	public static Game Instance {  
 		get {  
@@ -14,7 +26,7 @@ public class Game : MonoBehaviour {
 					container.name = "Game";  
 					_instance = container.AddComponent<Game>();  
 				}  
-			}  
+			}
 
 			return _instance;  
 		}  
@@ -23,9 +35,11 @@ public class Game : MonoBehaviour {
 	public RectTransform uiRoot;
 	public UIStagePanel stagePanel;
 	public UILevelPanel levelPanel;
-	public UIResultPanel resultPanel;
+	public UIGamePanel gamePanel;
+
 	public float scrollTime;
 	public CanvasScaler canvasScaler;
+	public PlayData playData;
 	//public GameObject background;
 
 	private float uiWidth;
@@ -36,12 +50,11 @@ public class Game : MonoBehaviour {
 		//stagePanel.gameObject.SetActive (true);
 		//levelPanel.gameObject.SetActive (false);
 		Map.Instance.gameObject.SetActive (false);
-		resultPanel.gameObject.SetActive (false);
 	}
 
 	public IEnumerator CheckCompleteStage() {
 		if (true == Map.Instance.CheckComplete ()) {
-			yield return StartCoroutine(resultPanel.Activate ());
+			yield return StartCoroutine(gamePanel.resultPanel.Activate ());
 			//if (true == resultPanel.isNext) {
 
 			//}

@@ -1,0 +1,16 @@
+{
+  "stage_infos" : [
+    {
+      "stage" : 1,
+      "name" : "Beginner",
+      "description" : "block 3 to 5 levels",
+      "total_level" : 8
+    },
+	{
+      "stage" : 2,
+      "name" : "Intermediator",
+      "description" : "block 3 to 5 levels",
+      "total_level" : 8
+    }
+  ]
+}

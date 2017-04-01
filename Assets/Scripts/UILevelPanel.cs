@@ -6,16 +6,16 @@ public class UILevelPanel : MonoBehaviour {
 	public UILevelInfo levelInfoPrefab;
 	public Transform gridView;
 	// Use this for initialization
-	public void Init (int stage) {
+	public void Init (UIStageInfo.Info info) {
 		while (0 < gridView.childCount) {
 			Transform child = gridView.GetChild (0);
 			child.SetParent (null);
 			DestroyImmediate (child.gameObject);
 		}
-		for (int i = 0; i < 24; i++) {
+		for (int i = 0; i < info.total_level; i++) {
 			UILevelInfo levelInfo = GameObject.Instantiate<UILevelInfo> (levelInfoPrefab);
 			levelInfo.transform.SetParent (gridView, false);
-			levelInfo.Init (stage, i + 1);
+			levelInfo.Init (info.stage, i + 1);
 		}
 	}
 

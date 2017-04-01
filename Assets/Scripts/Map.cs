@@ -43,7 +43,11 @@ public class Map : MonoBehaviour {
 	#if UNITY_EDITOR
 	public string dataPath;
 	#endif
-
+	public void Init(int stage, int level)
+	{
+		MapSaveData mapSaveData = Resources.Load<MapSaveData> (stage + "_" + level);
+		Init(mapSaveData);
+	}
 	public void Init(MapSaveData info)
 	{
 		editMode = false;

@@ -14,10 +14,25 @@ public class UIResultPanel : MonoBehaviour {
 		redo.onClick.AddListener (() => {
 			isNext = false;
 			gameObject.SetActive(false);
+			Map.Instance.Init(Game.Instance.playData.current_stage.stage, Game.Instance.playData.current_level);
 		});
 		next.onClick.AddListener (() => {
 			isNext = true;
 			gameObject.SetActive(false);
+			if(Game.Instance.playData.current_level < Game.Instance.playData.current_stage.total_level)
+			{
+				Game.Instance.playData.current_level++;
+			}
+			else
+			{
+				int currentStage = Game.Instance.playData.current_stage.stage;
+				if(currentStage < Game.Instance.stagePanel.stageInfos.stage_infos.Length)
+				{
+					Game.Instance.playData.current_stage = Game.Instance.stagePanel.stageInfos.stage_infos[currentStage];
+					Game.Instance.playData.current_level = 1;
+				}
+			}
+			Map.Instance.Init(Game.Instance.playData.current_stage.stage, Game.Instance.playData.current_level);
 		});
 	}
 
