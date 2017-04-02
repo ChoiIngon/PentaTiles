@@ -30,6 +30,9 @@ public class AudioManager : MonoBehaviour {
 	private Dictionary<string, AudioSource> audioSources;
 
 	void Init () {
+		if (true == Map.Instance.editMode) {
+			return;
+		}
 		audioSources = new Dictionary<string, AudioSource> ();
 		foreach(AudioInfo audioInfo in audioInfos)
 		{
@@ -46,6 +49,10 @@ public class AudioManager : MonoBehaviour {
 	}
 
 	public void Play(string name) {
+		if (true == Map.Instance.editMode) {
+			return;
+		}
+
 		if (false == audioSources.ContainsKey (name)) {
 			throw new System.Exception ("invalid audiosource name(" + name + ")");
 		}
@@ -56,6 +63,9 @@ public class AudioManager : MonoBehaviour {
 
 	public void Activate(bool flag)
 	{
+		if (true == Map.Instance.editMode) {
+			return;
+		}
 		foreach (var itr in audioSources) {
 			AudioSource audioSource = itr.Value;
 			audioSource.mute = !flag;
