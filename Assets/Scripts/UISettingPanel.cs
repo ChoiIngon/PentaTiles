@@ -22,22 +22,17 @@ public class UISettingPanel : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Load ();
-		rectTransform = GetComponent<RectTransform> ();
-		bgmToggle.isOn = saveData.isBgmOn;
+
 		bgmToggle.onValueChanged.AddListener(value => {
 			AudioManager.Instance.Play("ButtonClick");
 			saveData.isBgmOn = bgmToggle.isOn;
 			Save();
-
 		});
-		soundToggle.isOn = saveData.isSoundOn;
 		soundToggle.onValueChanged.AddListener(value =>	{
 			AudioManager.Instance.Play("ButtonClick");
-			saveData.isSoundOn = soundToggle.isOn;
 			AudioManager.Instance.Activate(soundToggle.isOn);
-
+			saveData.isSoundOn = soundToggle.isOn;
 			Save();		
-
 		});
 		closeButton.onClick.AddListener (() => {
 			AudioManager.Instance.Play("ButtonClick");
@@ -49,6 +44,11 @@ public class UISettingPanel : MonoBehaviour {
 
 	void OnEnable()
 	{
+		if (null == saveData) {
+			return;
+		}
+		bgmToggle.isOn = saveData.isBgmOn;
+		soundToggle.isOn = saveData.isSoundOn;
 		Game.Instance.Pause (true);
 	}
 
@@ -80,6 +80,9 @@ public class UISettingPanel : MonoBehaviour {
 			saveData.isBgmOn = true;
 			saveData.isSoundOn = true;
 		}
+		bgmToggle.isOn = saveData.isBgmOn;
+		soundToggle.isOn = saveData.isSoundOn;
+		Debug.Log (saveData.isSoundOn.ToString ());
 		AudioManager.Instance.Activate (saveData.isSoundOn);
 	}
 }

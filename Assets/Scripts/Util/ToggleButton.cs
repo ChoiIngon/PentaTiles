@@ -16,8 +16,8 @@ public class ToggleButton : Toggle
 		base.Start();
 
 		normalSprite = ((Image)targetGraphic).sprite;
-		onValueChanged.AddListener(value =>
-		{
+		onValueChanged.AddListener(value =>	{
+			Debug.Log(name + " isOn:" + isOn);
 			switch (transition)
 			{
 				case Transition.ColorTint: 
