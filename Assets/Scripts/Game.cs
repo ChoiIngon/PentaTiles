@@ -39,15 +39,19 @@ public class Game : MonoBehaviour {
 	public PlayData playData;
 	//public GameObject background;
 
+	private UnityAds unityAds;
 	private float uiWidth;
 	void Start()
 	{
+		unityAds = GetComponent<UnityAds> ();
+
 		TextAsset json = Resources.Load<TextAsset> ("StageInfo");
 		stageInfos = JsonUtility.FromJson<StageInfos> (json.text);
 		Load ();
 
 		//iTween.ShakePosition (background, new Vector3 (3.0f, 3.0f, 3.0f), 60.0f);
 		uiWidth = canvasScaler.referenceResolution.x;
+		Map.Instance.editMode = false;
 		Map.Instance.gameObject.SetActive (false);
 
 		stagePanel.Init ();
@@ -76,7 +80,7 @@ public class Game : MonoBehaviour {
 		}
 
 		uiRoot.anchoredPosition = new Vector2 (originalPosition + uiWidth * direction, uiRoot.anchoredPosition.y);
-
+	
 		scrollScreenCoroutine = null;
 	}
 
@@ -89,6 +93,8 @@ public class Game : MonoBehaviour {
 
 	public IEnumerator CompleteLevel() {
 		if (true == Map.Instance.CheckComplete ()) {
+			AudioManager.Instance.Play("LevelClear");
+
 			PlayData.StageData stageData = playData.stageDatas [playData.current_stage.stage - 1];
 			stageData.level = Mathf.Max (stageData.level, playData.current_level);
 			stagePanel.GetStageInfo (stageData.stage).SetOpenLevel (stageData.level);
@@ -96,10 +102,11 @@ public class Game : MonoBehaviour {
 				levelPanel.GetLevelInfo (stageData.level+1).Unlock ();
 			}
 			Save ();
-			AudioManager.Instance.Play("LevelClear");
+			unityAds.Show ();
+
+			yield return new WaitForSeconds (1.0f);
 			yield return StartCoroutine(gamePanel.resultPanel.Activate ());
 		}
-		yield break;
 	}
 
 
