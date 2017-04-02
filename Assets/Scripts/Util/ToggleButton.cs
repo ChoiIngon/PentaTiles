@@ -15,10 +15,6 @@ public class ToggleButton : Toggle
 	{
 		base.Start();
 		//normalSprite = ((Image)targetGraphic).sprite;
-		Debug.Log("sprite name for true:" + spriteState.pressedSprite.name + 
-			" and false:" + spriteState.disabledSprite.name + 
-			", current:" + image.sprite.name +", value:" + isOn +")"
-		);
 		OnChangeValue (isOn);
 		onValueChanged.AddListener(OnChangeValue);
 	}
@@ -36,6 +32,5 @@ public class ToggleButton : Toggle
 		default: 
 			throw new NotImplementedException();
 		}
-		Debug.Log("value change(value:" + isOn + ", sprite:" + image.sprite.name +")");
 	}
 }
