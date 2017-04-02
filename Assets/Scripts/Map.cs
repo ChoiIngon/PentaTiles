@@ -211,17 +211,6 @@ public class Map : MonoBehaviour {
 		}
 		return saveData;
 	}
-	#if UNITY_EDITOR
-    private void OnGUI()
-    {
-		string text = "";
-		text += "Stage : " + Map.Instance.stage + ", Level : " + Map.Instance.level + "\n";
-		text += "Data file path : " + Map.Instance.dataPath + "\n";
-		text += "Mode : " + (true == editMode ? "Edit" : "Game") + "\n";
-		text += "Map Size :" + Map.Instance.width + " x " + Map.Instance.height + "\n";
-		GUI.Label (new Rect (0, 0, 400, 100), text);
-    }
-	#endif
 }
 
 #if UNITY_EDITOR
