@@ -14,17 +14,15 @@ public class ToggleButton : Toggle
 	protected override void Start()
 	{
 		base.Start();
-
-		normalSprite = ((Image)targetGraphic).sprite;
+		//normalSprite = ((Image)targetGraphic).sprite;
 		onValueChanged.AddListener(value =>	{
-			Debug.Log(name + " isOn:" + isOn);
 			switch (transition)
 			{
 				case Transition.ColorTint: 
-					image.color = isOn ? colors.pressedColor : colors.normalColor; 
+				image.color = isOn ? colors.pressedColor : colors.disabledColor; 
 					break;
 				case Transition.SpriteSwap: 
-					image.sprite = isOn ? spriteState.pressedSprite : normalSprite; 
+					image.sprite = isOn ? spriteState.pressedSprite : spriteState.disabledSprite; 
 					break;
 				default: 
 					throw new NotImplementedException();

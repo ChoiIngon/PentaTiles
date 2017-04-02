@@ -30,25 +30,18 @@ public class UISettingPanel : MonoBehaviour {
 		});
 		soundToggle.onValueChanged.AddListener(value =>	{
 			AudioManager.Instance.Play("ButtonClick");
-			AudioManager.Instance.Activate(soundToggle.isOn);
-			saveData.isSoundOn = soundToggle.isOn;
+			AudioManager.Instance.Activate(value);
+			saveData.isSoundOn = value;
 			Save();		
 		});
 		closeButton.onClick.AddListener (() => {
 			AudioManager.Instance.Play("ButtonClick");
 			gameObject.SetActive(false);
-
 		});
-		gameObject.SetActive (false);
 	}
 
 	void OnEnable()
 	{
-		if (null == saveData) {
-			return;
-		}
-		bgmToggle.isOn = saveData.isBgmOn;
-		soundToggle.isOn = saveData.isSoundOn;
 		Game.Instance.Pause (true);
 	}
 
@@ -58,6 +51,7 @@ public class UISettingPanel : MonoBehaviour {
 			Game.Instance.Pause (false);
 		}
 	}
+
 	public void Save()
 	{
 		Debug.Log ("saved \'setting.dat\' to " + Application.persistentDataPath + "/setting.dat");
@@ -82,7 +76,6 @@ public class UISettingPanel : MonoBehaviour {
 		}
 		bgmToggle.isOn = saveData.isBgmOn;
 		soundToggle.isOn = saveData.isSoundOn;
-		Debug.Log (saveData.isSoundOn.ToString ());
 		AudioManager.Instance.Activate (saveData.isSoundOn);
 	}
 }
