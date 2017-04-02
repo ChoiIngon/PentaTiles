@@ -167,6 +167,11 @@ public class Map : MonoBehaviour {
 				return false;
 			}
 		}
+
+		BlockTile[] blockTiles = blocks.GetComponentsInChildren<BlockTile> ();
+		foreach (BlockTile blockTile in blockTiles) {
+			iTween.RotateBy(blockTile.gameObject, iTween.Hash("x", 20.0f, "time", 1.0f));
+		}
 		return true;
 	}
 

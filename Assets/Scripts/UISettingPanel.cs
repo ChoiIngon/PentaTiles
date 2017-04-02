@@ -38,6 +38,7 @@ public class UISettingPanel : MonoBehaviour {
 			AudioManager.Instance.Play("ButtonClick");
 			gameObject.SetActive(false);
 		});
+		gameObject.SetActive (false);
 	}
 
 	void OnEnable()
