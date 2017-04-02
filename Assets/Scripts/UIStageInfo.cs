@@ -31,8 +31,8 @@ public class UIStageInfo : MonoBehaviour {
 		star = transform.FindChild ("Star/Text").GetComponent<Text> ();
 
 		this.info = info;
-		title.text = "<size=50>" + info.name + "</size>\n" + 
-			"<size=40>" + info.description + "</size>";
+		title.text = "<size=40>" + info.name + "</size>\n" + 
+			"<size=30>" + info.description + "</size>";
 
 		PlayData.StageData stageData = Game.Instance.playData.stageDatas [info.stage - 1];
 
