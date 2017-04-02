@@ -15,18 +15,27 @@ public class ToggleButton : Toggle
 	{
 		base.Start();
 		//normalSprite = ((Image)targetGraphic).sprite;
-		onValueChanged.AddListener(value =>	{
-			switch (transition)
-			{
-				case Transition.ColorTint: 
-				image.color = isOn ? colors.pressedColor : colors.disabledColor; 
-					break;
-				case Transition.SpriteSwap: 
-					image.sprite = isOn ? spriteState.pressedSprite : spriteState.disabledSprite; 
-					break;
-				default: 
-					throw new NotImplementedException();
-			}
-		});
+		Debug.Log("sprite name for true:" + spriteState.pressedSprite.name + 
+			" and false:" + spriteState.disabledSprite.name + 
+			", current:" + image.sprite.name +", value:" + isOn +")"
+		);
+		OnChangeValue (isOn);
+		onValueChanged.AddListener(OnChangeValue);
+	}
+
+	private void OnChangeValue(bool flag)
+	{
+		switch (transition)
+		{
+		case Transition.ColorTint: 
+			image.color = isOn ? colors.pressedColor : colors.disabledColor; 
+			break;
+		case Transition.SpriteSwap: 
+			image.sprite = isOn ? spriteState.pressedSprite : spriteState.disabledSprite; 
+			break;
+		default: 
+			throw new NotImplementedException();
+		}
+		Debug.Log("value change(value:" + isOn + ", sprite:" + image.sprite.name +")");
 	}
 }

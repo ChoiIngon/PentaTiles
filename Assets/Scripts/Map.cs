@@ -249,12 +249,15 @@ public class MapEditor : Editor {
 			AssetDatabase.SaveAssets ();
 			AssetDatabase.Refresh ();
 			Map.Instance.dataPath = saveData.stage + "_" + saveData.level;
+
+			Debug.Log ("success to save map file to " + "\'Assets/Resources/" + saveData.stage + "_" + saveData.level + ".asset" +"\'");
 		}
 
 		if(GUILayout.Button("Load"))
 		{
 			MapSaveData data = Resources.Load<MapSaveData> (Map.Instance.stage + "_" + Map.Instance.level);
 			Map.Instance.Init (data);
+			Debug.Log ("success to load map file from " + "\'Assets/Resources/" + data.stage + "_" + data.level + ".asset" +"\'");
 		}
 
 		for (int i = 0; i < Map.Instance.blocks.childCount; i++) {

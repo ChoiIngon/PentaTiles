@@ -29,11 +29,14 @@ public class AudioManager : MonoBehaviour {
 	public AudioInfo[] audioInfos;
 	private Dictionary<string, AudioSource> audioSources;
 
+	void Start() {
+		
+	}
 	void Init () {
-		if (true == Map.Instance.editMode) {
+		audioSources = new Dictionary<string, AudioSource> ();
+		if (null == audioInfos) {
 			return;
 		}
-		audioSources = new Dictionary<string, AudioSource> ();
 		foreach(AudioInfo audioInfo in audioInfos)
 		{
 			GameObject audio = new GameObject ();
@@ -63,9 +66,6 @@ public class AudioManager : MonoBehaviour {
 
 	public void Activate(bool flag)
 	{
-		if (true == Map.Instance.editMode) {
-			return;
-		}
 		foreach (var itr in audioSources) {
 			AudioSource audioSource = itr.Value;
 			audioSource.mute = !flag;
