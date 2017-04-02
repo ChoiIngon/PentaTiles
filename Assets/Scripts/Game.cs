@@ -31,6 +31,7 @@ public class Game : MonoBehaviour {
 	public UIStagePanel stagePanel;
 	public UILevelPanel levelPanel;
 	public UIGamePanel gamePanel;
+	public UISettingPanel settingPanel;
 
 	public float scrollTime;
 	public CanvasScaler canvasScaler;
@@ -128,6 +129,14 @@ public class Game : MonoBehaviour {
 				stageData.level = 0;
 				playData.stageDatas.Add (stageData);
 			}
+		}
+	}
+
+	public void Pause(bool flag)
+	{
+		BoxCollider[] children = Map.Instance.transform.GetComponentsInChildren<BoxCollider> ();
+		foreach (BoxCollider child in children) {
+			child.enabled = !flag;
 		}
 	}
 }

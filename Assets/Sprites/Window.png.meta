@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: d2061de8d944d4cb8a7d4e2ad189e739
-timeCreated: 1490972119
+timeCreated: 1491090665
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -15,7 +15,7 @@ TextureImporter:
     21300016: Window_8
     21300018: Window_9
     21300020: Window_10
-    21300022: Window_11
+    21300022: SettingPanel
     21300024: Window_12
     21300026: Window_13
     21300028: Window_14
@@ -27,14 +27,14 @@ TextureImporter:
     21300040: Window_20
     21300042: Window_21
     21300044: Window_22
-    21300046: Window@Ribbon
+    21300046: GamePanel@Ribbon
     21300048: Window_24
     21300050: Window_25
     21300052: Window_26
     21300054: Window_27
     21300056: Window_28
-    21300058: Window@Outer
-    21300060: Window@Inner
+    21300058: GamePanel@Outer
+    21300060: GamePanel@Inner
     21300062: StageInfo
     21300064: Window_32
     21300066: Window_33
@@ -302,7 +302,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Window_11
+      name: SettingPanel
       rect:
         serializedVersion: 2
         x: 595
@@ -311,7 +311,7 @@ TextureImporter:
         height: 635
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 115, y: 90, z: 115, w: 140}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
@@ -458,7 +458,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Window@Ribbon
+      name: GamePanel@Ribbon
       rect:
         serializedVersion: 2
         x: 1642
@@ -536,7 +536,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Window@Outer
+      name: GamePanel@Outer
       rect:
         serializedVersion: 2
         x: 2321
@@ -549,7 +549,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Window@Inner
+      name: GamePanel@Inner
       rect:
         serializedVersion: 2
         x: 2983

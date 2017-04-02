@@ -19,6 +19,7 @@ public class AudioManager : MonoBehaviour {
 					container.name = "AudioManager";  
 					_instance = container.AddComponent<AudioManager>();  
 				}  
+				_instance.Init ();
 			}
 
 			return _instance;  
@@ -28,7 +29,7 @@ public class AudioManager : MonoBehaviour {
 	public AudioInfo[] audioInfos;
 	private Dictionary<string, AudioSource> audioSources;
 
-	void Start () {
+	void Init () {
 		audioSources = new Dictionary<string, AudioSource> ();
 		foreach(AudioInfo audioInfo in audioInfos)
 		{
@@ -53,6 +54,11 @@ public class AudioManager : MonoBehaviour {
 		audioSource.Play ();
 	}
 
-
-
+	public void Activate(bool flag)
+	{
+		foreach (var itr in audioSources) {
+			AudioSource audioSource = itr.Value;
+			audioSource.mute = !flag;
+		}	
+	}
 }

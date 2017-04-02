@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 4302c7735c33040d89541259bde06674
-timeCreated: 1491046258
+timeCreated: 1491091627
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -24,7 +24,7 @@ TextureImporter:
     21300034: Button_17
     21300036: Button_18
     21300038: Button_19
-    21300040: Button@Option
+    21300040: Button@Setting
     21300042: Button_21
     21300044: Button_22
     21300046: Button_23
@@ -37,7 +37,7 @@ TextureImporter:
     21300060: Button_30
     21300062: Button_31
     21300064: Button_32
-    21300066: Button_33
+    21300066: Button@Cancel
     21300068: Button_34
     21300070: Button_35
     21300072: Button_36
@@ -121,10 +121,10 @@ TextureImporter:
     21300228: Button_114
     21300230: Button_115
     21300232: Button_116
-    21300234: Button_117
+    21300234: Button@BGM_On
     21300236: Button_118
     21300238: Button_119
-    21300240: Button_120
+    21300240: Button@BGM_Off
     21300242: Button_121
     21300244: Button_122
     21300246: Button_123
@@ -137,10 +137,10 @@ TextureImporter:
     21300260: Button_130
     21300262: Button_131
     21300264: Button_132
-    21300266: Button_133
+    21300266: Button@Sound_On
     21300268: Button_134
     21300270: Button_135
-    21300272: Button_136
+    21300272: Button@Sound_Off
     21300274: Button_137
     21300276: Button_138
     21300278: Button_139
@@ -531,7 +531,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Button@Option
+      name: Button@Setting
       rect:
         serializedVersion: 2
         x: 3090
@@ -700,7 +700,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Button_33
+      name: Button@Cancel
       rect:
         serializedVersion: 2
         x: 3090
@@ -1792,7 +1792,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Button_117
+      name: Button@BGM_On
       rect:
         serializedVersion: 2
         x: 2145
@@ -1831,7 +1831,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Button_120
+      name: Button@BGM_Off
       rect:
         serializedVersion: 2
         x: 2758
@@ -2000,7 +2000,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Button_133
+      name: Button@Sound_On
       rect:
         serializedVersion: 2
         x: 2145
@@ -2039,7 +2039,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Button_136
+      name: Button@Sound_Off
       rect:
         serializedVersion: 2
         x: 2758
