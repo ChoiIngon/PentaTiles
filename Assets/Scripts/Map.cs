@@ -276,18 +276,6 @@ public class MapEditor : Editor {
 			}
 		}
 	}
-	/*
-	[OnOpenAssetAttribute(1)]
-	public static bool AutoOpen(int instanceID, int line)
-	{
-		if (Selection.activeObject != null && Selection.activeObject.GetType() == typeof(BlockSaveData))
-		{
-			string path = AssetDatabase.GetAssetPath(instanceID);
-			Debug.Log ("open asset");
-			return true;
-		}
-		return false;
-	}
-	*/
+
 }
 #endif
