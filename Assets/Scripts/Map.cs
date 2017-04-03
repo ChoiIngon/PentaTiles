@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Analytics;
+
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Callbacks;
@@ -172,7 +174,12 @@ public class Map : MonoBehaviour {
 		foreach (BlockTile blockTile in blockTiles) {
 			iTween.RotateBy(blockTile.gameObject, iTween.Hash("x", 20.0f, "time", 1.0f));
 		}
-		return true;
+
+        Analytics.CustomEvent("LevelComplete", new Dictionary<string, object> {
+            {"stage", Game.Instance.playData.current_stage.stage },
+            {"level", Game.Instance.playData.current_level}
+        });
+        return true;
 	}
 
 	public bool UseHint()
@@ -188,9 +195,15 @@ public class Map : MonoBehaviour {
 		if (0 == candidates.Count) {
 			return false;
 		}
-		candidates [Random.Range (0, candidates.Count)].SetActive (true);
-		AudioManager.Instance.Play ("HintUse");
-		return true;
+
+        AudioManager.Instance.Play("HintUse");
+        candidates [Random.Range (0, candidates.Count)].SetActive (true);
+		
+        Analytics.CustomEvent("HintUse", new Dictionary<string, object> {
+            {"stage", Game.Instance.playData.current_stage.stage },
+            {"level", Game.Instance.playData.current_level}
+        });
+        return true;
 	}
 
 	public MapSaveData GetSaveData()

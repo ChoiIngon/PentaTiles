@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using UnityEngine.Advertisements;
+using UnityEngine.Analytics;
 
 public class UnityAds : MonoBehaviour {
 	public string iosGameID; // Set this value from the inspector.
@@ -10,13 +10,17 @@ public class UnityAds : MonoBehaviour {
 	public float showInterval;
 
 	private float lastAdShowTime;
+    private int watchAdsCount;
 
 	IEnumerator Start () {
-		if (false == Advertisement.isSupported) { // If runtime platform is supported...
+        if (false == Advertisement.isSupported) { // If runtime platform is supported...
 			Debug.Log("advertisement is not supported");
 			yield break;
 		}
-		string gameID = androidGameID;
+
+        watchAdsCount = 0;
+        lastAdShowTime = Time.realtimeSinceStartup;
+        string gameID = androidGameID;
 		if (Application.platform == RuntimePlatform.Android) {
 			gameID = androidGameID;
 		} else if (Application.platform == RuntimePlatform.IPhonePlayer) {
@@ -29,8 +33,8 @@ public class UnityAds : MonoBehaviour {
 			yield return new WaitForSeconds(0.5f);
 		}
 
-		lastAdShowTime = Time.realtimeSinceStartup;
-		Debug.Log ("unity ads is ready");
+        
+        Debug.Log ("unity ads is ready");
 	}
 
 	public void Show()
@@ -40,7 +44,13 @@ public class UnityAds : MonoBehaviour {
 		{
 			lastAdShowTime = Time.realtimeSinceStartup;
 			Advertisement.Show();
-		}
+
+            Analytics.CustomEvent("AdsWatch", new Dictionary<string, object> {
+                {"stage", Game.Instance.playData.current_stage.stage },
+                {"level", Game.Instance.playData.current_level},
+                {"watch_count", ++watchAdsCount }
+            });
+        }
 	}
 
 }

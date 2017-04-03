@@ -117,7 +117,7 @@ public class Game : MonoBehaviour {
 		FileStream file = File.Create (Application.persistentDataPath + "/playdata.dat");
 		bf.Serialize(file, playData);
 		file.Close();
-	}
+    }
 
 	public void Load()
 	{

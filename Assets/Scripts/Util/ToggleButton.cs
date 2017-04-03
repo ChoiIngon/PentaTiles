@@ -5,11 +5,11 @@ using System.Collections;
 
 public class ToggleButton : Toggle
 {
-	#region Inspector
+	//#region Inspector
 	// ReSharper disable InconsistentNaming
-	Sprite normalSprite;
+	//Sprite normalSprite;
 	// ReSharper restore InconsistentNaming
-	#endregion
+	//#endregion
 
 	protected override void Start()
 	{
