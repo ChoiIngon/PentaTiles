@@ -20,22 +20,27 @@ public class Editor : MonoBehaviour {
 	}
 
 	public Color[] colors;
-	private Color currentColor;
+    public BlockTile blockTilePrefab;
+
+    public ToggleButton pencilToggle;
+    public ToggleButton eraserToggle;
+    public Button createButton;
+
+    private Color currentColor;
 	private Vector3 position;
-	public ToggleButton pencilToggle;
-	public ToggleButton eraserToggle;
-	public Button createButton; 
-	public BlockTile blockTilePrefab;
+		
 	public int blockID;
 	public enum State {
 		Invalid, Pencil, Eraser
 	}
 	public State state = State.Pencil;
-	public List<BlockTile> blockTiles;
+
 	public List<MapTile> mapTiles;
 	void Start () {
-		blockTiles = new List<BlockTile> ();
-		mapTiles = new List<MapTile> ();
+        Map.Instance.editMode = true;
+        state = State.Invalid;
+        blockID = 1;
+        mapTiles = new List<MapTile> ();
 		pencilToggle.onValueChanged.AddListener(value => {
 			state = value ? State.Pencil : State.Eraser;		
 		});
@@ -45,42 +50,61 @@ public class Editor : MonoBehaviour {
 		createButton.onClick.AddListener (() => {
 			CreateBlock();
 		});
-		Map.Instance.editMode = true;
 	}
 
 	public Block CreateBlock() {
 		GameObject go = new GameObject ();
-		go.name = "Block_" + (blockID++);
+        Block block = go.AddComponent<Block>();
 
-		Block block = go.AddComponent<Block> ();
-		block.transform.SetParent (Map.Instance.blocks, false);
-		block.transform.position = mapTiles [0].transform.position;
+        block.id = blockID;
+        block.gameObject.name = "Block_" + blockID;
+        block.transform.position = mapTiles[0].transform.position;
+        foreach (MapTile mapTile in mapTiles) {
+            BlockTile blockTile = GameObject.Instantiate<BlockTile>(blockTilePrefab);
+            blockTile.transform.position = mapTile.transform.position;
+            blockTile.transform.SetParent(block.transform);
+            mapTile.id = block.id;
+        }
 		block.tileColor = currentColor;
-		foreach(MapTile mapTile in mapTiles) {
-			BlockTile blockTile = GameObject.Instantiate<BlockTile> (blockTilePrefab);
-			blockTile.transform.SetParent (block.transform, false);
-			blockTile.transform.position = mapTile.transform.position;
-
-		}
 		block.Init ();
 		block.transform.localPosition = Vector3.zero;
-		return block;
+
+        mapTiles = new List<MapTile>();
+        blockID++;
+        state = State.Invalid;
+
+        return block;
 	}
 
 	public void OnClickMapTile(MapTile mapTile)
 	{
-		if (0 == mapTiles.Count) {
-			currentColor = colors [Random.Range (0, colors.Length)];
-		}
-		mapTile.spriteRenderer.color = currentColor;
-		mapTiles.Add (mapTile);
+        if (State.Pencil == state)
+        {
+            if (0 == mapTiles.Count)
+            {
+                currentColor = colors[Random.Range(0, colors.Length)];
+            }
+            mapTile.spriteRenderer.color = currentColor;
+            mapTiles.Add(mapTile);
+        }
+        else if (State.Eraser == state)
+        {
+            mapTile.spriteRenderer.color = Color.white;
+            mapTiles.Remove(mapTile);
+        }
 	}
 
 	public void OnClickBlockTile(BlockTile blockTile)
 	{
-		if (State.Eraser == state) {
-			blockTiles.Remove (blockTile);
-			DestroyImmediate (blockTile.gameObject);
-		}
+		
 	}
+
+    public void Save()
+    {
+
+    }
+
+    public void Load()
+    {
+    }
 }
