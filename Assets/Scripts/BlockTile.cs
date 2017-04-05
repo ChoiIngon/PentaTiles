@@ -23,19 +23,24 @@ public class BlockTile : MonoBehaviour {
 		touchInput.onTouchDrag = null;
 		touchInput.onTouchUp = null;
 		touchInput.onTouchDown += (Vector3 position) => {
-			block.OnClick();
+			if(false == Map.Instance.editMode)
+			{
+				block.OnClick ();
+			}
+			else {
+				Editor.Instance.OnClickBlockTile(this);
+			}
 		};
 		touchInput.onTouchDrag += (Vector3 delta) => {
 			block.transform.position += delta;
 		};
 		touchInput.onTouchUp += (Vector3 position) => {
 			Vector3 delta = Vector3.zero;
-			if(null != mapTile)
-			{
+			if (null != mapTile) {
 				delta = mapTile.transform.position - transform.position;
 			}
 
-			block.OnDrop(block.transform.position + delta);
+			block.OnDrop (block.transform.position + delta);
 		};
 	}
 
@@ -83,7 +88,7 @@ public class BlockTile : MonoBehaviour {
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(BlockTile))]
-public class BlockTileEditor : Editor
+public class BlockTileEditor : UnityEditor.Editor
 {
     public override void OnInspectorGUI()
     {

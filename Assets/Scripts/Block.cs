@@ -23,30 +23,26 @@ public class Block : MonoBehaviour {
 
 	public GameObject blockSlot;
     public GameObject hint;
+	public Color tileColor;
 
-	void Start () {
-        if (Map.Instance.blocks == transform.parent)
-        {
-            return;
-        }
-		Init ();
-	}
 	public void Init()
 	{
-		transform.SetParent (Map.Instance.blocks, false);
-		transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
-
-		initPosition = transform.position;
 		blockTiles = new List<BlockTile> ();
 		for (int i = 0; i < transform.childCount; i++) {
             BlockTile blockTile = transform.GetChild(i).GetComponent<BlockTile>();
             if (true == blockTile.gameObject.activeSelf) {
 				blockTile.Init ();
+				blockTile.spriteRenderer.color = tileColor;
 				blockTiles.Add (blockTile);
 			}       
 		}
 		mapTiles = new List<MapTile> ();
-		CreateBlockSlot ();
+		if (false == Map.Instance.editMode) {
+			transform.SetParent (Map.Instance.blocks, false);
+			transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
+			initPosition = transform.position;
+			CreateBlockSlot ();
+		}
 	}
 
 	public void OnClick() {
@@ -211,7 +207,7 @@ public class Block : MonoBehaviour {
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(Block)), CanEditMultipleObjects]
-public class BlockEditor : Editor 
+public class BlockEditor : UnityEditor.Editor 
 {
 	public override void OnInspectorGUI()
 	{

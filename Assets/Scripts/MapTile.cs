@@ -30,11 +30,15 @@ public class MapTile : MonoBehaviour {
 			spriteRenderer.color = activeColor;
 		}
 #if UNITY_EDITOR
-		TouchInput touch = gameObject.AddComponent<TouchInput>();
-		touch.onTouchUp += (Vector3 position) =>  {
-			Debug.Log("touch(id:" + id + ")");
-			spriteRenderer.color = ColorReceiver.Instance.color;
-		};
+		if(true == Map.Instance.editMode)
+		{
+			TouchInput touch = gameObject.AddComponent<TouchInput>();
+			touch.onTouchUp += (Vector3 position) =>  {
+				Debug.Log("touch(position:" + transform.position +")");
+				//spriteRenderer.color = ColorReceiver.Instance.color;
+				Editor.Instance.OnClickMapTile(this);
+			};
+		}
 #endif
 	}
 }

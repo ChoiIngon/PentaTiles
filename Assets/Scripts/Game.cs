@@ -43,6 +43,7 @@ public class Game : MonoBehaviour {
 	private float uiWidth;
 	void Start()
 	{
+		Map.Instance.editMode = false;
 		unityAds = GetComponent<UnityAds> ();
 
 		TextAsset json = Resources.Load<TextAsset> ("StageInfo");

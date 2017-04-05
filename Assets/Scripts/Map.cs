@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.Analytics;
 
 #if UNITY_EDITOR
@@ -52,11 +51,6 @@ public class Map : MonoBehaviour {
 	}
 	public void Init(MapSaveData info)
 	{
-		editMode = false;
-		if ("Editor" == SceneManager.GetActiveScene ().name) {
-			editMode = true;
-		}
-
 		if (null == info) {
 			#if UNITY_EDITOR
 			dataPath = "none";
@@ -233,7 +227,7 @@ public class Map : MonoBehaviour {
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(Map))]
-public class MapEditor : Editor {
+public class MapEditor : UnityEditor.Editor {
 	void OnEnable() {
 		Map map = (Map)target;
 	}
