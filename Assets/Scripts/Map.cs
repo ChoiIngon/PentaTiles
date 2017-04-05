@@ -134,17 +134,17 @@ public class Map : MonoBehaviour {
 				block.transform.SetParent (blocks, false);
 				block.Init ();
 
-				block.blockSlot.transform.localPosition = blockSaveData.slotPosition;
-				block.blockSlot.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
+				block.slot.transform.localPosition = blockSaveData.slotPosition;
+				block.slot.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
 
-				block.initPosition = block.blockSlot.transform.position;
-				block.transform.position = block.blockSlot.transform.position;
+				block.initPosition = block.slot.transform.position;
+				block.transform.position = block.slot.transform.position;
 				block.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
 
 				if (blockSaveData.slotPosition != blockSaveData.hintPosition) {
 					block.CreateHint();
 					block.hint.transform.localPosition = blockSaveData.hintPosition;
-					block.hint.SetActive (false);
+					block.hint.gameObject.SetActive (false);
 				}
 
 				if (true == editMode) {
@@ -263,10 +263,10 @@ public class MapEditor : UnityEditor.Editor {
 
 		for (int i = 0; i < Map.Instance.blocks.childCount; i++) {
 			Block block = Map.Instance.blocks.GetChild (i).GetComponent<Block>();
-			block.blockSlot.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
+			block.slot.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
 
-			if (block.transform.position == block.blockSlot.transform.position) {
-				block.transform.localScale = block.blockSlot.transform.localScale;
+			if (block.transform.position == block.slot.transform.position) {
+				block.transform.localScale = block.slot.transform.localScale;
 			}
 		}
 	}

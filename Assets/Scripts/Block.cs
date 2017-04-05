@@ -7,6 +7,11 @@ using UnityEditor;
 
 //[ExecuteInEditMode]
 public class Block : MonoBehaviour {
+	public enum Type {
+		Block,
+		Hint,
+		Slot
+	}
 	public enum SortingOrder
 	{
 		Slot,
@@ -15,54 +20,68 @@ public class Block : MonoBehaviour {
 		PutOnTheMap,
 		Select
 	}
-	public int id;
-
-	public Vector3 initPosition;
-	public List<BlockTile> blockTiles;
+	public Color tileColor;
+	[ReadOnly] public int id;
+	[ReadOnly] public Vector3 initPosition;
+	[ReadOnly] public List<BlockTile> blockTiles;
+	[ReadOnly] public Block slot;
+	[ReadOnly] public Block hint;
+	[ReadOnly] public Type type;
+	public BlockTile blockTilePrefab;
 	private List<MapTile> mapTiles;
 
-	public GameObject blockSlot;
-    public GameObject hint;
-	public Color tileColor;
-
-    public BlockTile blockTilePrefab;
     public void Init(BlockSaveData saveData)
     {
-        name = "Block_" + saveData.name;
+        name = saveData.name;
         id = saveData.id;
-
+		type = Type.Block;
+		transform.SetParent (Map.Instance.blocks);
+		transform.localPosition = saveData.tilePositions [0];
         blockTiles = new List<BlockTile>();
         foreach (Vector3 tilePosition in saveData.tilePositions)
         {
             BlockTile blockTile = GameObject.Instantiate<BlockTile>(blockTilePrefab);
-            blockTile.transform.SetParent(transform);
+			blockTile.transform.SetParent(Map.Instance.tiles);
             blockTile.transform.localPosition = tilePosition;
+			blockTile.transform.SetParent(transform);
+			blockTile.Init ();
+			blockTile.spriteRenderer.color = saveData.tileColor;
             blockTiles.Add(blockTile);
         }
 
-        if (false == Map.Instance.editMode)
-        {
-            CreateBlockSlot();
-            blockSlot.transform.localPosition = saveData.slotPosition;
-            blockSlot.transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
-        }
+		hint = GameObject.Instantiate<Block> (this);
+		slot = GameObject.Instantiate<Block> (this);
+		foreach (BlockTile blockTile in hint.blockTiles) {
+			blockTile.Init ();
+		}
+		foreach (BlockTile blockTile in slot.blockTiles) {
+			blockTile.Init ();
+		}
 
-        transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
+		hint.name = name + "_Hint";
+		hint.type = Type.Hint;
+		hint.transform.SetParent (Map.Instance.hints, false);
+
+		slot.name = name + "_Slot";
+		slot.type = Type.Slot;
+		slot.transform.SetParent (Map.Instance.slots, false);
+		slot.transform.localPosition = Vector3.zero;
+		slot.transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
+
+		initPosition = transform.position;
+		mapTiles = new List<MapTile> ();
+        //blockSlot.transform.localPosition = saveData.slotPosition;
+        //blockSlot.transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
+        
+        //transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
+		/*
         if (saveData.slotPosition != saveData.hintPosition)
         {
             CreateHint();
             hint.transform.localPosition = saveData.hintPosition;
             hint.SetActive(false);
         }
-
-        if (true == Map.Instance.editMode)
-        {
-            if (blockSaveData.slotPosition != blockSaveData.hintPosition)
-            {
-                block.transform.localScale = Vector3.one;
-                block.transform.localPosition = blockSaveData.hintPosition;
-            }
-        }
+        */
     }
 
     public void Init()
@@ -115,8 +134,8 @@ public class Block : MonoBehaviour {
 		if (true == returnToOrigialPosition) {
             if (false == Map.Instance.editMode)
             {
-                transform.position = blockSlot.transform.position;
-                transform.localScale = blockSlot.transform.localScale;
+                transform.position = slot.transform.position;
+                transform.localScale = slot.transform.localScale;
             }
 			initPosition = transform.position;
 			foreach(MapTile mapTile in mapTiles)
@@ -137,8 +156,8 @@ public class Block : MonoBehaviour {
 		foreach(BlockTile blockTile in blockTiles) {
 			if (null == blockTile.mapTile) {
 				transform.position = initPosition;
-				if (transform.position == blockSlot.transform.position) {
-					transform.localScale = blockSlot.transform.localScale;
+				if (transform.position == slot.transform.position) {
+					transform.localScale = slot.transform.localScale;
 				}
 				AudioManager.Instance.Play("BlockOut");
 				return;
@@ -147,16 +166,16 @@ public class Block : MonoBehaviour {
 			MapTile mapTile = blockTile.mapTile;
 			if (false == Map.Instance.editMode && 0 == mapTile.id) {
 				transform.position = initPosition;
-				if (transform.position == blockSlot.transform.position) {
-					transform.localScale = blockSlot.transform.localScale;
+				if (transform.position == slot.transform.position) {
+					transform.localScale = slot.transform.localScale;
 				}
 				AudioManager.Instance.Play("BlockOut");
 				return;
 			}
 			if (null != mapTile.block && this != mapTile.block) {
 				transform.position = initPosition;
-				if (transform.position == blockSlot.transform.position) {
-					transform.localScale = blockSlot.transform.localScale;
+				if (transform.position == slot.transform.position) {
+					transform.localScale = slot.transform.localScale;
 				}
 				AudioManager.Instance.Play("BlockOut");
 				return;
@@ -189,8 +208,6 @@ public class Block : MonoBehaviour {
 		AudioManager.Instance.Play("BlockDrop");
 	}
 
-    
-
     public BlockSaveData GetSaveData()
 	{
 		BlockSaveData saveData = ScriptableObject.CreateInstance<BlockSaveData> ();
@@ -203,7 +220,7 @@ public class Block : MonoBehaviour {
             saveData.tilePositions.Add(blockTile.transform.localPosition);
         }
 
-		saveData.slotPosition = blockSlot.transform.localPosition;
+		saveData.slotPosition = slot.transform.localPosition;
         if (null != hint) {
 			saveData.hintPosition = hint.transform.localPosition;
 			//OnDrop (transform.position);
@@ -215,18 +232,18 @@ public class Block : MonoBehaviour {
 	}
 
     private void CreateBlockSlot() {
-		if(false == Map.Instance.editMode)
-        {
-            blockSlot = CloneTiles((int)SortingOrder.Slot);
-			blockSlot.name = "BlockSlot_" + id;
-			blockSlot.transform.SetParent (Map.Instance.slots);
-		}
-		blockSlot.transform.localScale = transform.localScale;
-		blockSlot.transform.position = transform.position;
+		/*
+		slot = CloneTiles((int)SortingOrder.Slot);
+		slot.name = "BlockSlot_" + id;
+		slot.transform.SetParent (Map.Instance.slots);
+		slot.transform.localScale = transform.localScale;
+		slot.transform.position = transform.position;
+		*/
 	}
 
     public void CreateHint()
     {
+		/*
         if (null == hint)
         {
             hint = CloneTiles((int)SortingOrder.Hint);
@@ -234,6 +251,7 @@ public class Block : MonoBehaviour {
             hint.transform.SetParent(Map.Instance.hints);
         }
         hint.transform.position = transform.position;
+        */
     }
 
     private GameObject CloneTiles(int sortingOrder)
@@ -276,10 +294,10 @@ public class BlockEditor : UnityEditor.Editor
 				return;
 			}
 			block.Init ();
-			block.blockSlot.transform.position = block.transform.position;
-			block.blockSlot.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
+			block.slot.transform.position = block.transform.position;
+			block.slot.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
 			if (null != block.hint) {
-				block.transform.localScale = block.blockSlot.transform.localScale;
+				block.transform.localScale = block.slot.transform.localScale;
 			}
 		}
 	}

@@ -20,7 +20,7 @@ public class Editor : MonoBehaviour {
 	}
 
 	public Color[] colors;
-    public BlockTile blockTilePrefab;
+	public Block blockPrefab;
 
     public ToggleButton pencilToggle;
     public ToggleButton eraserToggle;
@@ -53,21 +53,20 @@ public class Editor : MonoBehaviour {
 	}
 
 	public Block CreateBlock() {
-		GameObject go = new GameObject ();
-        Block block = go.AddComponent<Block>();
+		BlockSaveData saveData = ScriptableObject.CreateInstance<BlockSaveData> ();
+		saveData.id = blockID;
+		saveData.name = "Block_" + blockID;
+		saveData.slotPosition = Vector3.zero;
+		saveData.hintPosition = Vector3.zero;
+		saveData.tileColor = currentColor;
+		saveData.tilePositions = new List<Vector3> ();
+		foreach (MapTile mapTile in mapTiles) {
+			saveData.tilePositions.Add(mapTile.transform.localPosition);
+			mapTile.id = blockID;
+		}
 
-        block.id = blockID;
-        block.gameObject.name = "Block_" + blockID;
-        block.transform.position = mapTiles[0].transform.position;
-        foreach (MapTile mapTile in mapTiles) {
-            BlockTile blockTile = GameObject.Instantiate<BlockTile>(blockTilePrefab);
-            blockTile.transform.position = mapTile.transform.position;
-            blockTile.transform.SetParent(block.transform);
-            mapTile.id = block.id;
-        }
-		block.tileColor = currentColor;
-		block.Init ();
-		block.transform.localPosition = Vector3.zero;
+		Block block = GameObject.Instantiate<Block> (blockPrefab);
+		block.Init (saveData);
 
         mapTiles = new List<MapTile>();
         blockID++;

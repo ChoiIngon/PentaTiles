@@ -6,11 +6,10 @@ using UnityEditor;
 #endif
 
 public class BlockTile : MonoBehaviour {
-	[HideInInspector]
+	[ReadOnly]
 	public Block block;
 	public TouchInput touchInput;
 	public MapTile mapTile;
-	[HideInInspector]
 	public SpriteRenderer spriteRenderer;
 	private Color markingColor;
 	public void Init () {
