@@ -39,8 +39,8 @@ public class Map : MonoBehaviour {
 	public Transform hints;
 	public MapTile mapTilePrefab;
 	public Block[] blockPrefabs;
-
-	private MapTile[] mapTiles;
+    public Block blockPrefab;
+	public MapTile[] mapTiles;
 	#if UNITY_EDITOR
 	public string dataPath;
 	#endif
@@ -109,9 +109,13 @@ public class Map : MonoBehaviour {
 				mapTile.name = "MapTile_" + x + "_" + y;
 				mapTile.transform.SetParent (tiles, false);
 				mapTile.transform.localPosition = new Vector3 (x, height - y, 0.0f);
-				mapTile.editMode = editMode;
 				mapTile.Init (info.tiles [x + y * width]);
 				mapTiles [x + y * width] = mapTile;
+
+                if (true == Map.Instance.editMode)
+                {
+                    mapTile.spriteRenderer.color = Color.white;
+                }
 			}
 		}
 		{
@@ -129,20 +133,16 @@ public class Map : MonoBehaviour {
 
 		if (null != info.blocks) {
 			foreach (BlockSaveData blockSaveData in info.blocks) {
-				Block block = GameObject.Instantiate<Block> (blockPrefabs [blockSaveData.id - 1]);
-				block.name = "Block_" + blockSaveData.id;
-				block.transform.SetParent (blocks, false);
-				block.Init ();
-
-				block.slot.transform.localPosition = blockSaveData.slotPosition;
-				block.slot.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
-
-				block.initPosition = block.slot.transform.position;
-				block.transform.position = block.slot.transform.position;
-				block.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
-
+				Block block = GameObject.Instantiate<Block> (blockPrefab);
+                block.Init(blockSaveData);
+                block.transform.localPosition = blockSaveData.slotPosition;
+                block.transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
+                block.initPosition = blockSaveData.slotPosition;
+                block.slot.transform.localPosition = blockSaveData.slotPosition;
+                block.slot.transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
+                
+				
 				if (blockSaveData.slotPosition != blockSaveData.hintPosition) {
-					block.CreateHint();
 					block.hint.transform.localPosition = blockSaveData.hintPosition;
 					block.hint.gameObject.SetActive (false);
 				}
@@ -153,7 +153,7 @@ public class Map : MonoBehaviour {
 						block.transform.localPosition = blockSaveData.hintPosition;
 					}
 				}
-			}
+            }
 		}
 	}
 		
@@ -215,11 +215,7 @@ public class Map : MonoBehaviour {
 		}
 		for(int i=0; i<mapTiles.Length; i++)
 		{
-			if (null != mapTiles [i].block) {
-				saveData.tiles [i] = mapTiles [i].block.id;
-			} else {
-				saveData.tiles [i] = 0;
-			}
+            saveData.tiles[i] = mapTiles[i].id;
 		}
 		return saveData;
 	}
@@ -261,6 +257,7 @@ public class MapEditor : UnityEditor.Editor {
 			Debug.Log ("success to load map file from " + "\'Assets/Resources/" + data.stage + "_" + data.level + ".asset" +"\'");
 		}
 
+        /*
 		for (int i = 0; i < Map.Instance.blocks.childCount; i++) {
 			Block block = Map.Instance.blocks.GetChild (i).GetComponent<Block>();
 			block.slot.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
@@ -269,6 +266,7 @@ public class MapEditor : UnityEditor.Editor {
 				block.transform.localScale = block.slot.transform.localScale;
 			}
 		}
+        */
 	}
 
 }

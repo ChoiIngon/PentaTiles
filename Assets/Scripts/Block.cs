@@ -24,17 +24,19 @@ public class Block : MonoBehaviour {
 	[ReadOnly] public int id;
 	[ReadOnly] public Vector3 initPosition;
 	[ReadOnly] public List<BlockTile> blockTiles;
-	[ReadOnly] public Block slot;
+    [ReadOnly] public Block block;
+    [ReadOnly] public Block slot;
 	[ReadOnly] public Block hint;
-	[ReadOnly] public Type type;
+    [ReadOnly] public Type type;
 	public BlockTile blockTilePrefab;
-	private List<MapTile> mapTiles;
+	public List<MapTile> mapTiles;
 
     public void Init(BlockSaveData saveData)
     {
         name = saveData.name;
         id = saveData.id;
 		type = Type.Block;
+        tileColor = saveData.tileColor;
 		transform.SetParent (Map.Instance.blocks);
 		transform.localPosition = saveData.tilePositions [0];
         blockTiles = new List<BlockTile>();
@@ -50,72 +52,47 @@ public class Block : MonoBehaviour {
         }
 
 		hint = GameObject.Instantiate<Block> (this);
-		slot = GameObject.Instantiate<Block> (this);
-		foreach (BlockTile blockTile in hint.blockTiles) {
-			blockTile.Init ();
-		}
-		foreach (BlockTile blockTile in slot.blockTiles) {
-			blockTile.Init ();
-		}
+        slot = GameObject.Instantiate<Block>(this);
 
-		hint.name = name + "_Hint";
-		hint.type = Type.Hint;
-		hint.transform.SetParent (Map.Instance.hints, false);
-
-		slot.name = name + "_Slot";
-		slot.type = Type.Slot;
-		slot.transform.SetParent (Map.Instance.slots, false);
-		slot.transform.localPosition = Vector3.zero;
-		slot.transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
+        {
+            hint.name = name + "_Hint";
+            hint.type = Type.Hint;
+            hint.block = this;
+            hint.slot = slot;
+            hint.transform.SetParent(Map.Instance.hints, false);
+            
+            foreach (BlockTile blockTile in hint.blockTiles)
+            {
+                blockTile.Init();
+            }
+        }
+        {
+            slot.name = name + "_Slot";
+            slot.type = Type.Slot;
+            slot.block = this;
+            slot.hint = hint;
+            slot.transform.SetParent(Map.Instance.slots, false);
+            slot.transform.localPosition = Vector3.zero;
+            slot.transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
+            foreach (BlockTile blockTile in slot.blockTiles)
+            {
+                blockTile.Init();
+            }
+        }
 
 		initPosition = transform.position;
 		mapTiles = new List<MapTile> ();
-        //blockSlot.transform.localPosition = saveData.slotPosition;
-        //blockSlot.transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
-        
-        //transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
-		/*
-        if (saveData.slotPosition != saveData.hintPosition)
-        {
-            CreateHint();
-            hint.transform.localPosition = saveData.hintPosition;
-            hint.SetActive(false);
-        }
-        */
     }
 
-    public void Init()
-	{
-		blockTiles = new List<BlockTile> ();
-		for (int i = 0; i < transform.childCount; i++) {
-            BlockTile blockTile = transform.GetChild(i).GetComponent<BlockTile>();
-            if (true == blockTile.gameObject.activeSelf) {
-				blockTile.Init ();
-				blockTile.spriteRenderer.color = tileColor;
-				blockTiles.Add (blockTile);
-			}       
-		}
-		mapTiles = new List<MapTile> ();
-        transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
-        initPosition = transform.position;
-        if (false == Map.Instance.editMode)
-        {
-            transform.SetParent(Map.Instance.blocks, false);
-            CreateBlockSlot();
-        }
-        else
-        {
-            transform.SetParent(Map.Instance.slots, false);
-        }
-	}
-
+    
 	public void OnClick() {
-		transform.localScale = Vector3.one;
-		transform.position = new Vector3 (transform.position.x, transform.position.y + 1.5f, transform.position.z);
-		foreach (BlockTile blockTile in blockTiles) {
+        transform.localScale = Vector3.one;
+        transform.position = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
+        foreach (BlockTile blockTile in blockTiles)
+        {
             blockTile.spriteRenderer.sortingOrder = (int)SortingOrder.Select;
         }
-		AudioManager.Instance.Play("BlockSelect");
+        AudioManager.Instance.Play("BlockSelect");
 	}
 
 	public void OnDrop(Vector3 position) {
@@ -198,10 +175,6 @@ public class Block : MonoBehaviour {
 		initPosition = position;
 		transform.position = position;
 
-		if (true == Map.Instance.editMode)
-        {
-            CreateHint();
-        }
 		if (false == Map.Instance.editMode) {
 			StartCoroutine (Game.Instance.CompleteLevel ());
 		}
@@ -231,50 +204,20 @@ public class Block : MonoBehaviour {
 		return saveData;
 	}
 
-    private void CreateBlockSlot() {
-		/*
-		slot = CloneTiles((int)SortingOrder.Slot);
-		slot.name = "BlockSlot_" + id;
-		slot.transform.SetParent (Map.Instance.slots);
-		slot.transform.localScale = transform.localScale;
-		slot.transform.position = transform.position;
-		*/
-	}
-
-    public void CreateHint()
+    public void Destroy()
     {
-		/*
-        if (null == hint)
+        if(null != hint)
         {
-            hint = CloneTiles((int)SortingOrder.Hint);
-            hint.name = name + "_Hint";
-            hint.transform.SetParent(Map.Instance.hints);
+            hint.transform.SetParent(null);
+            DestroyImmediate(hint.gameObject);
         }
-        hint.transform.position = transform.position;
-        */
-    }
-
-    private GameObject CloneTiles(int sortingOrder)
-    {
-        GameObject cloneBlock = new GameObject();
-        foreach (BlockTile blockTile in blockTiles)
+        if(null != slot)
         {
-            GameObject hintTile = new GameObject();
-            hintTile.name = "Tile";
-            hintTile.transform.localPosition = blockTile.transform.localPosition;
-            hintTile.transform.SetParent(cloneBlock.transform, false);
-            SpriteRenderer spriteRenderer = hintTile.AddComponent<SpriteRenderer>();
-            spriteRenderer.sprite = blockTile.spriteRenderer.sprite;
-            spriteRenderer.color = new Color(
-                blockTile.spriteRenderer.color.r / 2,
-                blockTile.spriteRenderer.color.g / 2,
-                blockTile.spriteRenderer.color.b / 2,
-                1.0f
-            );
-            spriteRenderer.sortingLayerID = blockTile.spriteRenderer.sortingLayerID;
-            spriteRenderer.sortingOrder = sortingOrder;
+            slot.transform.SetParent(null);
+            DestroyImmediate(slot.gameObject);
         }
-        return cloneBlock;
+        transform.SetParent(null);
+        DestroyImmediate(this.gameObject);
     }
 }
 
@@ -290,6 +233,7 @@ public class BlockEditor : UnityEditor.Editor
 		//EditorGUILayout.PropertyField(lookAtPoint);
 		serializedObject.ApplyModifiedProperties();
 		if (GUILayout.Button ("Init")) {
+            /*
 			if (null != block.hint) {
 				return;
 			}
@@ -299,6 +243,7 @@ public class BlockEditor : UnityEditor.Editor
 			if (null != block.hint) {
 				block.transform.localScale = block.slot.transform.localScale;
 			}
+            */
 		}
 	}
 }

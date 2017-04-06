@@ -21,21 +21,77 @@ public class BlockTile : MonoBehaviour {
 		touchInput.onTouchDown = null;
 		touchInput.onTouchDrag = null;
 		touchInput.onTouchUp = null;
-		touchInput.onTouchDown += (Vector3 position) => {
-            block.OnClick ();
-		};
-		touchInput.onTouchDrag += (Vector3 delta) => {
-			block.transform.position += delta;
-		};
-		touchInput.onTouchUp += (Vector3 position) => {
-            Vector3 delta = Vector3.zero;
-            if (null != mapTile)
-            {
-                delta = mapTile.transform.position - transform.position;
-            }
 
-            block.OnDrop(block.transform.position + delta);
-		};
+        touchInput.onTouchDown += (Vector3 position) =>
+        {
+            if (false == Map.Instance.editMode)
+            {
+                if (Block.Type.Block == block.type)
+                {
+                    block.OnClick();
+                }
+            }
+#if UNITY_EDITOR
+            else {
+                if (Block.Type.Slot == block.type)
+                {
+                    if (Editor.State.Pencil == Editor.Instance.state)
+                    {
+                        block.transform.localScale = Vector3.one;
+                        foreach (BlockTile blockTile in block.blockTiles)
+                        {
+                            blockTile.spriteRenderer.sortingOrder = (int)Block.SortingOrder.Select;
+                        }
+                    }
+                }
+
+                if (Editor.State.Eraser == Editor.Instance.state)
+                {
+                    Editor.Instance.DestroyBlock(block.id);
+                }
+            }
+#endif
+        };
+
+        touchInput.onTouchDrag += (Vector3 delta) =>
+        {
+            if (false == Map.Instance.editMode)
+            {
+                if (Block.Type.Block == block.type)
+                {
+                    block.transform.position += delta;
+                }
+            }
+#if UNITY_EDITOR
+            else {
+                if (Block.Type.Slot == block.type)
+                {
+                    if (Editor.State.Pencil == Editor.Instance.state)
+                    {
+                        block.transform.position += delta;
+                    }
+                }
+            }
+#endif
+        };
+
+        touchInput.onTouchUp += (Vector3 position) =>
+        {
+            if (false == Map.Instance.editMode)
+            {
+                if (Block.Type.Block == block.type)
+                {
+                    Vector3 delta = Vector3.zero;
+                    if (null != mapTile)
+                    {
+                        delta = mapTile.transform.position - transform.position;
+                    }
+                    block.OnDrop(block.transform.position + delta);
+                }
+            }
+#if UNITY_EDITOR
+#endif
+        };
 	}
 
     void OnTriggerStay(Collider coll) {
