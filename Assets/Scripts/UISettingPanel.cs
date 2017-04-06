@@ -77,6 +77,7 @@ public class UISettingPanel : MonoBehaviour {
 			saveData.isSoundOn = true;
 		}
 		bgmToggle.isOn = saveData.isBgmOn;
+		Game.Instance.bgm.mute = !saveData.isBgmOn;
 		soundToggle.isOn = saveData.isSoundOn;
 		AudioManager.Instance.Activate (saveData.isSoundOn);
 	}

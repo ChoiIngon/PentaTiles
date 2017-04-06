@@ -159,6 +159,9 @@ public class EditorEditor : UnityEditor.Editor
 
         if (GUILayout.Button("Save"))
         {
+			Map.Instance.stage = editor.stage;
+			Map.Instance.level = editor.level;
+
             MapSaveData saveData = Map.Instance.GetSaveData();
             AssetDatabase.CreateAsset(saveData, "Assets/Resources/" + saveData.stage + "_" + saveData.level + ".asset");
             for (int i = 0; i < saveData.blocks.Length; i++)
