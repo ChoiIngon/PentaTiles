@@ -72,17 +72,16 @@ public class Editor : MonoBehaviour {
 		BlockSaveData saveData = ScriptableObject.CreateInstance<BlockSaveData> ();
 		saveData.id = blockID;
 		saveData.name = "Block_" + blockID;
-		saveData.slotPosition = Vector3.zero;
-		saveData.hintPosition = Vector3.zero;
 		saveData.tileColor = currentColor;
 		saveData.tilePositions = new List<Vector3> ();
 		foreach (MapTile mapTile in mapTiles) {
 			saveData.tilePositions.Add(mapTile.transform.localPosition);
 		}
+        saveData.slotPosition = Vector3.zero;
+        saveData.hintPosition = saveData.tilePositions[0];
 
-		Block block = GameObject.Instantiate<Block> (blockPrefab);
+        Block block = GameObject.Instantiate<Block> (blockPrefab);
 		block.Init (saveData);
-
         blocks.Add(block.id, block);
 
         blockID++;
@@ -129,13 +128,7 @@ public class Editor : MonoBehaviour {
             mapTile.spriteRenderer.color = Color.white;
             mapTiles.Remove(mapTile);
         }
-	}
-
-    private void Update()
-    {
-           
-
-    }
+	}    
 }
 
 
@@ -193,7 +186,5 @@ public class EditorEditor : UnityEditor.Editor
 			block.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
 		}
     }
-
-
 }
 #endif

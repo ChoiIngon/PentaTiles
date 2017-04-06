@@ -32,7 +32,7 @@ public class Game : MonoBehaviour {
 	public UILevelPanel levelPanel;
 	public UIGamePanel gamePanel;
 	public UISettingPanel settingPanel;
-
+    public AudioSource bgm;
 	public float scrollTime;
 	public CanvasScaler canvasScaler;
 	public StageInfos stageInfos;

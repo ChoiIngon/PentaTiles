@@ -8,15 +8,21 @@ using UnityEditor;
 public class BlockTile : MonoBehaviour {
 	[ReadOnly]
 	public Block block;
-	public TouchInput touchInput;
-	public MapTile mapTile;
+    [ReadOnly]
 	public SpriteRenderer spriteRenderer;
-	private Color markingColor;
-	public void Init () {
-		block = GetComponentInParent<Block> ();
-		spriteRenderer = GetComponent<SpriteRenderer> ();
+    [HideInInspector]
+    public TouchInput touchInput;
+    [HideInInspector]
+    public MapTile mapTile;
+    private Color originalColor;
+    private Color markColor;
+    public void Init (Block block) {
+        this.block = block;
         spriteRenderer.sortingOrder = (int)Block.SortingOrder.Idle;
-        markingColor = spriteRenderer.color / 2;
+        originalColor = spriteRenderer.color;
+        markColor = spriteRenderer.color;
+        markColor.a = 0.5f;
+             
 		touchInput = GetComponent<TouchInput> ();
 		touchInput.onTouchDown = null;
 		touchInput.onTouchDrag = null;
@@ -26,7 +32,6 @@ public class BlockTile : MonoBehaviour {
         {
             if (false == Map.Instance.editMode)
             {
-                Debug.Log(name + " is clicked");
                 if (Block.Type.Block == block.type)
                 {
                     block.OnClick();
@@ -38,17 +43,25 @@ public class BlockTile : MonoBehaviour {
                 {
                     if (Editor.State.Pencil == Editor.Instance.state)
                     {
-                        block.transform.localScale = Vector3.one;
                         foreach (BlockTile blockTile in block.blockTiles)
                         {
                             blockTile.spriteRenderer.sortingOrder = (int)Block.SortingOrder.Select;
                         }
                     }
+
+                    else if (Editor.State.Eraser == Editor.Instance.state)
+                    {
+                        Editor.Instance.DestroyBlock(block.id);
+                    }
                 }
 
-                if (Editor.State.Eraser == Editor.Instance.state)
+                else if (Block.Type.Block == block.type)
                 {
-                    Editor.Instance.DestroyBlock(block.id);
+                    if (null != block.hint)
+                    {
+                        block.hint.transform.SetParent(null);
+                        DestroyImmediate(block.hint.gameObject);
+                    }
                 }
             }
 #endif
@@ -114,8 +127,8 @@ public class BlockTile : MonoBehaviour {
 				
 			if (true == coll.bounds.Contains(transform.position)) {
 				markedMapTile.blockTile = this;
-				markedMapTile.spriteRenderer.color = markingColor;
 				mapTile = markedMapTile;
+                mapTile.spriteRenderer.color = markColor;
 			}
 			else 
 			{
@@ -144,26 +157,3 @@ public class BlockTile : MonoBehaviour {
 		}
 	}
 }
-
-/*
-#if UNITY_EDITOR
-[CustomEditor(typeof(BlockTile))]
-public class BlockTileEditor : UnityEditor.Editor
-{
-    public override void OnInspectorGUI()
-    {
-        BlockTile blockTile = (BlockTile)target;
-        DrawDefaultInspector();
-        if (true == Map.Instance.editMode)
-        {
-			if (blockTile.gameObject == Selection.activeGameObject && null != blockTile.block)
-            {
-                Selection.activeGameObject = blockTile.block.gameObject;
-            }
-        }
-        serializedObject.Update();
-        serializedObject.ApplyModifiedProperties();
-    }
-}
-#endif
-*/

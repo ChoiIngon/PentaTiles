@@ -25,6 +25,7 @@ public class UISettingPanel : MonoBehaviour {
 
 		bgmToggle.onValueChanged.AddListener(value => {
 			AudioManager.Instance.Play("ButtonClick");
+            Game.Instance.bgm.mute = !value;
 			saveData.isBgmOn = bgmToggle.isOn;
 			Save();
 		});

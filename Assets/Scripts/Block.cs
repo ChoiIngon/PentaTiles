@@ -1,11 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
-//[ExecuteInEditMode]
 public class Block : MonoBehaviour {
 	public enum Type {
 		Block,
@@ -33,6 +29,8 @@ public class Block : MonoBehaviour {
 
     public void Init(BlockSaveData saveData)
     {
+        mapTiles = new List<MapTile>();
+
         name = saveData.name;
         id = saveData.id;
 		type = Type.Block;
@@ -46,26 +44,15 @@ public class Block : MonoBehaviour {
 			blockTile.transform.SetParent(Map.Instance.tiles);
             blockTile.transform.localPosition = tilePosition;
 			blockTile.transform.SetParent(transform);
-			blockTile.Init ();
-			blockTile.spriteRenderer.color = saveData.tileColor;
+            blockTile.spriteRenderer.color = saveData.tileColor;
+            blockTile.Init (this);
             blockTiles.Add(blockTile);
         }
 
-		hint = GameObject.Instantiate<Block> (this);
-        slot = GameObject.Instantiate<Block>(this);
+		slot = GameObject.Instantiate<Block>(this);
+        hint = GameObject.Instantiate<Block>(this);
 
-        {
-            hint.name = name + "_Hint";
-            hint.type = Type.Hint;
-            hint.block = this;
-            hint.slot = slot;
-            hint.transform.SetParent(Map.Instance.hints, false);
-            
-            foreach (BlockTile blockTile in hint.blockTiles)
-            {
-                blockTile.Init();
-            }
-        }
+        if(null != slot)
         {
             slot.name = name + "_Slot";
             slot.type = Type.Slot;
@@ -76,15 +63,47 @@ public class Block : MonoBehaviour {
             slot.transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
             foreach (BlockTile blockTile in slot.blockTiles)
             {
-                blockTile.Init();
+                Color color = saveData.tileColor / 2;
+                color.a = 1.0f;
+                blockTile.spriteRenderer.color = color;
+                blockTile.Init(slot);
             }
+
+            slot.transform.localPosition = saveData.slotPosition;
+            slot.transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
         }
 
-		initPosition = transform.position;
-		mapTiles = new List<MapTile> ();
+        if(null != hint)
+        {
+            hint.name = name + "_Hint";
+            hint.type = Type.Hint;
+            hint.block = this;
+            hint.slot = slot;
+            hint.transform.SetParent(Map.Instance.hints, false);
+            foreach (BlockTile blockTile in hint.blockTiles)
+            {
+                Color color = saveData.tileColor;
+                color.a = 0.5f;
+                blockTile.spriteRenderer.color = color;
+                blockTile.Init(hint);
+            }
+
+            hint.transform.localPosition = saveData.hintPosition;
+            hint.gameObject.SetActive(false);
+        }
+        
+        if (true == Map.Instance.editMode)
+        {
+            transform.position = hint.transform.position;
+        }
+        else
+        {
+            transform.position = slot.transform.position;
+            transform.localScale = slot.transform.localScale;
+            initPosition = transform.position;
+        }
     }
 
-    
 	public void OnClick() {
         transform.localScale = Vector3.one;
         transform.position = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
@@ -196,7 +215,6 @@ public class Block : MonoBehaviour {
 		saveData.slotPosition = slot.transform.localPosition;
         if (null != hint) {
 			saveData.hintPosition = hint.transform.localPosition;
-			//OnDrop (transform.position);
         }
         else {
 			saveData.hintPosition = saveData.slotPosition;
@@ -221,30 +239,3 @@ public class Block : MonoBehaviour {
     }
 }
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(Block)), CanEditMultipleObjects]
-public class BlockEditor : UnityEditor.Editor 
-{
-	public override void OnInspectorGUI()
-	{
-		Block block = (Block)target;
-		DrawDefaultInspector ();
-		serializedObject.Update();
-		//EditorGUILayout.PropertyField(lookAtPoint);
-		serializedObject.ApplyModifiedProperties();
-		if (GUILayout.Button ("Init")) {
-            /*
-			if (null != block.hint) {
-				return;
-			}
-			block.Init ();
-			block.slot.transform.position = block.transform.position;
-			block.slot.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
-			if (null != block.hint) {
-				block.transform.localScale = block.slot.transform.localScale;
-			}
-            */
-		}
-	}
-}
-#endif
