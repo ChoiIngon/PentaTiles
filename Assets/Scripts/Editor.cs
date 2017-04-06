@@ -25,7 +25,13 @@ public class Editor : MonoBehaviour {
 			return _instance;  
 		}  
 	}
-
+    
+    public int stage;
+    public int level;
+    public int width;
+    public int height;
+    [Range(0, 1)]
+    public float blockSlotScale;
 	public Block blockPrefab;
     public ToggleButton pencilToggle;
     public ToggleButton eraserToggle;
@@ -55,6 +61,7 @@ public class Editor : MonoBehaviour {
 
     public void Init()
     {
+        blockSlotScale = 1.0f;
         state = State.Pencil;
         blockID = 1;
         mapTiles = new List<MapTile>();
@@ -124,12 +131,10 @@ public class Editor : MonoBehaviour {
         }
 	}
 
-    public void Save()
+    private void Update()
     {
-    }
+           
 
-    public void Load()
-    {
     }
 }
 
@@ -144,7 +149,14 @@ public class EditorEditor : UnityEditor.Editor
         DrawDefaultInspector();
         if (GUILayout.Button("Init"))
         {
-            Map.Instance.Init(null);
+            MapSaveData mapSaveData = ScriptableObject.CreateInstance<MapSaveData>();
+            mapSaveData.stage = editor.stage;
+            mapSaveData.level = editor.level;
+            mapSaveData.width = editor.width;
+            mapSaveData.height = editor.height;
+            mapSaveData.tiles = new int[mapSaveData.width * mapSaveData.height];
+            mapSaveData.blockSlotScale = 1.0f;
+            Map.Instance.Init(mapSaveData);
         }
 
         if (GUILayout.Button("Save"))
@@ -157,7 +169,6 @@ public class EditorEditor : UnityEditor.Editor
             }
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Map.Instance.dataPath = saveData.stage + "_" + saveData.level;
 
             Debug.Log("success to save map file to " + "\'Assets/Resources/" + saveData.stage + "_" + saveData.level + ".asset" + "\'");
         }
@@ -175,15 +186,14 @@ public class EditorEditor : UnityEditor.Editor
             Debug.Log("success to load map file from " + "\'Assets/Resources/" + data.stage + "_" + data.level + ".asset" + "\'");
         }
 
-		for (int i = 0; i < Map.Instance.blocks.childCount; i++) {
-			Block block = Map.Instance.blocks.GetChild (i).GetComponent<Block>();
-			block.slot.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
+        Map.Instance.blockSlotScale = editor.blockSlotScale;
 
-			if (block.transform.position == block.slot.transform.position) {
-				block.transform.localScale = block.slot.transform.localScale;
-			}
+        for (int i = 0; i < Map.Instance.slots.childCount; i++) {
+			Block block = Map.Instance.slots.GetChild (i).GetComponent<Block>();
+			block.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
 		}
     }
+
 
 }
 #endif

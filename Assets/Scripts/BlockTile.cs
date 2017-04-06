@@ -26,6 +26,7 @@ public class BlockTile : MonoBehaviour {
         {
             if (false == Map.Instance.editMode)
             {
+                Debug.Log(name + " is clicked");
                 if (Block.Type.Block == block.type)
                 {
                     block.OnClick();
@@ -92,7 +93,16 @@ public class BlockTile : MonoBehaviour {
 #if UNITY_EDITOR
 #endif
         };
-	}
+
+        if (false == Map.Instance.editMode)
+        {
+            if (Block.Type.Block != block.type)
+            {
+                touchInput.enabled = false;
+                GetComponent<BoxCollider>().enabled = false;
+            }
+        }
+    }
 
     void OnTriggerStay(Collider coll) {
 		if ("MapTile" == coll.gameObject.tag) {

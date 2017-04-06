@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Analytics;
 
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEditor.Callbacks;
-#endif
-
 public class Map : MonoBehaviour {
 	private static Map _instance;  
 	public static Map Instance {  
@@ -30,7 +25,6 @@ public class Map : MonoBehaviour {
 	public int level;
 	public int width;
 	public int height;
-	[Range(0.0f, 1.0f)]
 	public float blockSlotScale;
 
 	public Transform tiles;
@@ -38,12 +32,9 @@ public class Map : MonoBehaviour {
 	public Transform slots;
 	public Transform hints;
 	public MapTile mapTilePrefab;
-	public Block[] blockPrefabs;
+	
     public Block blockPrefab;
 	public MapTile[] mapTiles;
-	#if UNITY_EDITOR
-	public string dataPath;
-	#endif
 	public void Init(int stage, int level)
 	{
 		MapSaveData mapSaveData = Resources.Load<MapSaveData> (stage + "_" + level);
@@ -51,24 +42,6 @@ public class Map : MonoBehaviour {
 	}
 	public void Init(MapSaveData info)
 	{
-		if (null == info) {
-			#if UNITY_EDITOR
-			dataPath = "none";
-			#endif
-			info = ScriptableObject.CreateInstance<MapSaveData> ();
-			info.stage = stage;
-			info.level = level;
-			info.width = Mathf.Max(Map.Instance.width, 3);
-			info.height = Mathf.Max(Map.Instance.height, 3);
-			info.tiles = new int[info.width * info.height];
-			info.blockSlotScale = 1.0f;
-		}
-		#if UNITY_EDITOR
-		else {
-			dataPath = info.stage + "_" + info.level;
-		}
-		#endif
-
 		while (0 < tiles.childCount) {
 			Transform tile = tiles.GetChild (0);
 			tile.SetParent (null);
@@ -135,13 +108,13 @@ public class Map : MonoBehaviour {
 			foreach (BlockSaveData blockSaveData in info.blocks) {
 				Block block = GameObject.Instantiate<Block> (blockPrefab);
                 block.Init(blockSaveData);
-                block.transform.localPosition = blockSaveData.slotPosition;
-                block.transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
-                block.initPosition = blockSaveData.slotPosition;
                 block.slot.transform.localPosition = blockSaveData.slotPosition;
                 block.slot.transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
+
+                block.transform.position = block.slot.transform.position;
+                block.initPosition = block.transform.localPosition;
+                block.transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
                 
-				
 				if (blockSaveData.slotPosition != blockSaveData.hintPosition) {
 					block.hint.transform.localPosition = blockSaveData.hintPosition;
 					block.hint.gameObject.SetActive (false);
@@ -221,53 +194,3 @@ public class Map : MonoBehaviour {
 	}
 }
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(Map))]
-public class MapEditor : UnityEditor.Editor {
-	void OnEnable() {
-		Map map = (Map)target;
-	}
-	public override void OnInspectorGUI()
-	{
-		DrawDefaultInspector();
-		if(GUILayout.Button("Init"))
-		{
-			Map.Instance.editMode = true;
-			Map.Instance.Init(null);
-		}
-
-		if(GUILayout.Button("Save"))
-		{
-			MapSaveData saveData = Map.Instance.GetSaveData ();
-			AssetDatabase.CreateAsset (saveData, "Assets/Resources/" + saveData.stage + "_" + saveData.level + ".asset");
-			for (int i = 0; i < saveData.blocks.Length; i++) {
-				AssetDatabase.AddObjectToAsset (saveData.blocks [i], saveData);
-			}
-			AssetDatabase.SaveAssets ();
-			AssetDatabase.Refresh ();
-			Map.Instance.dataPath = saveData.stage + "_" + saveData.level;
-
-			Debug.Log ("success to save map file to " + "\'Assets/Resources/" + saveData.stage + "_" + saveData.level + ".asset" +"\'");
-		}
-
-		if(GUILayout.Button("Load"))
-		{
-			MapSaveData data = Resources.Load<MapSaveData> (Map.Instance.stage + "_" + Map.Instance.level);
-			Map.Instance.Init (data);
-			Debug.Log ("success to load map file from " + "\'Assets/Resources/" + data.stage + "_" + data.level + ".asset" +"\'");
-		}
-
-        /*
-		for (int i = 0; i < Map.Instance.blocks.childCount; i++) {
-			Block block = Map.Instance.blocks.GetChild (i).GetComponent<Block>();
-			block.slot.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
-
-			if (block.transform.position == block.slot.transform.position) {
-				block.transform.localScale = block.slot.transform.localScale;
-			}
-		}
-        */
-	}
-
-}
-#endif
