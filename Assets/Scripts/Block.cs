@@ -50,9 +50,7 @@ public class Block : MonoBehaviour {
         }
 
 		slot = GameObject.Instantiate<Block>(this);
-        hint = GameObject.Instantiate<Block>(this);
-
-        if(null != slot)
+		if(null != slot)
         {
             slot.name = name + "_Slot";
             slot.type = Type.Slot;
@@ -72,29 +70,14 @@ public class Block : MonoBehaviour {
             slot.transform.localPosition = saveData.slotPosition;
             slot.transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
         }
-
-        if(null != hint)
-        {
-            hint.name = name + "_Hint";
-            hint.type = Type.Hint;
-            hint.block = this;
-            hint.slot = slot;
-            hint.transform.SetParent(Map.Instance.hints, false);
-            foreach (BlockTile blockTile in hint.blockTiles)
-            {
-                Color color = saveData.tileColor;
-                color.a = 0.5f;
-                blockTile.spriteRenderer.color = color;
-                blockTile.Init(hint);
-            }
-
-            hint.transform.localPosition = saveData.hintPosition;
-            hint.gameObject.SetActive(false);
-        }
+		if (saveData.hintPosition != saveData.slotPosition) {
+			hint = CreateHint ();
+			hint.transform.localPosition = saveData.hintPosition;
+		}
         
-        if (true == Map.Instance.editMode)
+		if (true == Map.Instance.editMode && null != hint)
         {
-            transform.position = hint.transform.position;
+			transform.position = hint.transform.position;
         }
         else
         {
@@ -119,30 +102,39 @@ public class Block : MonoBehaviour {
             blockTile.spriteRenderer.sortingOrder = (int)SortingOrder.Idle;
         }
 
-		bool returnToOrigialPosition = true;
+		bool returnToSlotPosition = true;
 		foreach(BlockTile blockTile in blockTiles) {
 			if (null != blockTile.mapTile) {
-				returnToOrigialPosition = false;
+				returnToSlotPosition = false;
 				break;
 			}
 		}
 
-		if (true == returnToOrigialPosition) {
-            if (false == Map.Instance.editMode)
-            {
-                transform.position = slot.transform.position;
-                transform.localScale = slot.transform.localScale;
-            }
+		if (true == returnToSlotPosition) {
+            transform.position = slot.transform.position;
+            transform.localScale = slot.transform.localScale;
 			initPosition = transform.position;
 			foreach(MapTile mapTile in mapTiles)
 			{
 				mapTile.block = null;
 			}
 			mapTiles = new List<MapTile> ();
-			if(true == Map.Instance.editMode && null != hint)
+			if(true == Map.Instance.editMode)
             {
-                DestroyImmediate(hint);
-                hint = null;
+				foreach (MapTile mapTile in Map.Instance.mapTiles)
+				{
+					if (mapTile.id == id)
+					{
+						mapTile.spriteRenderer.color = Color.white;
+						mapTile.id = 0;
+					}
+				}
+
+				if (null != hint) {
+					hint.transform.SetParent (null);
+					DestroyImmediate (hint.gameObject);
+					hint = null;
+				}
             }
 
 			AudioManager.Instance.Play("BlockOut");
@@ -180,6 +172,9 @@ public class Block : MonoBehaviour {
 
 		foreach(MapTile mapTile in mapTiles)
 		{
+			if (true == Map.Instance.editMode) {
+				mapTile.id = 0;
+			}
 			mapTile.block = null;
 		}
 		mapTiles = new List<MapTile> ();
@@ -193,7 +188,10 @@ public class Block : MonoBehaviour {
 
 		initPosition = position;
 		transform.position = position;
-
+		if (true == Map.Instance.editMode) {
+			hint = CreateHint ();
+			hint.transform.position = transform.position;
+		}
 		if (false == Map.Instance.editMode) {
 			StartCoroutine (Game.Instance.CompleteLevel ());
 		}
@@ -207,6 +205,7 @@ public class Block : MonoBehaviour {
 		saveData.id = id;
         saveData.tileColor = tileColor;
         saveData.tilePositions = new List<Vector3>();
+
         foreach (BlockTile blockTile in blockTiles)
         {
             saveData.tilePositions.Add(blockTile.transform.localPosition);
@@ -237,5 +236,28 @@ public class Block : MonoBehaviour {
         transform.SetParent(null);
         DestroyImmediate(this.gameObject);
     }
+
+	public Block CreateHint()
+	{
+		if (null != hint) {
+			return hint;
+		}
+		hint = GameObject.Instantiate<Block> (this);
+		if (null != hint) {
+			hint.name = name + "_Hint";
+			hint.type = Type.Hint;
+			hint.block = this;
+			hint.slot = slot;
+			hint.transform.SetParent (Map.Instance.hints, false);
+			foreach (BlockTile blockTile in hint.blockTiles) {
+				Color color = tileColor;
+				color.a = 0.5f;
+				blockTile.spriteRenderer.color = color;
+				blockTile.Init (hint);
+			}
+			hint.gameObject.SetActive(false);
+		}
+		return hint;
+	}
 }
 

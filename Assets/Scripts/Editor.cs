@@ -103,6 +103,7 @@ public class Editor : MonoBehaviour {
         Block block = blocks[blockID];
         block.Destroy();
         blocks.Remove(blockID);
+		Debug.Log ("destroy block(id:" + blockID + ")");
     }
 
 	public void OnClickMapTile(MapTile mapTile)
@@ -138,8 +139,12 @@ public class EditorEditor : UnityEditor.Editor
 {
     public override void OnInspectorGUI()
     {
+		DrawDefaultInspector();
+		if (false == Application.isPlaying) {
+			return;
+		}
         Editor editor = (Editor)target;
-        DrawDefaultInspector();
+        
         if (GUILayout.Button("Init"))
         {
             MapSaveData mapSaveData = ScriptableObject.CreateInstance<MapSaveData>();
@@ -169,12 +174,13 @@ public class EditorEditor : UnityEditor.Editor
         if (GUILayout.Button("Load"))
         {
             editor.Init();
-            MapSaveData data = Resources.Load<MapSaveData>(Map.Instance.stage + "_" + Map.Instance.level);
+            MapSaveData data = Resources.Load<MapSaveData>(editor.stage + "_" + editor.level);
             Map.Instance.Init(data);
             for (int i = 0; i < Map.Instance.blocks.childCount; i++)
             {
                 Block block = Map.Instance.blocks.GetChild(i).GetComponent<Block>();
                 editor.blocks.Add(block.id, block);
+				editor.blockID = Mathf.Max (editor.blockID + 1, block.id);
             }
             Debug.Log("success to load map file from " + "\'Assets/Resources/" + data.stage + "_" + data.level + ".asset" + "\'");
         }

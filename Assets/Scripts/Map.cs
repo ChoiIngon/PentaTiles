@@ -112,18 +112,16 @@ public class Map : MonoBehaviour {
                 block.slot.transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
 
                 block.transform.position = block.slot.transform.position;
-                block.initPosition = block.transform.localPosition;
                 block.transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
+				block.initPosition = block.transform.position;
                 
-				if (blockSaveData.slotPosition != blockSaveData.hintPosition) {
+				if (null != block.hint) {
 					block.hint.transform.localPosition = blockSaveData.hintPosition;
 					block.hint.gameObject.SetActive (false);
-				}
 
-				if (true == editMode) {
-					if (blockSaveData.slotPosition != blockSaveData.hintPosition) {
+					if (true == editMode) {
 						block.transform.localScale = Vector3.one;
-						block.transform.localPosition = blockSaveData.hintPosition;
+						block.transform.position = block.hint.transform.position;
 					}
 				}
             }
