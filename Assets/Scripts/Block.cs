@@ -44,7 +44,7 @@ public class Block : MonoBehaviour {
 			blockTile.transform.SetParent(Map.Instance.tiles);
             blockTile.transform.localPosition = tilePosition;
 			blockTile.transform.SetParent(transform);
-            blockTile.spriteRenderer.color = saveData.tileColor;
+            //blockTile.spriteRenderer.color = saveData.tileColor;
             blockTile.Init (this);
             blockTiles.Add(blockTile);
         }
@@ -61,9 +61,9 @@ public class Block : MonoBehaviour {
             slot.transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
             foreach (BlockTile blockTile in slot.blockTiles)
             {
-                Color color = saveData.tileColor / 2;
-                color.a = 1.0f;
-                blockTile.spriteRenderer.color = color;
+                //Color color = saveData.tileColor / 2;
+                //color.a = 1.0f;
+                //blockTile.spriteRenderer.color = color;
                 blockTile.Init(slot);
             }
 
@@ -87,20 +87,23 @@ public class Block : MonoBehaviour {
         }
     }
 
+	public int sortingOrder {
+		set {
+			foreach (BlockTile blockTile in blockTiles)
+			{
+				blockTile.spriteRenderer.sortingOrder = value;
+			}
+		}
+	}
 	public void OnClick() {
         transform.localScale = Vector3.one;
         transform.position = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
-        foreach (BlockTile blockTile in blockTiles)
-        {
-            blockTile.spriteRenderer.sortingOrder = (int)SortingOrder.Select;
-        }
+		sortingOrder = (int)SortingOrder.Select;
         AudioManager.Instance.Play("BlockSelect");
 	}
 
 	public void OnDrop(Vector3 position) {
-		foreach (BlockTile blockTile in blockTiles) {
-            blockTile.spriteRenderer.sortingOrder = (int)SortingOrder.Idle;
-        }
+		sortingOrder = (int)SortingOrder.Idle;
 
 		bool returnToSlotPosition = true;
 		foreach(BlockTile blockTile in blockTiles) {
@@ -250,9 +253,9 @@ public class Block : MonoBehaviour {
 			hint.slot = slot;
 			hint.transform.SetParent (Map.Instance.hints, false);
 			foreach (BlockTile blockTile in hint.blockTiles) {
-				Color color = tileColor;
-				color.a = 0.5f;
-				blockTile.spriteRenderer.color = color;
+				//Color color = tileColor;
+				//color.a = 0.5f;
+				//blockTile.spriteRenderer.color = color;
 				blockTile.Init (hint);
 			}
 			hint.gameObject.SetActive(false);

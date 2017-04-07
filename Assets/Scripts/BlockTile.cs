@@ -17,7 +17,24 @@ public class BlockTile : MonoBehaviour {
     private Color markColor;
     public void Init (Block block) {
         this.block = block;
-        spriteRenderer.sortingOrder = (int)Block.SortingOrder.Idle;
+
+		Color tileColor = block.tileColor;
+		switch (block.type) {
+		case Block.Type.Block:
+			spriteRenderer.sortingOrder = (int)Block.SortingOrder.Idle;
+			break;
+		case Block.Type.Hint:
+			tileColor.a = 0.5f;
+			spriteRenderer.sortingOrder = (int)Block.SortingOrder.Hint;
+			break;
+		case Block.Type.Slot:
+			tileColor = tileColor / 2;
+			tileColor.a = 1.0f;
+			spriteRenderer.sortingOrder = (int)Block.SortingOrder.Slot;
+			break;
+		}
+		spriteRenderer.color = tileColor;
+        
         markColor = spriteRenderer.color;
         markColor.a = 0.5f;
              
@@ -45,10 +62,7 @@ public class BlockTile : MonoBehaviour {
 					}
 	                else if (Block.Type.Slot == block.type)
 	                {
-	                	foreach (BlockTile blockTile in block.blockTiles)
-                        {
-                            blockTile.spriteRenderer.sortingOrder = (int)Block.SortingOrder.Select;
-                        }
+						block.sortingOrder = (int)Block.SortingOrder.Select;
 	                }
 				}
 				else if (Editor.State.Eraser == Editor.Instance.state)
@@ -114,6 +128,10 @@ public class BlockTile : MonoBehaviour {
 							delta = mapTile.transform.position - transform.position;
 						}
 						block.OnDrop(block.transform.position + delta);
+					}
+					else if(Block.Type.Slot == block.type)
+					{
+						block.sortingOrder = (int)Block.SortingOrder.Slot;
 					}
 				}
 			}
