@@ -8,12 +8,13 @@ public class UIGamePanel : MonoBehaviour {
 	public Button backButton;
 	public Button redoButton;
 	public Button hintButton;
-	public UIResultPanel resultPanel;
+	public UILevelComplete levelComplete;
+    public UIStageComplete stageComplete;
 	// Use this for initialization
 	void Start () {
 		backButton.onClick.AddListener (() => {
 			Map.Instance.gameObject.SetActive (false);
-			resultPanel.gameObject.SetActive(false);
+            levelComplete.gameObject.SetActive(false);
 		});
 		redoButton.onClick.AddListener (() => {
 			Game.Instance.StartLevel(Game.Instance.playData.currentStage.stage, Game.Instance.playData.currentLevel);
@@ -23,6 +24,6 @@ public class UIGamePanel : MonoBehaviour {
 			Map.Instance.UseHint();
 			AudioManager.Instance.Play("ButtonClick");
 		});
-		resultPanel.gameObject.SetActive (false);
+        levelComplete.gameObject.SetActive (false);
 	}
 }

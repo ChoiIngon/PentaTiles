@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIResultPanel : MonoBehaviour {
+public class UILevelComplete : MonoBehaviour {
 	public Button redo;
 	public Button next;
 
+    public Image[] stars;
 	public GameObject result;
 	// Use this for initialization
 	void Start () {
@@ -37,17 +38,30 @@ public class UIResultPanel : MonoBehaviour {
 
 	void OnEnable()
 	{
-		result.transform.localScale = Vector3.zero;
-		iTween.ScaleTo (result, Vector2.one, 0.5f);
-	}
-
-	void OnDisable()
-	{
-	}
+        result.transform.localScale = Vector3.zero;
+        for (int i = 0; i < stars.Length; i++)
+        {
+            Image star = stars[i];
+            star.transform.localScale = Vector3.zero;
+        }
+    }
 
 	public IEnumerator Activate() {
 		gameObject.SetActive (true);
-		while (true == gameObject.activeSelf) {
+        
+        iTween.ScaleTo(result, Vector2.one, 0.5f);
+        yield return new WaitForSeconds(0.5f);
+
+        const float time = 0.2f;
+        for (int i = 0; i < stars.Length; i++)
+        {
+            Image star = stars[i];
+            star.transform.localScale = Vector3.zero;
+            iTween.ScaleTo(star.gameObject, iTween.Hash("x", 1.0f, "y", 1.0f, "z", 1.0f, "time", time));
+            yield return new WaitForSeconds(time);
+        }
+
+        while (true == gameObject.activeSelf) {
 			yield return null;
 		}
 	}

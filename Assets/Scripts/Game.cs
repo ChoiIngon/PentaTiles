@@ -110,7 +110,7 @@ public class Game : MonoBehaviour {
 
 			yield return new WaitForSeconds (1.0f);
             //gamePanel.resultPanel.
-			yield return StartCoroutine(gamePanel.resultPanel.Activate ());
+			yield return StartCoroutine(gamePanel.levelComplete.Activate ());
 		}
 	}
 
