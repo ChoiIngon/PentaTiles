@@ -49,7 +49,15 @@ public class Editor : MonoBehaviour {
         Init();
         Map.Instance.editMode = true;
         pencilToggle.onValueChanged.AddListener(value => {
-			state = value ? State.Pencil : State.Eraser;		
+			state = value ? State.Pencil : State.Eraser;	
+			if(true == value)
+			{
+				currentColor = colors[Random.Range(0, colors.Length)];
+				foreach(MapTile mapTile in mapTiles)
+				{
+					mapTile.spriteRenderer.color = currentColor;
+				}
+			}
 		});
 		eraserToggle.onValueChanged.AddListener(value => {
 			state = value ? State.Eraser : State.Pencil;		
@@ -86,6 +94,7 @@ public class Editor : MonoBehaviour {
 
         blockID++;
         mapTiles = new List<MapTile>();
+		currentColor = colors[Random.Range(0, colors.Length)];
         return block;
 	}
 
@@ -115,10 +124,6 @@ public class Editor : MonoBehaviour {
                 Debug.Log("already set tile(id:" + mapTile.id + ")");
                 return;
             }
-            if (0 == mapTiles.Count)
-            {
-                currentColor = colors[Random.Range(0, colors.Length)];
-            }
             mapTile.id = blockID;
             mapTile.spriteRenderer.color = currentColor;
             mapTiles.Add(mapTile);
@@ -131,7 +136,6 @@ public class Editor : MonoBehaviour {
         }
 	}    
 }
-
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(Editor))]
@@ -185,7 +189,7 @@ public class EditorEditor : UnityEditor.Editor
             {
                 Block block = Map.Instance.blocks.GetChild(i).GetComponent<Block>();
                 editor.blocks.Add(block.id, block);
-				editor.blockID = Mathf.Max (editor.blockID + 1, block.id);
+				editor.blockID = Mathf.Max (editor.blockID, block.id+1);
             }
             Debug.Log("success to load map file from " + "\'Assets/Resources/" + data.stage + "_" + data.level + ".asset" + "\'");
         }
