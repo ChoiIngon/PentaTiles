@@ -13,25 +13,25 @@ public class UIResultPanel : MonoBehaviour {
 		redo.onClick.AddListener (() => {
 			AudioManager.Instance.Play("ButtonClick");
 			gameObject.SetActive(false);
-			Game.Instance.StartLevel(Game.Instance.playData.current_stage.stage, Game.Instance.playData.current_level);
+			Game.Instance.StartLevel(Game.Instance.playData.currentStage.stage, Game.Instance.playData.currentLevel);
 		});
 		next.onClick.AddListener (() => {
 			AudioManager.Instance.Play("ButtonClick");
 			gameObject.SetActive(false);
-			if(Game.Instance.playData.current_level < Game.Instance.playData.current_stage.total_level)
+			if(Game.Instance.playData.currentLevel < Game.Instance.playData.currentStage.total_level)
 			{
-				Game.Instance.playData.current_level++;
+				Game.Instance.playData.currentLevel++;
 			}
 			else
 			{
-				int currentStage = Game.Instance.playData.current_stage.stage;
+				int currentStage = Game.Instance.playData.currentStage.stage;
 				if(currentStage < Game.Instance.stageInfos.stage_infos.Length)
 				{
-					Game.Instance.playData.current_stage = Game.Instance.stageInfos.stage_infos[currentStage];
-					Game.Instance.playData.current_level = 1;
+					Game.Instance.playData.currentStage = Game.Instance.stageInfos.stage_infos[currentStage];
+					Game.Instance.playData.currentLevel = 1;
 				}
 			}
-			Game.Instance.StartLevel(Game.Instance.playData.current_stage.stage, Game.Instance.playData.current_level);
+			Game.Instance.StartLevel(Game.Instance.playData.currentStage.stage, Game.Instance.playData.currentLevel);
 		});
 	}
 

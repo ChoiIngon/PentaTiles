@@ -10,8 +10,10 @@ public class PlayData {
 		public int level;
 	}
 
-	public UIStageInfo.Info current_stage;
-	public int current_level;
+	public UIStageInfo.Info currentStage;
+	public int currentLevel;
 	public List<StageData> stageDatas;
 	public int hint;
+
+    public float bestCompleteTime = float.MaxValue;
 }

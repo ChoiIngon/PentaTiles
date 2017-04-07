@@ -16,7 +16,7 @@ public class UIGamePanel : MonoBehaviour {
 			resultPanel.gameObject.SetActive(false);
 		});
 		redoButton.onClick.AddListener (() => {
-			Game.Instance.StartLevel(Game.Instance.playData.current_stage.stage, Game.Instance.playData.current_level);
+			Game.Instance.StartLevel(Game.Instance.playData.currentStage.stage, Game.Instance.playData.currentLevel);
 			AudioManager.Instance.Play("ButtonClick");
 		});
 		hintButton.onClick.AddListener (() => {

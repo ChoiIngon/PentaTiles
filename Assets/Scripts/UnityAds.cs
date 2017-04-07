@@ -46,8 +46,8 @@ public class UnityAds : MonoBehaviour {
 			Advertisement.Show();
 
             Analytics.CustomEvent("AdsWatch", new Dictionary<string, object> {
-                {"stage", Game.Instance.playData.current_stage.stage },
-                {"level", Game.Instance.playData.current_level},
+                {"stage", Game.Instance.playData.currentStage.stage },
+                {"level", Game.Instance.playData.currentLevel},
                 {"watch_count", ++watchAdsCount }
             });
         }

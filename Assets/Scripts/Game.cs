@@ -37,7 +37,7 @@ public class Game : MonoBehaviour {
 	public CanvasScaler canvasScaler;
 	public StageInfos stageInfos;
 	public PlayData playData;
-	//public GameObject background;
+    public float levelStartTime;
 
 	private UnityAds unityAds;
 	private float uiWidth;
@@ -87,7 +87,9 @@ public class Game : MonoBehaviour {
 
 	public void StartLevel(int stage, int level)
 	{
-		gamePanel.level.text = "Level - " + level;
+        levelStartTime = Time.realtimeSinceStartup;
+
+        gamePanel.level.text = "Level - " + level;
 		Map.Instance.gameObject.SetActive(true);
 		Map.Instance.Init(stage, level);
 	}
@@ -95,17 +97,19 @@ public class Game : MonoBehaviour {
 	public IEnumerator CompleteLevel() {
 		if (true == Map.Instance.CheckComplete ()) {
 			AudioManager.Instance.Play("LevelClear");
-
-			PlayData.StageData stageData = playData.stageDatas [playData.current_stage.stage - 1];
-			stageData.level = Mathf.Max (stageData.level, playData.current_level);
+            float playTime = Time.realtimeSinceStartup - levelStartTime;
+            playData.bestCompleteTime = Mathf.Min(playData.bestCompleteTime, playTime);
+            PlayData.StageData stageData = playData.stageDatas [playData.currentStage.stage - 1];
+			stageData.level = Mathf.Max (stageData.level, playData.currentLevel);
 			stagePanel.GetStageInfo (stageData.stage).SetOpenLevel (stageData.level);
-			if (stageData.level < playData.current_stage.total_level) {
+			if (stageData.level < playData.currentStage.total_level) {
 				levelPanel.GetLevelInfo (stageData.level+1).Unlock ();
 			}
 			Save ();
 			unityAds.Show ();
 
 			yield return new WaitForSeconds (1.0f);
+            //gamePanel.resultPanel.
 			yield return StartCoroutine(gamePanel.resultPanel.Activate ());
 		}
 	}

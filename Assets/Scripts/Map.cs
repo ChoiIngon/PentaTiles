@@ -141,8 +141,8 @@ public class Map : MonoBehaviour {
 		}
 
         Analytics.CustomEvent("LevelComplete", new Dictionary<string, object> {
-            {"stage", Game.Instance.playData.current_stage.stage },
-            {"level", Game.Instance.playData.current_level}
+            {"stage", Game.Instance.playData.currentStage.stage },
+            {"level", Game.Instance.playData.currentLevel}
         });
         return true;
 	}
@@ -165,8 +165,8 @@ public class Map : MonoBehaviour {
         candidates [Random.Range (0, candidates.Count)].SetActive (true);
 		
         Analytics.CustomEvent("HintUse", new Dictionary<string, object> {
-            {"stage", Game.Instance.playData.current_stage.stage },
-            {"level", Game.Instance.playData.current_level}
+            {"stage", Game.Instance.playData.currentStage.stage },
+            {"level", Game.Instance.playData.currentLevel}
         });
         return true;
 	}
