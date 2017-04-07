@@ -179,6 +179,8 @@ public class EditorEditor : UnityEditor.Editor
             editor.Init();
             MapSaveData data = Resources.Load<MapSaveData>(editor.stage + "_" + editor.level);
             Map.Instance.Init(data);
+
+			editor.blockSlotScale = Map.Instance.blockSlotScale;
             for (int i = 0; i < Map.Instance.blocks.childCount; i++)
             {
                 Block block = Map.Instance.blocks.GetChild(i).GetComponent<Block>();
