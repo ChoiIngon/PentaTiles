@@ -17,6 +17,24 @@
       "name" : "Expert",
       "description" : "block 3 to 5 levels",
       "total_level" : 24 
+    },
+	{
+      "stage" : 4,
+      "name" : "Expert",
+      "description" : "block 3 to 5 levels",
+      "total_level" : 24 
+    },
+	{
+      "stage" : 5,
+      "name" : "Expert",
+      "description" : "block 3 to 5 levels",
+      "total_level" : 24 
+    },
+	{
+      "stage" : 6,
+      "name" : "Expert",
+      "description" : "block 3 to 5 levels",
+      "total_level" : 24 
     }
   ]
 }
