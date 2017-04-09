@@ -35,6 +35,36 @@
       "name" : "Expert",
       "description" : "block 3 to 5 levels",
       "total_level" : 24 
+    },
+	{
+      "stage" : 7,
+      "name" : "Beginner",
+      "description" : "block 3 to 5 levels",
+      "total_level" : 24 
+    },
+	{
+      "stage" : 8,
+      "name" : "Intermediator",
+      "description" : "block 3 to 5 levels",
+      "total_level" : 24 
+    },
+	{
+      "stage" : 9,
+      "name" : "Expert",
+      "description" : "block 3 to 5 levels",
+      "total_level" : 24 
+    },
+	{
+      "stage" : 10,
+      "name" : "Expert",
+      "description" : "block 3 to 5 levels",
+      "total_level" : 24 
+    },
+	{
+      "stage" : 11,
+      "name" : "Expert",
+      "description" : "block 3 to 5 levels",
+      "total_level" : 12 
     }
   ]
 }

@@ -28,7 +28,7 @@ public class BlockTile : MonoBehaviour {
 			spriteRenderer.sortingOrder = (int)Block.SortingOrder.Hint;
 			break;
 		case Block.Type.Slot:
-			tileColor = tileColor / 2;
+			tileColor = tileColor * 0.4f;
 			tileColor.a = 1.0f;
 			spriteRenderer.sortingOrder = (int)Block.SortingOrder.Slot;
 			break;
