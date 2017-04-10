@@ -155,7 +155,7 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
             RectTransform child = _container.GetChild(i).GetComponent<RectTransform>();
             Vector2 childPosition;
             if (_horizontal) {
-                childPosition = new Vector2(i * width - containerWidth / 2 + offsetX, 0f);
+				childPosition = new Vector2(i * width - containerWidth / 2 + offsetX, 0.0f);
             } else {
                 childPosition = new Vector2(0f, -(i * height - containerHeight / 2 + offsetY));
             }

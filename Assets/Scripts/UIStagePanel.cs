@@ -22,7 +22,7 @@ public class UIStagePanel : MonoBehaviour {
             if (info.page > stagePages.Count)
             {
                 ScrollRect scrollRect = GameObject.Instantiate<ScrollRect>(stagePagePrefab);
-                scrollRect.transform.SetParent(content);
+                scrollRect.transform.SetParent(content, false);
                 stagePages.Add(scrollRect);
             }
 

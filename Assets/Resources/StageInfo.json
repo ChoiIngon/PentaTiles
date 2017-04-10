@@ -70,7 +70,7 @@
       "description" : "block 3 to 5 levels",
       "total_level" : 24,
 	  "page" : 3,
-	  "open_star" : 0
+	  "open_star" : 1
     },
 	{
       "stage" : 10,
@@ -78,7 +78,7 @@
       "description" : "block 3 to 5 levels",
       "total_level" : 24,
 	  "page" : 3,
-	  "open_star" : 0
+	  "open_star" : 1
     },
 	{
       "stage" : 11,
@@ -86,7 +86,7 @@
       "description" : "block 3 to 5 levels",
       "total_level" : 12,
 	  "page" : 3,
-	  "open_star" : 0
+	  "open_star" : 1
     }
   ]
 }

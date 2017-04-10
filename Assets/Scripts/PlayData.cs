@@ -14,6 +14,6 @@ public class PlayData {
 	public int currentLevel;
 	public List<StageData> stageDatas;
 	public int hint;
-
+	public int star;
     public float bestCompleteTime = float.MaxValue;
 }
