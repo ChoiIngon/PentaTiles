@@ -2,7 +2,7 @@
   "stage_infos" : [
     {
       "stage" : 1,
-      "name" : "Beginner",
+      "name" : "Stage 1",
       "description" : "block 3 to 5 levels",
       "total_level" : 24,
 	  "page" : 1,
@@ -10,19 +10,19 @@
     },
 	{
       "stage" : 2,
-      "name" : "Intermediator",
-      "description" : "block 3 to 5 levels",
+      "name" : "Stage 2",
+      "description" : "block 4 to 7 levels",
       "total_level" : 24,
 	  "page" : 1,
 	  "open_star" : 0
     },
 	{
       "stage" : 3,
-      "name" : "Expert",
-      "description" : "block 3 to 5 levels",
+      "name" : "Stage 3",
+      "description" : "block 5 to 8 levels",
       "total_level" : 24,
 	  "page" : 1,
-	  "open_star" : 0
+	  "open_star" : 0 
     },
 	{
       "stage" : 4,
@@ -85,6 +85,22 @@
       "name" : "Expert",
       "description" : "block 3 to 5 levels",
       "total_level" : 12,
+	  "page" : 3,
+	  "open_star" : 1
+    },
+	{
+      "stage" : 12,
+      "name" : "Stage",
+      "description" : "block 6 to 9 levels",
+      "total_level" : 24,
+	  "page" : 3,
+	  "open_star" : 1 
+    },
+	{
+      "stage" : 13,
+      "name" : "Stage",
+      "description" : "block 3 to 5 levels",
+      "total_level" : 24,
 	  "page" : 3,
 	  "open_star" : 1
     }
