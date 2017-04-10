@@ -11,6 +11,8 @@ public class UIStageInfo : MonoBehaviour {
 		public string name;
 		public string description;
 		public int total_level;
+        public int page;
+        public int open_star;
 	}
 	Button button;
 	Text title;

@@ -60,7 +60,7 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
     private List<Image> _pageSelectionImages;
     private CanvasScaler _scaler;
     //------------------------------------------------------------------------
-    void Start() {
+    public void Init() {
         _scaler = GetComponentInParent<CanvasScaler>();
         _scrollRectComponent = GetComponent<ScrollRect>();
         _scrollRectRect = GetComponent<RectTransform>();

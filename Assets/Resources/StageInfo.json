@@ -4,67 +4,89 @@
       "stage" : 1,
       "name" : "Beginner",
       "description" : "block 3 to 5 levels",
-      "total_level" : 24 
+      "total_level" : 24,
+	  "page" : 1,
+	  "open_star" : 0
     },
 	{
       "stage" : 2,
       "name" : "Intermediator",
       "description" : "block 3 to 5 levels",
-      "total_level" : 24 
+      "total_level" : 24,
+	  "page" : 1,
+	  "open_star" : 0
     },
 	{
       "stage" : 3,
       "name" : "Expert",
       "description" : "block 3 to 5 levels",
-      "total_level" : 24 
+      "total_level" : 24,
+	  "page" : 1,
+	  "open_star" : 0
     },
 	{
       "stage" : 4,
       "name" : "Expert",
       "description" : "block 3 to 5 levels",
-      "total_level" : 24 
+      "total_level" : 24,
+	  "page" : 1,
+	  "open_star" : 0
     },
 	{
       "stage" : 5,
       "name" : "Expert",
       "description" : "block 3 to 5 levels",
-      "total_level" : 24 
+      "total_level" : 24,
+	  "page" : 2,
+	  "open_star" : 0 
     },
 	{
       "stage" : 6,
       "name" : "Expert",
       "description" : "block 3 to 5 levels",
-      "total_level" : 24 
+      "total_level" : 24,
+	  "page" : 2,
+	  "open_star" : 0
     },
 	{
       "stage" : 7,
       "name" : "Beginner",
       "description" : "block 3 to 5 levels",
-      "total_level" : 24 
+      "total_level" : 24,
+	  "page" : 2,
+	  "open_star" : 0
     },
 	{
       "stage" : 8,
       "name" : "Intermediator",
       "description" : "block 3 to 5 levels",
-      "total_level" : 24 
+      "total_level" : 24,
+	  "page" : 2,
+	  "open_star" : 0
     },
 	{
       "stage" : 9,
       "name" : "Expert",
       "description" : "block 3 to 5 levels",
-      "total_level" : 24 
+      "total_level" : 24,
+	  "page" : 3,
+	  "open_star" : 0
     },
 	{
       "stage" : 10,
       "name" : "Expert",
       "description" : "block 3 to 5 levels",
-      "total_level" : 24 
+      "total_level" : 24,
+	  "page" : 3,
+	  "open_star" : 0
     },
 	{
       "stage" : 11,
       "name" : "Expert",
       "description" : "block 3 to 5 levels",
-      "total_level" : 12 
+      "total_level" : 12,
+	  "page" : 3,
+	  "open_star" : 0
     }
   ]
 }

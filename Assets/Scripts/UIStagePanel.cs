@@ -4,22 +4,38 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIStagePanel : MonoBehaviour {
-	
 	public UIStageInfo stageInfoPrefab;
+    public ScrollRect stagePagePrefab;
+
+    public ScrollSnapRect scrollSnapRect;
+    public List<ScrollRect> stagePages;
 	public List<UIStageInfo> stageInfos;
 	public Transform content;
 	// Use this for initialization
 	public void Init () {
-		stageInfos = new List<UIStageInfo> ();
-		foreach(UIStageInfo.Info info in Game.Instance.stageInfos.stage_infos)
-		{	
-			UIStageInfo stageInfo = GameObject.Instantiate<UIStageInfo> (stageInfoPrefab);
-			stageInfo.transform.SetParent (content, false);
-			stageInfo.Init (info);
-			stageInfos.Add (stageInfo);
-		}
+        
+        stagePages = new List<ScrollRect>();
+        stageInfos = new List<UIStageInfo> ();
 
-		Map.Instance.gameObject.SetActive (false);
+		foreach(UIStageInfo.Info info in Game.Instance.stageInfos.stage_infos)
+		{
+            if (info.page > stagePages.Count)
+            {
+                ScrollRect scrollRect = GameObject.Instantiate<ScrollRect>(stagePagePrefab);
+                scrollRect.transform.SetParent(content);
+                stagePages.Add(scrollRect);
+            }
+
+            {
+                ScrollRect scrollRect = stagePages[info.page - 1];
+                UIStageInfo stageInfo = GameObject.Instantiate<UIStageInfo>(stageInfoPrefab);
+                stageInfo.transform.SetParent(scrollRect.content, false);
+                stageInfo.Init(info);
+                stageInfos.Add(stageInfo);
+            }
+		}
+        scrollSnapRect.Init();
+        Map.Instance.gameObject.SetActive (false);
 	}
 
 	public UIStageInfo GetStageInfo(int stage)
