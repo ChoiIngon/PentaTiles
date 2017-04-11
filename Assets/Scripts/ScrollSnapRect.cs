@@ -169,6 +169,17 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
         aPageIndex = Mathf.Clamp(aPageIndex, 0, _pageCount - 1);
         _container.anchoredPosition = _pagePositions[aPageIndex];
         _currentPage = aPageIndex;
+
+        nextButton.gameObject.SetActive(true);
+        prevButton.gameObject.SetActive(true);
+        if (0 == _currentPage && null != prevButton)
+        {
+            prevButton.gameObject.SetActive(false);
+        }
+        if (_pageCount - 1 == _currentPage && null != nextButton)
+        {
+            nextButton.gameObject.SetActive(false);
+        }
     }
 
     //------------------------------------------------------------------------
@@ -177,6 +188,17 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
         _lerpTo = _pagePositions[aPageIndex];
         _lerp = true;
         _currentPage = aPageIndex;
+
+        nextButton.gameObject.SetActive(true);
+        prevButton.gameObject.SetActive(true);
+        if (0 == _currentPage && null != prevButton)
+        {
+            prevButton.gameObject.SetActive(false);
+        }
+        if (_pageCount - 1 == _currentPage && null != nextButton)
+        {
+            nextButton.gameObject.SetActive(false);
+        }
     }
 
     //------------------------------------------------------------------------

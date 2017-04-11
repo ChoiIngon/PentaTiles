@@ -25,40 +25,43 @@ public class UIStageInfo : MonoBehaviour {
 	public Sprite close;
 	public bool isOpen;
 
-	public void Init(Info info)
-	{
-		panelImage = GetComponent<Image> ();
-		button = GetComponent<Button> ();
-		button.onClick.AddListener (() => {
-			Game.Instance.levelPanel.Init(this.info);
-			Game.Instance.playData.currentStage = info;
-			Game.Instance.ScrollScreen(-1.0f);
-			AudioManager.Instance.Play("ButtonClick");
-		});
-		title = transform.FindChild ("Text").GetComponent<Text> ();
-		starImage = transform.FindChild ("Star").GetComponent<Image> ();
-		starText = transform.FindChild ("Star/Text").GetComponent<Text> ();
+    public void Init(Info info)
+    {
+        this.info = info;
 
-		this.info = info;
+        title = transform.FindChild("Text").GetComponent<Text>();
+        panelImage = GetComponent<Image>();
+        starImage = transform.FindChild("Star").GetComponent<Image>();
+        starText = transform.FindChild("Star/Text").GetComponent<Text>();
+        button = GetComponent<Button>();
 
+        PlayData.StageData stageData = Game.Instance.playData.stageDatas[info.stage - 1];
+        SetOpenLevel(stageData.level);
 
-		PlayData.StageData stageData = Game.Instance.playData.stageDatas [info.stage - 1];
+        isOpen = false;
+        if (Game.Instance.playData.star >= info.open_star)
+        {
+            isOpen = true;
+        }
 
-		SetOpenLevel (stageData.level);
-
-		starImage.gameObject.SetActive (false);
-		panelImage.sprite = close;
-		isOpen = false;
-		title.text = "<size=40>" + info.name + "</size>\n" + 
-			"<size=30>" + "need " + info.open_star + " star to unlock stage"  + "</size>";
-		if (Game.Instance.playData.star >= info.open_star) {
-			starImage.gameObject.SetActive (true);
-			panelImage.sprite = open;
-			isOpen = true;
-
-			title.text = "<size=40>" + info.name + "</size>\n" + 
-				"<size=30>" + info.description + "</size>";
-		}
+        panelImage.sprite = isOpen ? open : close;
+        starImage.gameObject.SetActive(isOpen);
+        
+        if (true == isOpen)
+        {
+            title.text = "<size=40>" + info.name + "</size>\n" + "<size=30>" + info.description + "</size>";
+            button.onClick.AddListener(() => {
+                Game.Instance.levelPanel.Init(this.info);
+                Game.Instance.playData.currentStage = info;
+                Game.Instance.ScrollScreen(-1.0f);
+                AudioManager.Instance.Play("ButtonClick");
+            });
+        }
+        else
+        {
+            title.text = "<size=40>" + info.name + "</size>\n" + "<size=30>" + "need " + info.open_star + " star to unlock stage" + "</size>";
+            button.onClick.RemoveAllListeners();
+        }
 	}
 
 	public void SetOpenLevel(int level) {
