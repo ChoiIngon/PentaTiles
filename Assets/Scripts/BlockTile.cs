@@ -15,9 +15,17 @@ public class BlockTile : MonoBehaviour {
     [HideInInspector]
     public MapTile mapTile;
     private Color markColor;
+
+	public Color color {
+		set { spriteRenderer.color = value; }
+		get { return spriteRenderer.color; }
+	}
+
+	public GameObject outLine;
     public void Init (Block block) {
         this.block = block;
-
+		outLine = transform.FindChild ("Outline").gameObject;
+		outLine.SetActive (false);
 		Color tileColor = block.tileColor;
 		switch (block.type) {
 		case Block.Type.Block:
@@ -33,7 +41,7 @@ public class BlockTile : MonoBehaviour {
 			spriteRenderer.sortingOrder = (int)Block.SortingOrder.Slot;
 			break;
 		}
-		spriteRenderer.color = tileColor;
+		color = tileColor;
         
         markColor = spriteRenderer.color;
         markColor.a = 0.5f;

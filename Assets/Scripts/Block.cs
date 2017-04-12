@@ -95,16 +95,26 @@ public class Block : MonoBehaviour {
 			}
 		}
 	}
+
+	public bool outline {
+		set {
+			foreach (BlockTile blockTile in blockTiles)
+			{
+				blockTile.outLine.SetActive (value);
+			}
+		}
+	}
 	public void OnClick() {
         transform.localScale = Vector3.one;
         transform.position = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
 		sortingOrder = (int)SortingOrder.Select;
+		outline = true;
         AudioManager.Instance.Play("BlockSelect");
 	}
 
 	public void OnDrop(Vector3 position) {
 		sortingOrder = (int)SortingOrder.Idle;
-
+		outline = false;
 		bool returnToSlotPosition = true;
 		foreach(BlockTile blockTile in blockTiles) {
 			if (null != blockTile.mapTile) {
