@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: d2061de8d944d4cb8a7d4e2ad189e739
-timeCreated: 1491831685
+timeCreated: 1492098476
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -58,7 +58,7 @@ TextureImporter:
     21300102: ResultPanel@Background
     21300104: Window_52
     21300106: StageInfo@Star
-    21300108: Window_54
+    21300108: StagePanel@TotalStars
     21300110: Window_55
     21300112: Window_56
     21300114: Window_57
@@ -823,7 +823,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Window_54
+      name: StagePanel@TotalStars
       rect:
         serializedVersion: 2
         x: 2868

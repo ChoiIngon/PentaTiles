@@ -11,11 +11,18 @@ public class UIStagePanel : MonoBehaviour {
     public List<ScrollRect> stagePages;
 	public List<UIStageInfo> stageInfos;
 	public Transform content;
+	public Text totalStarCountText;
+
+	public int totalStarCount {
+		set {
+			totalStarCountText.text = value.ToString ();
+		}
+	}
 	// Use this for initialization
 	public void Init () {
-        
         stagePages = new List<ScrollRect>();
         stageInfos = new List<UIStageInfo> ();
+		totalStarCount = Game.Instance.playData.star;
 
 		foreach(UIStageInfo.Info info in Game.Instance.stageInfos.stage_infos)
 		{

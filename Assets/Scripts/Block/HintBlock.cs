@@ -18,19 +18,8 @@ public class HintBlock : Block {
 		gameObject.SetActive(false);
 	}
 
-
 	void OnEnable()
 	{
 		iTween.ScaleFrom (gameObject, new Vector3 (5.0f, 5.0f, 1.0f), 0.5f);
-	}
-
-	void Update()
-	{
-		Color color = tileColor;
-		float alpha = 0.85f - ((Time.realtimeSinceStartup - (int)Time.realtimeSinceStartup)/2);
-		color.a = alpha;
-		foreach (BlockTile tile in blockTiles) {
-			tile.tileSprite.color = color;
-		}
 	}
 }

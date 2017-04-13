@@ -207,5 +207,12 @@ public class MapBlock : Block {
 		}
 		return saveData;
 	}
+
+	public void RotateTiles()
+	{
+		foreach (BlockTile blockTile in blockTiles) {
+			iTween.RotateBy(blockTile.gameObject, iTween.Hash("x", 20.0f, "time", 1.0f));
+		}
+	}
 }
 

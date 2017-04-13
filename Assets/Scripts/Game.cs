@@ -99,17 +99,21 @@ public class Game : MonoBehaviour {
 			AudioManager.Instance.Play("LevelClear");
             float playTime = Time.realtimeSinceStartup - levelStartTime;
             playData.bestCompleteTime = Mathf.Min(playData.bestCompleteTime, playTime);
+
             PlayData.StageData stageData = playData.stageDatas [playData.currentStage.stage - 1];
-			stageData.level = Mathf.Max (stageData.level, playData.currentLevel);
+			if (playData.currentLevel > stageData.level) {
+				stageData.level = playData.currentLevel;
+				playData.star += 1;
+				stagePanel.totalStarCount = playData.star;
+			}
 			stagePanel.GetStageInfo (stageData.stage).SetOpenLevel (stageData.level);
-			if (stageData.level < playData.currentStage.total_level) {
+			if (playData.currentStage.total_level > stageData.level) {
 				levelPanel.GetLevelInfo (stageData.level+1).Unlock ();
 			}
 			Save ();
 			unityAds.Show ();
 
 			yield return new WaitForSeconds (1.0f);
-            //gamePanel.resultPanel.
 			yield return StartCoroutine(gamePanel.levelComplete.Activate ());
 		}
 	}

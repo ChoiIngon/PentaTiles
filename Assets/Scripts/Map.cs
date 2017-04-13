@@ -38,6 +38,9 @@ public class Map : MonoBehaviour {
 	public SlotBlock slotBlockPrefab;
 	[HideInInspector]
 	public MapTile[] mapTiles;
+	private List<MapBlock> mapBlocks;
+	private List<HintBlock> activatedHintBlocks;
+	private Coroutine _blinkHintBlock;
 	public void Init(int stage, int level)
 	{
 		MapSaveData mapSaveData = Resources.Load<MapSaveData> (stage + "_" + level);
@@ -56,7 +59,7 @@ public class Map : MonoBehaviour {
 			block.SetParent (null);
 			DestroyImmediate (block.gameObject);
 		}
-
+		mapBlocks = new List<MapBlock> ();
 		while (0 < slots.childCount) {
 			Transform slot = slots.GetChild (0);
 			slot.SetParent (null);
@@ -68,6 +71,11 @@ public class Map : MonoBehaviour {
 			hint.SetParent (null);
 			DestroyImmediate (hint.gameObject);
 		}
+
+		if (null != _blinkHintBlock) {
+			StopCoroutine (_blinkHintBlock);
+		}
+		activatedHintBlocks = new List<HintBlock> ();
       
 		stage = info.stage;
 		level = info.level;
@@ -111,6 +119,7 @@ public class Map : MonoBehaviour {
 			foreach (BlockSaveData blockSaveData in info.blocks) {
 				MapBlock mapBlock = GameObject.Instantiate<MapBlock> (mapBlockPrefab);
 				mapBlock.Init(blockSaveData);
+				mapBlocks.Add (mapBlock);
             }
 		}
 	}
@@ -122,20 +131,30 @@ public class Map : MonoBehaviour {
 			}
 		}
 
-		BlockTile[] blockTiles = blocks.GetComponentsInChildren<BlockTile> ();
-		foreach (BlockTile blockTile in blockTiles) {
-			iTween.RotateBy(blockTile.gameObject, iTween.Hash("x", 20.0f, "time", 1.0f));
+		foreach (MapBlock mapBlock in mapBlocks) {
+			mapBlock.RotateTiles ();
+			if (null != mapBlock.hint) {
+				mapBlock.hint.gameObject.SetActive (false);
+			}
+		}
+			
+		if (null != _blinkHintBlock) {
+			StopCoroutine (_blinkHintBlock);
+			_blinkHintBlock = null;
 		}
 
         Analytics.CustomEvent("LevelComplete", new Dictionary<string, object> {
-            {"stage", Game.Instance.playData.currentStage.stage },
-            {"level", Game.Instance.playData.currentLevel}
+            {Game.Instance.playData.currentStage.stage + "_" + Game.Instance.playData.currentLevel, 1}
         });
         return true;
 	}
 
 	public bool UseHint()
 	{
+		if (0 >= Game.Instance.playData.hint) {
+			return false;
+		}
+
 		List<GameObject> candidates = new List<GameObject> ();
 		for (int i = 0; i < hints.childCount; i++) {
 			Transform candidate = hints.GetChild (i);
@@ -147,17 +166,68 @@ public class Map : MonoBehaviour {
 		if (0 == candidates.Count) {
 			return false;
 		}
+	
+		Game.Instance.playData.hint -= 1;
+		Game.Instance.Save ();
 
         AudioManager.Instance.Play("HintUse");
-        candidates [Random.Range (0, candidates.Count)].SetActive (true);
-		
+		HintBlock hintBlock = candidates [Random.Range (0, candidates.Count)].GetComponent<HintBlock> ();
+		hintBlock.gameObject.SetActive (true);
+		activatedHintBlocks.Add (hintBlock);
+
+		if (null == _blinkHintBlock) {
+			_blinkHintBlock = StartCoroutine (BlinkHintBlock ());
+			_blinkHintBlock = null;
+		}
         Analytics.CustomEvent("HintUse", new Dictionary<string, object> {
-            {"stage", Game.Instance.playData.currentStage.stage },
-            {"level", Game.Instance.playData.currentLevel}
+			{ Game.Instance.playData.currentStage.stage + "_" + Game.Instance.playData.currentLevel, 1}
         });
         return true;
 	}
 
+	private IEnumerator BlinkHintBlock()
+	{
+		float blinkTime = 1.5f;
+		const float max = 0.8f;
+		const float min = 0.4f;
+		float alpha = max;
+
+		while (true) {
+			alpha = max;
+			while (min <= alpha) {
+				alpha -= Time.deltaTime / blinkTime;
+				foreach (HintBlock hintBlock in activatedHintBlocks) {
+					Color color = hintBlock.tileColor;
+					color.a = alpha;
+					hintBlock.tileColor = color;
+				}
+				yield return null;
+			}
+			alpha = min;
+			foreach (HintBlock hintBlock in activatedHintBlocks) {
+				Color color = hintBlock.tileColor;
+				color.a = alpha;
+				hintBlock.tileColor = color;
+			}
+			yield return null;
+			while (max >= alpha) {
+				alpha += Time.deltaTime / blinkTime;
+				foreach (HintBlock hintBlock in activatedHintBlocks) {
+					Color color = hintBlock.tileColor;
+					color.a = alpha;
+					hintBlock.tileColor = color;
+				}
+				yield return null;
+			}
+			alpha = max;
+			foreach (HintBlock hintBlock in activatedHintBlocks) {
+				Color color = hintBlock.tileColor;
+				color.a = alpha;
+				hintBlock.tileColor = color;
+			}
+			yield return null;
+		}
+	}
 	public MapSaveData GetSaveData()
 	{
 		MapSaveData saveData = ScriptableObject.CreateInstance<MapSaveData> ();
