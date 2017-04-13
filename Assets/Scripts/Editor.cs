@@ -32,7 +32,6 @@ public class Editor : MonoBehaviour {
     public int height;
     [Range(0, 1)]
     public float blockSlotScale;
-	public Block blockPrefab;
     public ToggleButton pencilToggle;
     public ToggleButton eraserToggle;
     public Button createButton;
@@ -43,7 +42,7 @@ public class Editor : MonoBehaviour {
     public Color[] colors;
     private Color currentColor;
 	private List<MapTile> mapTiles;
-    public Dictionary<int, Block> blocks;
+    public Dictionary<int, MapBlock> blocks;
     
     void Start () {
         Init();
@@ -73,7 +72,8 @@ public class Editor : MonoBehaviour {
         state = State.Pencil;
         blockID = 1;
         mapTiles = new List<MapTile>();
-        blocks = new Dictionary<int, Block>();
+        blocks = new Dictionary<int, MapBlock>();
+		currentColor = colors[Random.Range(0, colors.Length)];
     }
 
     private Block CreateBlock() {
@@ -81,14 +81,16 @@ public class Editor : MonoBehaviour {
 		saveData.id = blockID;
 		saveData.name = "Block_" + blockID;
 		saveData.tileColor = currentColor;
+		saveData.slotPosition = Vector3.zero;
+		saveData.hintPosition = mapTiles[0].transform.localPosition;
 		saveData.tilePositions = new List<Vector3> ();
 		foreach (MapTile mapTile in mapTiles) {
-			saveData.tilePositions.Add(mapTile.transform.localPosition);
+			saveData.tilePositions.Add(mapTile.transform.localPosition - saveData.hintPosition);
 		}
-        saveData.slotPosition = Vector3.zero;
-        saveData.hintPosition = saveData.tilePositions[0];
+        
+        
 
-        Block block = GameObject.Instantiate<Block> (blockPrefab);
+		MapBlock block = GameObject.Instantiate<MapBlock> (Map.Instance.mapBlockPrefab);
 		block.Init (saveData);
         blocks.Add(block.id, block);
 
@@ -187,7 +189,7 @@ public class EditorEditor : UnityEditor.Editor
 			editor.blockSlotScale = Map.Instance.blockSlotScale;
             for (int i = 0; i < Map.Instance.blocks.childCount; i++)
             {
-                Block block = Map.Instance.blocks.GetChild(i).GetComponent<Block>();
+                MapBlock block = Map.Instance.blocks.GetChild(i).GetComponent<MapBlock>();
                 editor.blocks.Add(block.id, block);
 				editor.blockID = Mathf.Max (editor.blockID, block.id+1);
             }
@@ -197,7 +199,7 @@ public class EditorEditor : UnityEditor.Editor
         Map.Instance.blockSlotScale = editor.blockSlotScale;
 
         for (int i = 0; i < Map.Instance.slots.childCount; i++) {
-			Block block = Map.Instance.slots.GetChild (i).GetComponent<Block>();
+			SlotBlock block = Map.Instance.slots.GetChild (i).GetComponent<SlotBlock>();
 			block.transform.localScale = new Vector3 (Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
 		}
     }

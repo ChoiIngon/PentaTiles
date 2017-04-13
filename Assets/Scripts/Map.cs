@@ -31,9 +31,12 @@ public class Map : MonoBehaviour {
 	public Transform blocks;
 	public Transform slots;
 	public Transform hints;
+
 	public MapTile mapTilePrefab;
-	
-    public Block blockPrefab;
+    public MapBlock mapBlockPrefab;
+	public HintBlock hintBlockPrefab;
+	public SlotBlock slotBlockPrefab;
+	[HideInInspector]
 	public MapTile[] mapTiles;
 	public void Init(int stage, int level)
 	{
@@ -106,24 +109,8 @@ public class Map : MonoBehaviour {
 
 		if (null != info.blocks) {
 			foreach (BlockSaveData blockSaveData in info.blocks) {
-				Block block = GameObject.Instantiate<Block> (blockPrefab);
-                block.Init(blockSaveData);
-                block.slot.transform.localPosition = blockSaveData.slotPosition;
-                block.slot.transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
-
-                block.transform.position = block.slot.transform.position;
-                block.transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
-				block.initPosition = block.transform.position;
-                
-				if (null != block.hint) {
-					block.hint.transform.localPosition = blockSaveData.hintPosition;
-					block.hint.gameObject.SetActive (false);
-
-					if (true == editMode) {
-						block.transform.localScale = Vector3.one;
-						block.transform.position = block.hint.transform.position;
-					}
-				}
+				MapBlock mapBlock = GameObject.Instantiate<MapBlock> (mapBlockPrefab);
+				mapBlock.Init(blockSaveData);
             }
 		}
 	}
@@ -182,7 +169,7 @@ public class Map : MonoBehaviour {
 		saveData.tiles = new int[mapTiles.Length];
 		saveData.blocks = new BlockSaveData[blocks.childCount];
 		for (int i = 0; i < blocks.childCount; i++) {
-			saveData.blocks [i] = blocks.GetChild(i).GetComponent<Block>().GetSaveData();
+			saveData.blocks [i] = blocks.GetChild(i).GetComponent<MapBlock>().GetSaveData();
 		}
 		for(int i=0; i<mapTiles.Length; i++)
 		{

@@ -40,7 +40,7 @@ public class MapSaveData : ScriptableObject {
 			Editor.Instance.blockSlotScale = Map.Instance.blockSlotScale;
 			for (int i = 0; i < Map.Instance.blocks.childCount; i++)
 			{
-				Block block = Map.Instance.blocks.GetChild(i).GetComponent<Block>();
+				MapBlock block = Map.Instance.blocks.GetChild(i).GetComponent<MapBlock>();
 				Editor.Instance.blocks.Add(block.id, block);
 				Editor.Instance.blockID = Mathf.Max (Editor.Instance.blockID, block.id+1);
 			}
