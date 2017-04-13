@@ -8,9 +8,20 @@ public class UIGamePanel : MonoBehaviour {
 	public Button backButton;
 	public Button redoButton;
 	public Button hintButton;
+	public Text hintText;
 	public UILevelComplete levelComplete;
     public UIStageComplete stageComplete;
 	// Use this for initialization
+
+	public int hintCount {
+		set {
+			if (99 < value) {
+				hintText.text = "99+";
+			} else {
+				hintText.text = value.ToString ();
+			}
+		}
+	}
 	void Start () {
 		backButton.onClick.AddListener (() => {
 			Map.Instance.gameObject.SetActive (false);
@@ -20,8 +31,10 @@ public class UIGamePanel : MonoBehaviour {
 			Game.Instance.StartLevel(Game.Instance.playData.currentStage.stage, Game.Instance.playData.currentLevel);
 			AudioManager.Instance.Play("ButtonClick");
 		});
+		hintCount = Game.Instance.playData.hint;
 		hintButton.onClick.AddListener (() => {
 			Map.Instance.UseHint();
+			hintCount = Game.Instance.playData.hint;
 			AudioManager.Instance.Play("ButtonClick");
 		});
         levelComplete.gameObject.SetActive (false);

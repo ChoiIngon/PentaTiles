@@ -8,7 +8,7 @@ public class UnityAds : MonoBehaviour {
 	public string iosGameID; // Set this value from the inspector.
 	public string androidGameID;
 	public float showInterval;
-
+	public int rewardHintCount;
 	private float lastAdShowTime;
     private int watchAdsCount;
 
@@ -32,7 +32,6 @@ public class UnityAds : MonoBehaviour {
 		{
 			yield return new WaitForSeconds(0.5f);
 		}
-
         
         Debug.Log ("unity ads is ready");
 	}
@@ -44,7 +43,8 @@ public class UnityAds : MonoBehaviour {
 		{
 			lastAdShowTime = Time.realtimeSinceStartup;
 			Advertisement.Show();
-
+			Game.Instance.playData.hint += rewardHintCount;
+			Game.Instance.gamePanel.hintCount = Game.Instance.playData.hint;
             Analytics.CustomEvent("AdsWatch", new Dictionary<string, object> {
                 {"stage", Game.Instance.playData.currentStage.stage },
                 {"level", Game.Instance.playData.currentLevel},
