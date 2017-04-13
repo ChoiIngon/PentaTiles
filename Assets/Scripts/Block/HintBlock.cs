@@ -27,11 +27,10 @@ public class HintBlock : Block {
 	void Update()
 	{
 		Color color = tileColor;
-		float alpha = 1.5f - (Time.realtimeSinceStartup - (int)Time.realtimeSinceStartup);
+		float alpha = 0.85f - ((Time.realtimeSinceStartup - (int)Time.realtimeSinceStartup)/2);
 		color.a = alpha;
 		foreach (BlockTile tile in blockTiles) {
 			tile.tileSprite.color = color;
 		}
-		// fade in/out code here
 	}
 }
