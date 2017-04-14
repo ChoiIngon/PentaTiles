@@ -90,8 +90,7 @@ public class Game : MonoBehaviour {
 				stagePanel.totalStarCount = playData.star;
 			}
 
-			if (true == CheckWorldOpen ()) {
-			}
+			bool newBlock = CheckWorldOpen ();
 
 			Config.StageInfo stageInfo = config.FindStageInfo (playData.currentStage);
 			stagePanel.GetStageInfo (stageData.id).SetClearLevel(stageData.clearLevel);
@@ -102,7 +101,7 @@ public class Game : MonoBehaviour {
 			playData.Save ();
 
 			yield return new WaitForSeconds (1.0f);
-			yield return StartCoroutine(gamePanel.levelComplete.Activate ());
+			yield return StartCoroutine(gamePanel.levelComplete.Activate (newBlock));
 
 			unityAds.Show ();
 		}

@@ -4,19 +4,22 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UILevelComplete : MonoBehaviour {
-	public Button redo;
-	public Button next;
+	public Button redoButton;
+	public Button nextButton;
 
-    public Image[] stars;
-	public GameObject result;
+	public GameObject panel;
+	public GameObject star;
+
+	public Text title;
+	public Text reward;
 	// Use this for initialization
 	void Start () {
-		redo.onClick.AddListener (() => {
+		redoButton.onClick.AddListener (() => {
 			AudioManager.Instance.Play("ButtonClick");
 			gameObject.SetActive(false);
 			Game.Instance.StartLevel(Game.Instance.playData.currentStage, Game.Instance.playData.currentLevel);
 		});
-		next.onClick.AddListener (() => {
+		nextButton.onClick.AddListener (() => {
 			AudioManager.Instance.Play("ButtonClick");
 			gameObject.SetActive(false);
 
@@ -34,28 +37,26 @@ public class UILevelComplete : MonoBehaviour {
 		});
 	}
 
-	public IEnumerator Activate() {
+	public IEnumerator Activate(bool newBlock) {
 		gameObject.SetActive (true);
 
-		result.transform.localScale = Vector3.zero;
-		for (int i = 0; i < stars.Length; i++)
+		Config.StageInfo stageInfo = Game.Instance.config.FindStageInfo(Game.Instance.playData.currentStage);
+		if(Game.Instance.playData.currentLevel < stageInfo.totalLevel)
 		{
-			Image star = stars[i];
-			star.transform.localScale = Vector3.zero;
+			title.text = "Level Complete";
+		}
+		else
+		{
+			title.text = "Stage Complete";
 		}
 
-        iTween.ScaleTo(result, Vector2.one, 0.5f);
-        yield return new WaitForSeconds(0.5f);
-
-        const float time = 0.2f;
-        for (int i = 0; i < stars.Length; i++)
-        {
-            Image star = stars[i];
-            star.transform.localScale = Vector3.zero;
-            iTween.ScaleTo(star.gameObject, iTween.Hash("x", 1.0f, "y", 1.0f, "z", 1.0f, "time", time));
-            yield return new WaitForSeconds(time);
-        }
-
+		iTween.ScaleFrom(panel, Vector3.zero, 0.5f);
+		iTween.ScaleFrom(star, iTween.Hash("scale", Vector3.zero, "delay", 0.5f, "time", 0.2f));
+		if (true == newBlock) {
+			reward.text = "new block open";
+		} else {
+			reward.text = "";
+		}
 		while (true == gameObject.activeSelf) {
 			yield return null;
 		}
