@@ -33,6 +33,7 @@ public class Config {
 		public string description;
 		[XmlAttribute("total_level")]
 		public int totalLevel;
+		public int openStar;
 	}
 
 	public List<StageInfo> stageInfos;
@@ -68,6 +69,7 @@ public class Config {
 				Debug.Assert(0 < stageInfo.id && stageCount >= stageInfo.id, "invalid stage id:" + stageInfo.id);
 				Debug.Assert(null == stageInfos [stageInfo.id - 1], "duplicated stage id:" + stageInfo.id);
 #endif
+				stageInfo.openStar = worldInfo.openStar;
 				stageInfos [stageInfo.id - 1] = stageInfo;
 			}
 		}

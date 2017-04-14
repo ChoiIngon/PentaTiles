@@ -7,13 +7,13 @@
 		<Stage id="3" name="Stage 3" description="block 3 to 5 levels" total_level="24"/>
 		<Stage id="4" name="Stage 4" description="block 3 to 5 levels" total_level="24"/>
 	</World>
-	<World id="2" open_star="10">
+	<World id="2" open_star="1">
 		<Stage id="5" name="Stage 5" description="block 3 to 5 levels" total_level="24"/>
 		<Stage id="6" name="Stage 6" description="block 3 to 5 levels" total_level="24"/>
 		<Stage id="7" name="Stage 7" description="block 3 to 5 levels" total_level="24"/>
 		<Stage id="8" name="Stage 8" description="block 3 to 5 levels" total_level="24"/>
 	</World>
-	<World id="3" open_star="20">
+	<World id="3" open_star="28">
 		<Stage id="9" name="Stage 9" description="block 3 to 5 levels" total_level="24"/>
 		<Stage id="10" name="Stage 10" description="block 3 to 5 levels" total_level="24"/>
 		<Stage id="11" name="Stage 11" description="block 3 to 5 levels" total_level="24"/>

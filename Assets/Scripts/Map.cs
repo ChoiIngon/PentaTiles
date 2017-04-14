@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Analytics;
 
 public class Map : MonoBehaviour {
 	private static Map _instance;  
@@ -41,6 +40,18 @@ public class Map : MonoBehaviour {
 	private List<MapBlock> mapBlocks;
 	private List<HintBlock> activatedHintBlocks;
 	private Coroutine _blinkHintBlock;
+
+	public bool enableTouchInput 
+	{
+		set {
+			if (null == mapBlocks) {
+				return;
+			}
+			foreach (MapBlock mapBlock in mapBlocks) {
+				mapBlock.enableTouchInput = value;
+			}
+		}
+	}
 	public void Init(int stage, int level)
 	{
 		MapSaveData mapSaveData = Resources.Load<MapSaveData> (stage + "_" + level);
@@ -59,7 +70,7 @@ public class Map : MonoBehaviour {
 			block.SetParent (null);
 			DestroyImmediate (block.gameObject);
 		}
-		mapBlocks = new List<MapBlock> ();
+
 		while (0 < slots.childCount) {
 			Transform slot = slots.GetChild (0);
 			slot.SetParent (null);
@@ -74,6 +85,7 @@ public class Map : MonoBehaviour {
 
 		if (null != _blinkHintBlock) {
 			StopCoroutine (_blinkHintBlock);
+			_blinkHintBlock = null;
 		}
 		activatedHintBlocks = new List<HintBlock> ();
       
@@ -115,6 +127,7 @@ public class Map : MonoBehaviour {
 			blockSlots.transform.position = position;
 		}
 
+		mapBlocks = new List<MapBlock> ();
 		if (null != info.blocks) {
 			foreach (BlockSaveData blockSaveData in info.blocks) {
 				MapBlock mapBlock = GameObject.Instantiate<MapBlock> (mapBlockPrefab);
@@ -130,7 +143,7 @@ public class Map : MonoBehaviour {
 				return false;
 			}
 		}
-
+		enableTouchInput = false;
 		foreach (MapBlock mapBlock in mapBlocks) {
 			mapBlock.RotateTiles ();
 			if (null != mapBlock.hint) {
@@ -142,19 +155,11 @@ public class Map : MonoBehaviour {
 			StopCoroutine (_blinkHintBlock);
 			_blinkHintBlock = null;
 		}
-
-        Analytics.CustomEvent("LevelComplete", new Dictionary<string, object> {
-            {Game.Instance.playData.currentStage + "_" + Game.Instance.playData.currentLevel, 1}
-        });
         return true;
 	}
 
 	public bool UseHint()
 	{
-		if (0 >= Game.Instance.playData.hint) {
-			return false;
-		}
-
 		List<GameObject> candidates = new List<GameObject> ();
 		for (int i = 0; i < hints.childCount; i++) {
 			Transform candidate = hints.GetChild (i);
@@ -167,21 +172,13 @@ public class Map : MonoBehaviour {
 			return false;
 		}
 	
-		Game.Instance.playData.hint -= 1;
-		Game.Instance.Save ();
-
-        AudioManager.Instance.Play("HintUse");
 		HintBlock hintBlock = candidates [Random.Range (0, candidates.Count)].GetComponent<HintBlock> ();
 		hintBlock.gameObject.SetActive (true);
 		activatedHintBlocks.Add (hintBlock);
 
 		if (null == _blinkHintBlock) {
 			_blinkHintBlock = StartCoroutine (BlinkHintBlock ());
-			_blinkHintBlock = null;
 		}
-        Analytics.CustomEvent("HintUse", new Dictionary<string, object> {
-			{ Game.Instance.playData.currentStage + "_" + Game.Instance.playData.currentLevel, 1}
-        });
         return true;
 	}
 

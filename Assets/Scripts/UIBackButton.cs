@@ -9,7 +9,7 @@ public class UIBackButton : MonoBehaviour {
 	void Start () {
 		button = GetComponent<Button> ();
 		button.onClick.AddListener (() => {
-			Game.Instance.ScrollScreen(1.0f);
+			Game.Instance.rootPanel.ScrollScreen(1.0f);
 			AudioManager.Instance.Play("ButtonClick");
 		});
 	}

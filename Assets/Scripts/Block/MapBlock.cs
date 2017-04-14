@@ -164,7 +164,7 @@ public class MapBlock : Block {
 			hint.transform.position = transform.position;
 		}
 		if (false == Map.Instance.editMode) {
-			StartCoroutine (Game.Instance.CompleteLevel ());
+			Game.Instance.CheckLevelComplete ();
 		}
 		AudioManager.Instance.Play("BlockDrop");
 	}

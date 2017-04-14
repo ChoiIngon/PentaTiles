@@ -4,6 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Analytics;
 
 public class Game : MonoBehaviour {
 	private static Game _instance;  
@@ -22,81 +23,64 @@ public class Game : MonoBehaviour {
 		}  
 	}
 
-	public RectTransform uiRoot;
+	public UIRootPanel rootPanel;
 	public UIStagePanel stagePanel;
 	public UILevelPanel levelPanel;
 	public UIGamePanel gamePanel;
 	public UISettingPanel settingPanel;
     public AudioSource bgm;
-	public float scrollTime;
-	public CanvasScaler canvasScaler;
+
 	public Config config;
 	public PlayData playData;
-    public float levelStartTime;
 
 	private UnityAds unityAds;
-	private float uiWidth;
+
 	void Start()
 	{
-		config = Config.Load ();
-		Map.Instance.editMode = false;
 		unityAds = GetComponent<UnityAds> ();
-
-		Load ();
-
-		//iTween.ShakePosition (background, new Vector3 (3.0f, 3.0f, 3.0f), 60.0f);
-		uiWidth = canvasScaler.referenceResolution.x;
 		Map.Instance.editMode = false;
 		Map.Instance.gameObject.SetActive (false);
 
+		config = Config.Load ();
+		playData.Load ();
+
+		rootPanel.rectTransform.anchoredPosition = Vector2.zero;
 		stagePanel.Init ();
 	}
-
-	Coroutine scrollScreenCoroutine;
-	public void ScrollScreen(float direction)
-	{
-		if (null != scrollScreenCoroutine) {
-			return;	
-		}
-
-		scrollScreenCoroutine = StartCoroutine (_ScrollScreen (direction));
-	}
-	private IEnumerator _ScrollScreen(float direction)
-	{
-		float moveDistance = Mathf.Abs(uiWidth * direction);
-		Vector2 position = uiRoot.anchoredPosition;
-		float originalPosition = position.x;
-		while (0.0f < moveDistance) {
-			float delta = uiWidth * Time.deltaTime / scrollTime;
-			position.x += delta * direction;
-			uiRoot.anchoredPosition = position;
-			moveDistance -= delta;
-			yield return null;
-		}
-
-		uiRoot.anchoredPosition = new Vector2 (originalPosition + uiWidth * direction, uiRoot.anchoredPosition.y);
-	
-		scrollScreenCoroutine = null;
-	}
-
+		
 	public void StartLevel(int stage, int level)
 	{
-        levelStartTime = Time.realtimeSinceStartup;
-
-        gamePanel.level.text = "Level - " + level;
+		playData.currentStage = stage;
+		playData.currentLevel = level;
 		Map.Instance.gameObject.SetActive(true);
 		Map.Instance.Init(stage, level);
 	}
 
-	public bool ChekcOpenWorld()
+	public bool CheckWorldOpen()
 	{
-		for (int i = 0; i < playData.openWorlds; i++) {
+		for (int i = 0; i < playData.openWorlds.Length; i++) {
+			if (false == playData.openWorlds [i] && playData.star >= config.worldInfos [i].openStar) {
+				playData.openWorlds [i] = true;
+				Config.WorldInfo worldInfo = config.worldInfos [i];
+				foreach (Config.StageInfo stageInfo in worldInfo.stageInfos) {
+					stagePanel.GetStageInfo (stageInfo.id).open = true;
+				}
+				return true;
+			}
 		}
 		return false;
 	}
 
-	public IEnumerator CompleteLevel() {
+	public void CheckLevelComplete()
+	{
+		StartCoroutine (_CheckLevelComplete ());
+	}
+
+	public IEnumerator _CheckLevelComplete() {
 		if (true == Map.Instance.CheckComplete ()) {
+			Analytics.CustomEvent("LevelComplete", new Dictionary<string, object> {
+				{"level", Game.Instance.playData.currentStage + "_" + Game.Instance.playData.currentLevel}
+			});
 			AudioManager.Instance.Play("LevelClear");
 
 			PlayData.StageData stageData = playData.GetCurrentStageData ();
@@ -106,83 +90,40 @@ public class Game : MonoBehaviour {
 				stagePanel.totalStarCount = playData.star;
 			}
 
+			if (true == CheckWorldOpen ()) {
+			}
+
 			Config.StageInfo stageInfo = config.FindStageInfo (playData.currentStage);
 			stagePanel.GetStageInfo (stageData.id).SetClearLevel(stageData.clearLevel);
 			if (stageData.clearLevel < stageInfo.totalLevel ) {
 				levelPanel.GetLevelInfo (stageData.clearLevel+1).Unlock ();
 			}
 
-			Save ();
-			unityAds.Show ();
+			playData.Save ();
 
 			yield return new WaitForSeconds (1.0f);
 			yield return StartCoroutine(gamePanel.levelComplete.Activate ());
+
+			unityAds.Show ();
 		}
 	}
 
-
-	public void Save()
+	public bool UseHint()
 	{
-		Debug.Log ("saved \'playdata.dat\' to " + Application.persistentDataPath + "/playdata.dat");
-		BinaryFormatter bf = new BinaryFormatter();
-		FileStream file = File.Create (Application.persistentDataPath + "/playdata.dat");
-		bf.Serialize(file, playData);
-		file.Close();
-    }
-
-	public void Load()
-	{
-		Debug.Log ("loaded \'playdata.dat\' from " + Application.persistentDataPath + "/playdata.dat");
-		playData.openWorlds = new bool[config.worldInfos.Count];
-		playData.stageDatas = new PlayData.StageData[config.stageInfos.Count];
-
-		PlayData tmpPlayData = null;
-		if (File.Exists (Application.persistentDataPath + "/playdata.dat")) {
-			BinaryFormatter bf = new BinaryFormatter ();
-			FileStream file = File.Open (Application.persistentDataPath + "/playdata.dat", FileMode.Open);
-			tmpPlayData = (PlayData)bf.Deserialize (file);
-			file.Close ();
+		if (0 >= playData.hint) {
+			return false;
 		}
 			
-		if (null != tmpPlayData) {
-			playData.hint = tmpPlayData.hint;
-			playData.star = tmpPlayData.star;
-			for (int i = 0; i < tmpPlayData.openWorlds.Length; i++) {
-				if (i < playData.openWorlds.Length) {
-					playData.openWorlds [i] = tmpPlayData.openWorlds [i];
-				}
-			}
-				
-			for (int i = 0; i < tmpPlayData.stageDatas.Length; i++) {
-				if (i < playData.stageDatas.Length) {
-					playData.stageDatas[i] = tmpPlayData.stageDatas[i];
-				}
-			}
+		if (false == Map.Instance.UseHint ()) {
+			return false;
 		}
-
-		for (int i = 0; i < playData.openWorlds.Length; i++) {
-			if(null == playData.openWorlds [i])
-			{
-				playData.openWorlds [i] = false;
-			}
-		}
-
-		for (int i = 0; i < playData.stageDatas.Length; i++) {
-			if (null == playData.stageDatas[i]) {
-				PlayData.StageData stageData = new PlayData.StageData ();
-				stageData.id = i + 1;
-				stageData.clearLevel = 0;
-				playData.stageDatas [i] = stageData;
-			}
-		}
-	}
-
-	public void Pause(bool flag)
-	{
-		BoxCollider[] children = Map.Instance.transform.GetComponentsInChildren<BoxCollider> ();
-		foreach (BoxCollider child in children) {
-			child.enabled = !flag;
-		}
+			
+		playData.hint -= 1;
+		playData.Save ();
+		Analytics.CustomEvent("HintUse", new Dictionary<string, object> {
+			{ "level" , Game.Instance.playData.currentStage + "_" + Game.Instance.playData.currentLevel}
+		});
+		return true;
 	}
 
 	#if UNITY_EDITOR

@@ -10,7 +10,6 @@ public class UnityAds : MonoBehaviour {
 	public float showInterval;
 	public int rewardHintCount;
 	private float lastAdShowTime;
-    private int watchAdsCount;
 
 	IEnumerator Start () {
         if (false == Advertisement.isSupported) { // If runtime platform is supported...
@@ -18,7 +17,6 @@ public class UnityAds : MonoBehaviour {
 			yield break;
 		}
 
-        watchAdsCount = 0;
         lastAdShowTime = Time.realtimeSinceStartup;
         string gameID = androidGameID;
 		if (Application.platform == RuntimePlatform.Android) {

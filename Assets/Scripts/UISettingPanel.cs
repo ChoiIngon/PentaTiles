@@ -44,13 +44,13 @@ public class UISettingPanel : MonoBehaviour {
 
 	void OnEnable()
 	{
-		Game.Instance.Pause (true);
+		Map.Instance.enableTouchInput = false;
 	}
 
 	void OnDisable()
 	{
 		if (true == Application.isPlaying) {
-			Game.Instance.Pause (false);
+			Map.Instance.enableTouchInput = true;
 		}
 	}
 

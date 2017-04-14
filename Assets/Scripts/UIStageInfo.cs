@@ -13,9 +13,33 @@ public class UIStageInfo : MonoBehaviour {
 	Text starText;
 	Image starImage;
 	Image panelImage;
-	public Sprite open;
-	public Sprite close;
-	public bool isOpen;
+	public Sprite openSprite;
+	public Sprite closeSprite;
+
+	public bool open {
+		set {
+			Debug.Log ("name:" + name + ", id:" + info.id + ", value:" + value);
+			starImage.gameObject.SetActive(value);
+
+			if (true == value)
+			{
+				panelImage.sprite = openSprite;
+				title.text = "<size=40>" + info.name + "</size>\n" + "<size=30>" + info.description + "</size>";
+				button.onClick.AddListener(() => {
+					Game.Instance.levelPanel.Init(this.info);
+					Game.Instance.playData.currentStage = info.id;
+					Game.Instance.rootPanel.ScrollScreen(-1.0f);
+					AudioManager.Instance.Play("ButtonClick");
+				});
+			}
+			else
+			{
+				panelImage.sprite = closeSprite;
+				title.text = "<size=40>" + info.name + "</size>\n" + "<size=30>" + "need " + info.openStar + " star to unlock stage" + "</size>";
+				button.onClick.RemoveAllListeners();
+			}
+		}
+	}
 
 	public void Init(Config.StageInfo info)
     {
@@ -30,30 +54,10 @@ public class UIStageInfo : MonoBehaviour {
         PlayData.StageData stageData = Game.Instance.playData.stageDatas[info.id - 1];
 		SetClearLevel (stageData.clearLevel);
 
-        isOpen = false;
-        //if (Game.Instance.playData.star >= info.o)
-        {
-            isOpen = true;
-        }
-
-        panelImage.sprite = isOpen ? open : close;
-        starImage.gameObject.SetActive(isOpen);
-        
-        if (true == isOpen)
-        {
-            title.text = "<size=40>" + info.name + "</size>\n" + "<size=30>" + info.description + "</size>";
-            button.onClick.AddListener(() => {
-                Game.Instance.levelPanel.Init(this.info);
-                Game.Instance.playData.currentStage = info.id;
-                Game.Instance.ScrollScreen(-1.0f);
-                AudioManager.Instance.Play("ButtonClick");
-            });
-        }
-        else
-        {
-            //title.text = "<size=40>" + info.name + "</size>\n" + "<size=30>" + "need " + info. + " star to unlock stage" + "</size>";
-            button.onClick.RemoveAllListeners();
-        }
+		open = false;
+		if (Game.Instance.playData.star >= info.openStar) {
+			open = true;
+		}
 	}
 
 	public void SetClearLevel(int level) {

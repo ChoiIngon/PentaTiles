@@ -23,32 +23,27 @@ public class UILevelComplete : MonoBehaviour {
 			Config.StageInfo stageInfo = Game.Instance.config.FindStageInfo(Game.Instance.playData.currentStage);
 			if(Game.Instance.playData.currentLevel < stageInfo.totalLevel)
 			{
-				Game.Instance.playData.currentLevel++;
-				Game.Instance.StartLevel(Game.Instance.playData.currentStage, Game.Instance.playData.currentLevel);
+				Game.Instance.StartLevel(Game.Instance.playData.currentStage, Game.Instance.playData.currentLevel + 1);
 			}
 			else
 			{
 				Map.Instance.gameObject.SetActive(false);
-				Game.Instance.playData.currentStage = 0;
 				Game.Instance.playData.currentLevel = 0;
-				Game.Instance.ScrollScreen(2.0f);
+				Game.Instance.rootPanel.ScrollScreen(1.0f);
 			}
 		});
 	}
 
-	void OnEnable()
-	{
-        result.transform.localScale = Vector3.zero;
-        for (int i = 0; i < stars.Length; i++)
-        {
-            Image star = stars[i];
-            star.transform.localScale = Vector3.zero;
-        }
-    }
-
 	public IEnumerator Activate() {
 		gameObject.SetActive (true);
-        
+
+		result.transform.localScale = Vector3.zero;
+		for (int i = 0; i < stars.Length; i++)
+		{
+			Image star = stars[i];
+			star.transform.localScale = Vector3.zero;
+		}
+
         iTween.ScaleTo(result, Vector2.one, 0.5f);
         yield return new WaitForSeconds(0.5f);
 
@@ -61,7 +56,7 @@ public class UILevelComplete : MonoBehaviour {
             yield return new WaitForSeconds(time);
         }
 
-        while (true == gameObject.activeSelf) {
+		while (true == gameObject.activeSelf) {
 			yield return null;
 		}
 	}

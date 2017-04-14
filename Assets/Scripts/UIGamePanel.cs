@@ -33,9 +33,17 @@ public class UIGamePanel : MonoBehaviour {
 		});
 		hintCount = Game.Instance.playData.hint;
 		hintButton.onClick.AddListener (() => {
-			Map.Instance.UseHint();
-			hintCount = Game.Instance.playData.hint;
-			AudioManager.Instance.Play("ButtonClick");
+			if(false == Game.Instance.UseHint())
+			{
+				AudioManager.Instance.Play("BlockOut");
+				iTween.ShakeRotation(hintButton.gameObject, new Vector3(0.0f, 0.0f, 20.0f), 0.5f);
+			}
+			else
+			{
+				AudioManager.Instance.Play("ButtonClick");
+				AudioManager.Instance.Play("HintUse");
+				hintCount = Game.Instance.playData.hint;
+			}
 		});
         levelComplete.gameObject.SetActive (false);
 	}

@@ -18,6 +18,7 @@ public class UIStagePanel : MonoBehaviour {
 			totalStarCountText.text = value.ToString ();
 		}
 	}
+
 	// Use this for initialization
 	public void Init () {
 		stageScrollRects = new List<ScrollRect>();
@@ -27,25 +28,22 @@ public class UIStagePanel : MonoBehaviour {
 
 		totalStarCount = Game.Instance.playData.star;
 
-		for (int i = 0; i < stageScrollRects.Count; i++) {
-			ScrollRect scrollRect = GameObject.Instantiate<ScrollRect> (stageScrollRectPrefab);
-			scrollRect.transform.SetParent (content, false);
-			stageScrollRects[i] = scrollRect;
-		}
+		for (int i = 0; i < Game.Instance.config.worldInfos.Count; i++) {
+			ScrollRect stageScrollRect = GameObject.Instantiate<ScrollRect> (stageScrollRectPrefab);
+			stageScrollRect.transform.SetParent (content, false);
+			stageScrollRects[i] = stageScrollRect;
 
-		foreach(Config.WorldInfo worldInfo in Game.Instance.config.worldInfos)
-		{
-			ScrollRect stageScrollRect = stageScrollRects[worldInfo.id - 1];
+			Config.WorldInfo worldInfo = Game.Instance.config.worldInfos[i];
 			foreach(Config.StageInfo stageInfo in worldInfo.stageInfos)
 			{
 				UIStageInfo uiStageInfo = GameObject.Instantiate<UIStageInfo>(stageInfoPrefab);
 				uiStageInfo.transform.SetParent(stageScrollRect.content, false);
 				uiStageInfo.Init(stageInfo);
 				stageInfos [stageInfo.id - 1] = uiStageInfo;
-            }
+			}
 		}
+	
         scrollSnapRect.Init();
-        Map.Instance.gameObject.SetActive (false);
 	}
 
 	public UIStageInfo GetStageInfo(int stage)
