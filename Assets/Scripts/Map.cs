@@ -144,7 +144,7 @@ public class Map : MonoBehaviour {
 		}
 
         Analytics.CustomEvent("LevelComplete", new Dictionary<string, object> {
-            {Game.Instance.playData.currentStage.stage + "_" + Game.Instance.playData.currentLevel, 1}
+            {Game.Instance.playData.currentStage + "_" + Game.Instance.playData.currentLevel, 1}
         });
         return true;
 	}
@@ -180,7 +180,7 @@ public class Map : MonoBehaviour {
 			_blinkHintBlock = null;
 		}
         Analytics.CustomEvent("HintUse", new Dictionary<string, object> {
-			{ Game.Instance.playData.currentStage.stage + "_" + Game.Instance.playData.currentLevel, 1}
+			{ Game.Instance.playData.currentStage + "_" + Game.Instance.playData.currentLevel, 1}
         });
         return true;
 	}

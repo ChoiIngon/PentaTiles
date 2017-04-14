@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class UIStagePanel : MonoBehaviour {
 	public UIStageInfo stageInfoPrefab;
-    public ScrollRect stagePagePrefab;
+    public ScrollRect stageScrollRectPrefab;
 
     public ScrollSnapRect scrollSnapRect;
-    public List<ScrollRect> stagePages;
+    public List<ScrollRect> stageScrollRects;
 	public List<UIStageInfo> stageInfos;
 	public Transform content;
 	public Text totalStarCountText;
@@ -20,25 +20,28 @@ public class UIStagePanel : MonoBehaviour {
 	}
 	// Use this for initialization
 	public void Init () {
-        stagePages = new List<ScrollRect>();
-        stageInfos = new List<UIStageInfo> ();
+		stageScrollRects = new List<ScrollRect>();
+		stageScrollRects.AddRange (new ScrollRect[Game.Instance.config.worldInfos.Count]);
+		stageInfos = new List<UIStageInfo> ();
+		stageInfos.AddRange (new UIStageInfo[Game.Instance.config.stageInfos.Count]);
+
 		totalStarCount = Game.Instance.playData.star;
 
-		foreach(UIStageInfo.Info info in Game.Instance.stageInfos.stage_infos)
-		{
-            if (info.page > stagePages.Count)
-            {
-                ScrollRect scrollRect = GameObject.Instantiate<ScrollRect>(stagePagePrefab);
-                scrollRect.transform.SetParent(content, false);
-                stagePages.Add(scrollRect);
-            }
+		for (int i = 0; i < stageScrollRects.Count; i++) {
+			ScrollRect scrollRect = GameObject.Instantiate<ScrollRect> (stageScrollRectPrefab);
+			scrollRect.transform.SetParent (content, false);
+			stageScrollRects[i] = scrollRect;
+		}
 
-            {
-                ScrollRect scrollRect = stagePages[info.page - 1];
-                UIStageInfo stageInfo = GameObject.Instantiate<UIStageInfo>(stageInfoPrefab);
-                stageInfo.transform.SetParent(scrollRect.content, false);
-                stageInfo.Init(info);
-                stageInfos.Add(stageInfo);
+		foreach(Config.WorldInfo worldInfo in Game.Instance.config.worldInfos)
+		{
+			ScrollRect stageScrollRect = stageScrollRects[worldInfo.id - 1];
+			foreach(Config.StageInfo stageInfo in worldInfo.stageInfos)
+			{
+				UIStageInfo uiStageInfo = GameObject.Instantiate<UIStageInfo>(stageInfoPrefab);
+				uiStageInfo.transform.SetParent(stageScrollRect.content, false);
+				uiStageInfo.Init(stageInfo);
+				stageInfos [stageInfo.id - 1] = uiStageInfo;
             }
 		}
         scrollSnapRect.Init();

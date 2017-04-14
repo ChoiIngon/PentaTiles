@@ -6,14 +6,23 @@ using UnityEngine;
 public class PlayData {
 	[System.Serializable]
 	public class StageData {
-		public int stage;
-		public int level;
+		public int id;
+		public int clearLevel;
 	}
 
-	public UIStageInfo.Info currentStage;
+	public int currentStage;
 	public int currentLevel;
-	public List<StageData> stageDatas;
+
 	public int hint;
 	public int star;
-    public float bestCompleteTime = float.MaxValue;
+
+	public bool[] openWorlds;		// world open state
+	public StageData[] stageDatas;	// each stage progress state
+
+	public StageData GetCurrentStageData() {
+		if (0 >= currentStage || stageDatas.Length < currentStage) {
+			return null;
+		}
+		return stageDatas [currentStage - 1];
+	}
 }

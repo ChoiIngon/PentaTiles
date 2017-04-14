@@ -28,7 +28,7 @@ public class UIGamePanel : MonoBehaviour {
             levelComplete.gameObject.SetActive(false);
 		});
 		redoButton.onClick.AddListener (() => {
-			Game.Instance.StartLevel(Game.Instance.playData.currentStage.stage, Game.Instance.playData.currentLevel);
+			Game.Instance.StartLevel(Game.Instance.playData.currentStage, Game.Instance.playData.currentLevel);
 			AudioManager.Instance.Play("ButtonClick");
 		});
 		hintCount = Game.Instance.playData.hint;

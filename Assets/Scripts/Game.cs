@@ -22,11 +22,6 @@ public class Game : MonoBehaviour {
 		}  
 	}
 
-	[System.Serializable]
-	public class StageInfos {
-		public UIStageInfo.Info[] stage_infos;
-	}
-		
 	public RectTransform uiRoot;
 	public UIStagePanel stagePanel;
 	public UILevelPanel levelPanel;
@@ -35,7 +30,7 @@ public class Game : MonoBehaviour {
     public AudioSource bgm;
 	public float scrollTime;
 	public CanvasScaler canvasScaler;
-	public StageInfos stageInfos;
+	public Config config;
 	public PlayData playData;
     public float levelStartTime;
 
@@ -43,11 +38,10 @@ public class Game : MonoBehaviour {
 	private float uiWidth;
 	void Start()
 	{
+		config = Config.Load ();
 		Map.Instance.editMode = false;
 		unityAds = GetComponent<UnityAds> ();
 
-		TextAsset json = Resources.Load<TextAsset> ("StageInfo");
-		stageInfos = JsonUtility.FromJson<StageInfos> (json.text);
 		Load ();
 
 		//iTween.ShakePosition (background, new Vector3 (3.0f, 3.0f, 3.0f), 60.0f);
@@ -69,7 +63,7 @@ public class Game : MonoBehaviour {
 	}
 	private IEnumerator _ScrollScreen(float direction)
 	{
-		float moveDistance = uiWidth;
+		float moveDistance = Mathf.Abs(uiWidth * direction);
 		Vector2 position = uiRoot.anchoredPosition;
 		float originalPosition = position.x;
 		while (0.0f < moveDistance) {
@@ -94,22 +88,30 @@ public class Game : MonoBehaviour {
 		Map.Instance.Init(stage, level);
 	}
 
+	public bool ChekcOpenWorld()
+	{
+		for (int i = 0; i < playData.openWorlds; i++) {
+		}
+		return false;
+	}
+
 	public IEnumerator CompleteLevel() {
 		if (true == Map.Instance.CheckComplete ()) {
 			AudioManager.Instance.Play("LevelClear");
-            float playTime = Time.realtimeSinceStartup - levelStartTime;
-            playData.bestCompleteTime = Mathf.Min(playData.bestCompleteTime, playTime);
 
-            PlayData.StageData stageData = playData.stageDatas [playData.currentStage.stage - 1];
-			if (playData.currentLevel > stageData.level) {
-				stageData.level = playData.currentLevel;
+			PlayData.StageData stageData = playData.GetCurrentStageData ();
+			if (stageData.clearLevel < playData.currentLevel) {
+				stageData.clearLevel = playData.currentLevel;
 				playData.star += 1;
 				stagePanel.totalStarCount = playData.star;
 			}
-			stagePanel.GetStageInfo (stageData.stage).SetOpenLevel (stageData.level);
-			if (playData.currentStage.total_level > stageData.level) {
-				levelPanel.GetLevelInfo (stageData.level+1).Unlock ();
+
+			Config.StageInfo stageInfo = config.FindStageInfo (playData.currentStage);
+			stagePanel.GetStageInfo (stageData.id).SetClearLevel(stageData.clearLevel);
+			if (stageData.clearLevel < stageInfo.totalLevel ) {
+				levelPanel.GetLevelInfo (stageData.clearLevel+1).Unlock ();
 			}
+
 			Save ();
 			unityAds.Show ();
 
@@ -131,19 +133,46 @@ public class Game : MonoBehaviour {
 	public void Load()
 	{
 		Debug.Log ("loaded \'playdata.dat\' from " + Application.persistentDataPath + "/playdata.dat");
-		if(File.Exists(Application.persistentDataPath + "/playdata.dat")) {
-			BinaryFormatter bf = new BinaryFormatter();
-			FileStream file = File.Open(Application.persistentDataPath + "/playdata.dat", FileMode.Open);
-			playData = (PlayData)bf.Deserialize(file);
-			file.Close();
+		playData.openWorlds = new bool[config.worldInfos.Count];
+		playData.stageDatas = new PlayData.StageData[config.stageInfos.Count];
+
+		PlayData tmpPlayData = null;
+		if (File.Exists (Application.persistentDataPath + "/playdata.dat")) {
+			BinaryFormatter bf = new BinaryFormatter ();
+			FileStream file = File.Open (Application.persistentDataPath + "/playdata.dat", FileMode.Open);
+			tmpPlayData = (PlayData)bf.Deserialize (file);
+			file.Close ();
+		}
+			
+		if (null != tmpPlayData) {
+			playData.hint = tmpPlayData.hint;
+			playData.star = tmpPlayData.star;
+			for (int i = 0; i < tmpPlayData.openWorlds.Length; i++) {
+				if (i < playData.openWorlds.Length) {
+					playData.openWorlds [i] = tmpPlayData.openWorlds [i];
+				}
+			}
+				
+			for (int i = 0; i < tmpPlayData.stageDatas.Length; i++) {
+				if (i < playData.stageDatas.Length) {
+					playData.stageDatas[i] = tmpPlayData.stageDatas[i];
+				}
+			}
 		}
 
-		if (playData.stageDatas.Count < stageInfos.stage_infos.Length) {
-			for (int i = playData.stageDatas.Count; i < stageInfos.stage_infos.Length; i++) {
+		for (int i = 0; i < playData.openWorlds.Length; i++) {
+			if(null == playData.openWorlds [i])
+			{
+				playData.openWorlds [i] = false;
+			}
+		}
+
+		for (int i = 0; i < playData.stageDatas.Length; i++) {
+			if (null == playData.stageDatas[i]) {
 				PlayData.StageData stageData = new PlayData.StageData ();
-				stageData.stage = stageInfos.stage_infos [i].stage;
-				stageData.level = 0;
-				playData.stageDatas.Add (stageData);
+				stageData.id = i + 1;
+				stageData.clearLevel = 0;
+				playData.stageDatas [i] = stageData;
 			}
 		}
 	}

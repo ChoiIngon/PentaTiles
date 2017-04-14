@@ -46,9 +46,7 @@ public class UnityAds : MonoBehaviour {
 			Game.Instance.playData.hint += rewardHintCount;
 			Game.Instance.gamePanel.hintCount = Game.Instance.playData.hint;
             Analytics.CustomEvent("AdsWatch", new Dictionary<string, object> {
-                {"stage", Game.Instance.playData.currentStage.stage },
-                {"level", Game.Instance.playData.currentLevel},
-                {"watch_count", ++watchAdsCount }
+				{"level", Game.Instance.playData.currentStage + "_" +  Game.Instance.playData.currentLevel}
             });
         }
 	}

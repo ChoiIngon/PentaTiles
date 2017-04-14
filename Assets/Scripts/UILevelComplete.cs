@@ -14,25 +14,25 @@ public class UILevelComplete : MonoBehaviour {
 		redo.onClick.AddListener (() => {
 			AudioManager.Instance.Play("ButtonClick");
 			gameObject.SetActive(false);
-			Game.Instance.StartLevel(Game.Instance.playData.currentStage.stage, Game.Instance.playData.currentLevel);
+			Game.Instance.StartLevel(Game.Instance.playData.currentStage, Game.Instance.playData.currentLevel);
 		});
 		next.onClick.AddListener (() => {
 			AudioManager.Instance.Play("ButtonClick");
 			gameObject.SetActive(false);
-			if(Game.Instance.playData.currentLevel < Game.Instance.playData.currentStage.total_level)
+
+			Config.StageInfo stageInfo = Game.Instance.config.FindStageInfo(Game.Instance.playData.currentStage);
+			if(Game.Instance.playData.currentLevel < stageInfo.totalLevel)
 			{
 				Game.Instance.playData.currentLevel++;
+				Game.Instance.StartLevel(Game.Instance.playData.currentStage, Game.Instance.playData.currentLevel);
 			}
 			else
 			{
-				int currentStage = Game.Instance.playData.currentStage.stage;
-				if(currentStage < Game.Instance.stageInfos.stage_infos.Length)
-				{
-					Game.Instance.playData.currentStage = Game.Instance.stageInfos.stage_infos[currentStage];
-					Game.Instance.playData.currentLevel = 1;
-				}
+				Map.Instance.gameObject.SetActive(false);
+				Game.Instance.playData.currentStage = 0;
+				Game.Instance.playData.currentLevel = 0;
+				Game.Instance.ScrollScreen(2.0f);
 			}
-			Game.Instance.StartLevel(Game.Instance.playData.currentStage.stage, Game.Instance.playData.currentLevel);
 		});
 	}
 
