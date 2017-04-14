@@ -64,12 +64,12 @@ public class Editor : MonoBehaviour {
 		createButton.onClick.AddListener (() => {
 			CreateBlock();
 		});
+		state = State.Pencil;
 	}
 
     public void Init()
     {
         blockSlotScale = 1.0f;
-        state = State.Pencil;
         blockID = 1;
         mapTiles = new List<MapTile>();
         blocks = new Dictionary<int, MapBlock>();
@@ -87,8 +87,6 @@ public class Editor : MonoBehaviour {
 		foreach (MapTile mapTile in mapTiles) {
 			saveData.tilePositions.Add(mapTile.transform.localPosition - saveData.hintPosition);
 		}
-        
-        
 
 		MapBlock block = GameObject.Instantiate<MapBlock> (Map.Instance.mapBlockPrefab);
 		block.Init (saveData);

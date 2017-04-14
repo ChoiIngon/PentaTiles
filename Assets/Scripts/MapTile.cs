@@ -24,8 +24,11 @@ public class MapTile : MonoBehaviour {
 		}
 
 #if UNITY_EDITOR
-		if(true == Map.Instance.editMode)
-		{
+		if(true == Map.Instance.editMode) {
+			spriteRenderer.color = Color.white;
+			if(0 != id)	{
+				spriteRenderer.color = Color.gray;
+			}
 			TouchInput touch = gameObject.AddComponent<TouchInput>();
 			touch.onTouchUp += (Vector3 position) =>  {
 				Editor.Instance.OnClickMapTile(this);

@@ -107,11 +107,6 @@ public class Map : MonoBehaviour {
 				mapTile.transform.localPosition = new Vector3 (x, height - y, 0.0f);
 				mapTile.Init (info.tiles [x + y * width]);
 				mapTiles [x + y * width] = mapTile;
-
-                if (true == Map.Instance.editMode)
-                {
-                    mapTile.spriteRenderer.color = Color.white;
-                }
 			}
 		}
 		{
