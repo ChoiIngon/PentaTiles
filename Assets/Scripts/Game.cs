@@ -54,6 +54,7 @@ public class Game : MonoBehaviour {
 		playData.currentLevel = level;
 		Map.Instance.gameObject.SetActive(true);
 		Map.Instance.Init(stage, level);
+		gamePanel.level.text = "Level - " + level;
 	}
 
 	public bool CheckWorldOpen()
