@@ -29,9 +29,6 @@ public class AudioManager : MonoBehaviour {
 	public AudioInfo[] audioInfos;
 	private Dictionary<string, AudioSource> audioSources;
 
-	void Start() {
-		
-	}
 	void Init () {
 		audioSources = new Dictionary<string, AudioSource> ();
 		if (null == audioInfos) {
@@ -64,11 +61,11 @@ public class AudioManager : MonoBehaviour {
 		audioSource.Play ();
 	}
 
-	public void Activate(bool flag)
+	public void Mute(bool flag)
 	{
 		foreach (var itr in audioSources) {
 			AudioSource audioSource = itr.Value;
-			audioSource.mute = !flag;
+			audioSource.mute = flag;
 		}	
 	}
 }

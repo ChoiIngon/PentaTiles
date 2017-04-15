@@ -31,7 +31,7 @@ public class UISettingPanel : MonoBehaviour {
 		});
 		soundToggle.onValueChanged.AddListener(value =>	{
 			AudioManager.Instance.Play("ButtonClick");
-			AudioManager.Instance.Activate(value);
+			AudioManager.Instance.Mute(!value);
 			saveData.isSoundOn = value;
 			Save();		
 		});
@@ -79,6 +79,6 @@ public class UISettingPanel : MonoBehaviour {
 		bgmToggle.isOn = saveData.isBgmOn;
 		Game.Instance.bgm.mute = !saveData.isBgmOn;
 		soundToggle.isOn = saveData.isSoundOn;
-		AudioManager.Instance.Activate (saveData.isSoundOn);
+		AudioManager.Instance.Mute (!saveData.isSoundOn);
 	}
 }
