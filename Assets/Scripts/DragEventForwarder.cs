@@ -6,15 +6,21 @@ using UnityEngine.UI;
 
 public class DragEventForwarder : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    ScrollSnapRect scrollRectSnap;
-
+    public enum ScrollDirection
+	{
+		Vertical,
+		Horizontal
+	}
+	ScrollDirection scrollDirection;
+	ScrollSnapRect scrollRectSnap;
     private void Start()
     {
         scrollRectSnap = GetComponentInParent<ScrollSnapRect>();
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if(null != scrollRectSnap)
+		scrollDirection = Mathf.Abs(eventData.delta.x) > Mathf.Abs(eventData.delta.y) ? ScrollDirection.Horizontal : ScrollDirection.Vertical;
+		if(null != scrollRectSnap && ScrollDirection.Horizontal == scrollDirection)
         {
             scrollRectSnap.OnBeginDrag(eventData);
         }
@@ -22,14 +28,14 @@ public class DragEventForwarder : MonoBehaviour, IBeginDragHandler, IEndDragHand
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (null != scrollRectSnap)
+		if(null != scrollRectSnap && ScrollDirection.Horizontal == scrollDirection)
         {
             scrollRectSnap.OnDrag(eventData);
         }
     }
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (null != scrollRectSnap)
+		if(null != scrollRectSnap && ScrollDirection.Horizontal == scrollDirection)
         {
             scrollRectSnap.OnEndDrag(eventData);
         }
