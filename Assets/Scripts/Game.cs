@@ -70,7 +70,8 @@ public class Game : MonoBehaviour {
 	public IEnumerator _CheckLevelComplete() {
 		if (true == Map.Instance.CheckComplete ()) {
 			Analytics.CustomEvent("LevelComplete", new Dictionary<string, object> {
-				{"level", Game.Instance.playData.currentStage + "_" + Game.Instance.playData.currentLevel}
+				{"stage", Game.Instance.playData.currentStage},
+				{"level", Game.Instance.playData.currentStage + "-" + Game.Instance.playData.currentLevel}
 			});
 			AudioManager.Instance.Play("LevelClear");
 
@@ -127,7 +128,8 @@ public class Game : MonoBehaviour {
 		playData.hint -= 1;
 		playData.Save ();
 		Analytics.CustomEvent("HintUse", new Dictionary<string, object> {
-			{ "level" , Game.Instance.playData.currentStage + "_" + Game.Instance.playData.currentLevel}
+			{"stage", Game.Instance.playData.currentStage},
+			{"level", Game.Instance.playData.currentStage + "-" + Game.Instance.playData.currentLevel}
 		});
 		return true;
 	}

@@ -11,6 +11,7 @@ public class UnityAds : MonoBehaviour {
 	public int rewardHintCount;
 	public float lastAdShowTime;
 	public UIRewardPanel rewardPanel;
+	public int watchCount;
 	IEnumerator Start () {
         if (false == Advertisement.isSupported) { // If runtime platform is supported...
 			Debug.Log("advertisement is not supported");
@@ -30,7 +31,7 @@ public class UnityAds : MonoBehaviour {
 		{
 			yield return new WaitForSeconds(0.5f);
 		}
-        
+		watchCount = 1;
         Debug.Log ("unity ads is ready");
 	}
 
@@ -55,7 +56,9 @@ public class UnityAds : MonoBehaviour {
 			Game.Instance.playData.Save ();
 			StartCoroutine (rewardPanel.Open ());
 			Analytics.CustomEvent("AdsWatch", new Dictionary<string, object> {
-				{"level", Game.Instance.playData.currentStage + "_" +  Game.Instance.playData.currentLevel}
+				{"stage", Game.Instance.playData.currentStage},
+				{"level", Game.Instance.playData.currentStage + "-" +  Game.Instance.playData.currentLevel},
+				{"count", watchCount++ } 
 			});
 			break;
 		//case ShowResult.Skipped:
