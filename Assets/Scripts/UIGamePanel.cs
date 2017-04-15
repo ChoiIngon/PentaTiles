@@ -10,8 +10,6 @@ public class UIGamePanel : MonoBehaviour {
 	public Button hintButton;
 	public Text hintText;
 	public UILevelComplete levelComplete;
-    public UIStageComplete stageComplete;
-	// Use this for initialization
 
 	public int hintCount {
 		set {

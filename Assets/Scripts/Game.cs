@@ -35,6 +35,9 @@ public class Game : MonoBehaviour {
 
 	private UnityAds unityAds;
 
+	public float playTime;
+	public int moveCount;
+
 	void Start()
 	{
 		unityAds = GetComponent<UnityAds> ();
@@ -52,24 +55,11 @@ public class Game : MonoBehaviour {
 	{
 		playData.currentStage = stage;
 		playData.currentLevel = level;
+		playTime = Time.realtimeSinceStartup;
+		moveCount = 0;
 		Map.Instance.gameObject.SetActive(true);
 		Map.Instance.Init(stage, level);
 		gamePanel.level.text = "Level - " + level;
-	}
-
-	public bool CheckWorldOpen()
-	{
-		for (int i = 0; i < playData.openWorlds.Length; i++) {
-			if (false == playData.openWorlds [i] && playData.star >= config.worldInfos [i].openStar) {
-				playData.openWorlds [i] = true;
-				Config.WorldInfo worldInfo = config.worldInfos [i];
-				foreach (Config.StageInfo stageInfo in worldInfo.stageInfos) {
-					stagePanel.GetStageInfo (stageInfo.id).open = true;
-				}
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public void CheckLevelComplete()
@@ -84,6 +74,8 @@ public class Game : MonoBehaviour {
 			});
 			AudioManager.Instance.Play("LevelClear");
 
+			playTime = Time.realtimeSinceStartup - playTime;
+
 			PlayData.StageData stageData = playData.GetCurrentStageData ();
 			if (stageData.clearLevel < playData.currentLevel) {
 				stageData.clearLevel = playData.currentLevel;
@@ -91,7 +83,7 @@ public class Game : MonoBehaviour {
 				stagePanel.totalStarCount = playData.star;
 			}
 
-			bool newBlock = CheckWorldOpen ();
+			int newOpenWorld = GetNewOpenWorld ();
 
 			Config.StageInfo stageInfo = config.FindStageInfo (playData.currentStage);
 			stagePanel.GetStageInfo (stageData.id).SetClearLevel(stageData.clearLevel);
@@ -102,10 +94,24 @@ public class Game : MonoBehaviour {
 			playData.Save ();
 
 			yield return new WaitForSeconds (1.0f);
-			yield return StartCoroutine(gamePanel.levelComplete.Activate (newBlock));
-
+			yield return StartCoroutine(gamePanel.levelComplete.Open (newOpenWorld));
 			unityAds.Show ();
 		}
+	}
+
+	private int GetNewOpenWorld()
+	{
+		for (int i = 0; i < playData.openWorlds.Length; i++) {
+			if (false == playData.openWorlds [i] && playData.star >= config.worldInfos [i].openStar) {
+				playData.openWorlds [i] = true;
+				Config.WorldInfo worldInfo = config.worldInfos [i];
+				foreach (Config.StageInfo stageInfo in worldInfo.stageInfos) {
+					stagePanel.GetStageInfo (stageInfo.id).open = true;
+				}
+				return i + 1;
+			}
+		}
+		return 0;
 	}
 
 	public bool UseHint()
@@ -126,7 +132,7 @@ public class Game : MonoBehaviour {
 		return true;
 	}
 
-	#if UNITY_EDITOR
+	//#if UNITY_EDITOR
 	private void OnGUI()
 	{
 		string text = "";
@@ -134,7 +140,8 @@ public class Game : MonoBehaviour {
 		text += "Stage : " + Map.Instance.stage + ", Level : " + Map.Instance.level + "\n";
 		text += "Mode : " + (true == Map.Instance.editMode ? "Edit" : "Game") + "\n";
 		text += "Map Size :" + Map.Instance.width + " x " + Map.Instance.height + "\n";
+		text += "Ad interval:" + unityAds.showInterval + ", elapsed time:" + (Time.realtimeSinceStartup - unityAds.lastAdShowTime) + "\n";
 		GUI.Label (new Rect (0, 0, 400, 100), text);
 	}
-	#endif
+	//#endif
 }

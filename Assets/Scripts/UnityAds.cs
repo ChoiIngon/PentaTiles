@@ -9,8 +9,8 @@ public class UnityAds : MonoBehaviour {
 	public string androidGameID;
 	public float showInterval;
 	public int rewardHintCount;
-	private float lastAdShowTime;
-
+	public float lastAdShowTime;
+	public UIRewardPanel rewardPanel;
 	IEnumerator Start () {
         if (false == Advertisement.isSupported) { // If runtime platform is supported...
 			Debug.Log("advertisement is not supported");
@@ -36,17 +36,35 @@ public class UnityAds : MonoBehaviour {
 
 	public void Show()
 	{
-		Debug.Log ("show ad(interval:" + showInterval + ", elapsed time:" + (Time.realtimeSinceStartup - lastAdShowTime) +")");
 		if (Advertisement.IsReady() && Time.realtimeSinceStartup - lastAdShowTime >= showInterval)
 		{
 			lastAdShowTime = Time.realtimeSinceStartup;
-			Advertisement.Show();
-			Game.Instance.playData.hint += rewardHintCount;
-			Game.Instance.gamePanel.hintCount = Game.Instance.playData.hint;
-            Analytics.CustomEvent("AdsWatch", new Dictionary<string, object> {
-				{"level", Game.Instance.playData.currentStage + "_" +  Game.Instance.playData.currentLevel}
-            });
+			var options = new ShowOptions { resultCallback = OnAdsComplete };
+			Advertisement.Show("video", options);
         }
 	}
 
+	private void OnAdsComplete(ShowResult result)
+	{
+		switch (result)	{
+		case ShowResult.Finished:
+		case ShowResult.Skipped:
+			Debug.Log("The ad was successfully shown.");
+			Game.Instance.playData.hint += rewardHintCount;
+			Game.Instance.gamePanel.hintCount = Game.Instance.playData.hint;
+			Game.Instance.playData.Save ();
+			StartCoroutine (rewardPanel.Open ());
+			Analytics.CustomEvent("AdsWatch", new Dictionary<string, object> {
+				{"level", Game.Instance.playData.currentStage + "_" +  Game.Instance.playData.currentLevel}
+			});
+			break;
+		//case ShowResult.Skipped:
+			//Debug.Log("The ad was skipped before reaching the end.");
+			//break;
+		case ShowResult.Failed:
+			Debug.LogError("The ad failed to be shown.");
+			break;
+
+		}
+	}
 }

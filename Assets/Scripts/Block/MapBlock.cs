@@ -158,6 +158,8 @@ public class MapBlock : Block {
 			mapTiles.Add (mapTile);
 		}
 
+		Game.Instance.moveCount++;
+
 		initPosition = position;
 		transform.position = position;
 		if (true == Map.Instance.editMode) {

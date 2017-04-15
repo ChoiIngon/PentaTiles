@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 4302c7735c33040d89541259bde06674
-timeCreated: 1491233402
+timeCreated: 1492248470
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -73,7 +73,7 @@ TextureImporter:
     21300132: Button_66
     21300134: Button_67
     21300136: Button_68
-    21300138: Button@Hint
+    21300138: Button@70
     21300140: Button_70
     21300142: Button_71
     21300144: Button_72
@@ -189,6 +189,11 @@ TextureImporter:
     21300364: Button_182
     21300366: Button_183
     21300368: Button_184
+    21300370: Button_0
+    21300372: Button@Hint
+    21300374: Button_24
+    21300376: Button_26
+    21300378: Button_28
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -1155,7 +1160,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Button@Hint
+      name: Button@70
       rect:
         serializedVersion: 2
         x: 2145
@@ -2659,6 +2664,71 @@ TextureImporter:
         height: 193
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Button_0
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 2651
+        width: 429
+        height: 194
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Button@Hint
+      rect:
+        serializedVersion: 2
+        x: 3073
+        y: 129
+        width: 187
+        height: 194
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Button_24
+      rect:
+        serializedVersion: 2
+        x: 3283
+        y: 129
+        width: 187
+        height: 194
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Button_26
+      rect:
+        serializedVersion: 2
+        x: 3494
+        y: 129
+        width: 186
+        height: 194
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Button_28
+      rect:
+        serializedVersion: 2
+        x: 3703
+        y: 129
+        width: 187
+        height: 194
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0

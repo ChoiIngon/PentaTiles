@@ -18,7 +18,6 @@ public class UIStageInfo : MonoBehaviour {
 
 	public bool open {
 		set {
-			Debug.Log ("name:" + name + ", id:" + info.id + ", value:" + value);
 			starImage.gameObject.SetActive(value);
 
 			if (true == value)
