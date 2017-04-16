@@ -13,7 +13,7 @@ public class SlotBlock : Block {
 		transform.localScale = new Vector3(Map.Instance.blockSlotScale, Map.Instance.blockSlotScale, 1.0f);
 		transform.localPosition = saveData.slotPosition;
 		foreach (BlockTile tile in blockTiles) {
-			tile.transform.localRotation = new Quaternion (180.0f, 0.0f, 0.0f, 0.0f);
+			tile.transform.localRotation = new Quaternion (0.0f, 0.0f, 180.0f, 0.0f);
 		}
 
 		if (true == Map.Instance.editMode) {

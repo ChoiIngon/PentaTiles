@@ -38,6 +38,9 @@ public class UIResultPanel : MonoBehaviour {
 	}
 
 	public IEnumerator Open() {
+		transform.localScale = Vector3.zero;
+		star.transform.localScale = Vector3.zero;
+
 		gameObject.SetActive (true);
 
 		Config.StageInfo stageInfo = Game.Instance.config.FindStageInfo(Game.Instance.playData.currentStage);
@@ -53,8 +56,8 @@ public class UIResultPanel : MonoBehaviour {
 		time.text = string.Format("{0:00}:{1:00}",(Game.Instance.playTime/60)%60,Game.Instance.playTime%60);
 		move.text = Game.Instance.moveCount.ToString();
 
-		iTween.ScaleFrom (gameObject, Vector3.zero, 0.5f);
-		iTween.ScaleFrom(star, iTween.Hash("scale", Vector3.zero, "delay", 0.5f, "time", 0.2f));
+		iTween.ScaleTo (gameObject, Vector3.one, 0.5f);
+		iTween.ScaleTo(star, iTween.Hash("scale", Vector3.one, "delay", 0.5f, "time", 0.2f));
 		while (true == gameObject.activeSelf) {
 			yield return null;
 		}

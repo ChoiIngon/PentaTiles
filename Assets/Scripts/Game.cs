@@ -52,7 +52,7 @@ public class Game : MonoBehaviour {
 		rootPanel.rectTransform.anchoredPosition = Vector2.zero;
 		stagePanel.Init ();
 
-		//iTween.RotateBy(background, iTween.Hash("y", 20.0f, "time", 5.0f, "easetype", iTween.EaseType.linear, "looptype", iTween.LoopType.pingPong));
+		iTween.RotateBy(background, iTween.Hash("y", 1.0f, "speed", 7.0f, "easetype", iTween.EaseType.linear, "looptype", iTween.LoopType.loop));
 	}
 
 	public void StartLevel(int stage, int level)

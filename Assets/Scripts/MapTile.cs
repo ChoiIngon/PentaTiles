@@ -20,11 +20,13 @@ public class MapTile : MonoBehaviour {
 		if (0 != id) {
 			spriteRenderer.color = activeColor;
 		} else {
-			spriteRenderer.color = deactiveColor;
+			//spriteRenderer.color = deactiveColor;
+			gameObject.SetActive(false);
 		}
 
 #if UNITY_EDITOR
 		if(true == Map.Instance.editMode) {
+			gameObject.SetActive(true);
 			spriteRenderer.color = Color.white;
 			if(0 != id)	{
 				spriteRenderer.color = Color.gray;

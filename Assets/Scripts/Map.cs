@@ -138,7 +138,13 @@ public class Map : MonoBehaviour {
 				return false;
 			}
 		}
+
 		enableTouchInput = false;
+
+		foreach (MapTile mapTile in mapTiles) {
+			mapTile.spriteRenderer.color = mapTile.activeColor;
+		}
+
 		foreach (MapBlock mapBlock in mapBlocks) {
 			mapBlock.RotateTiles ();
 			if (null != mapBlock.hint) {
@@ -150,6 +156,8 @@ public class Map : MonoBehaviour {
 			StopCoroutine (_blinkHintBlock);
 			_blinkHintBlock = null;
 		}
+
+
         return true;
 	}
 
