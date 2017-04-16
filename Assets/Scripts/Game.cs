@@ -28,6 +28,8 @@ public class Game : MonoBehaviour {
 	public UILevelSelectPanel levelPanel;
 	public UIGamePanel gamePanel;
 	public UISettingPanel settingPanel;
+	public GameObject background;
+
     public AudioSource bgm;
 
 	public Config config;
@@ -49,8 +51,10 @@ public class Game : MonoBehaviour {
 
 		rootPanel.rectTransform.anchoredPosition = Vector2.zero;
 		stagePanel.Init ();
+
+		//iTween.RotateBy(background, iTween.Hash("y", 20.0f, "time", 5.0f, "easetype", iTween.EaseType.linear, "looptype", iTween.LoopType.pingPong));
 	}
-		
+
 	public void StartLevel(int stage, int level)
 	{
 		playData.currentStage = stage;
