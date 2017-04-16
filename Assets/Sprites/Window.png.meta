@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: d2061de8d944d4cb8a7d4e2ad189e739
-timeCreated: 1492098476
+timeCreated: 1492316649
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -10,10 +10,10 @@ TextureImporter:
     21300006: Window_3
     21300008: Window_4
     21300010: Window_5
-    21300012: Window_6
+    21300012: BlockSlot@Outer
     21300014: Window_7
     21300016: Window_8
-    21300018: BlockSlots@Background
+    21300018: BlockSlots@Inner
     21300020: Window_10
     21300022: SettingPanel
     21300024: Window_12
@@ -238,7 +238,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Window_6
+      name: BlockSlot@Outer
       rect:
         serializedVersion: 2
         x: 3020
@@ -247,7 +247,7 @@ TextureImporter:
         height: 662
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 100, y: 100, z: 100, w: 100}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
@@ -277,7 +277,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: BlockSlots@Background
+      name: BlockSlots@Inner
       rect:
         serializedVersion: 2
         x: 3059

@@ -8,11 +8,13 @@ using System.Xml.Serialization;
 public class UIStageInfo : MonoBehaviour {
 	Config.StageInfo info;
 
-	Button button;
-	Text title;
-	Text starText;
-	Image starImage;
-	Image panelImage;
+	private Button button;
+	public Text title;
+	public Text description;
+	public Image starImage;
+	public Text starText;
+
+	private Image panelImage;
 	public Sprite openSprite;
 	public Sprite closeSprite;
 
@@ -23,7 +25,8 @@ public class UIStageInfo : MonoBehaviour {
 			if (true == value)
 			{
 				panelImage.sprite = openSprite;
-				title.text = "<size=40>" + info.name + "</size>\n" + "<size=30>" + info.description + "</size>";
+				title.text = info.name;
+				description.text = info.description;
 				button.onClick.AddListener(() => {
 					Game.Instance.levelPanel.Init(this.info);
 					Game.Instance.playData.currentStage = info.id;
@@ -34,7 +37,8 @@ public class UIStageInfo : MonoBehaviour {
 			else
 			{
 				panelImage.sprite = closeSprite;
-				title.text = "<size=40>" + info.name + "</size>\n" + "<size=30>" + "need " + info.openStar + " star to unlock stage" + "</size>";
+				title.text = info.name;
+				description.text = "need " + info.openStar + " star to unlock stage";
 				button.onClick.RemoveAllListeners();
 			}
 		}
@@ -45,9 +49,6 @@ public class UIStageInfo : MonoBehaviour {
         this.info = info;
 
 		panelImage = GetComponent<Image>();
-        title = transform.FindChild("Text").GetComponent<Text>();
-        starImage = transform.FindChild("Star").GetComponent<Image>();
-        starText = transform.FindChild("Star/Text").GetComponent<Text>();
         button = GetComponent<Button>();
 
         PlayData.StageData stageData = Game.Instance.playData.stageDatas[info.id - 1];

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UILevelPanel : MonoBehaviour {
+public class UILevelSelectPanel : MonoBehaviour {
 	public UILevelInfo levelInfoPrefab;
 	public List<UILevelInfo> levelInfos;
 	public Transform gridView;

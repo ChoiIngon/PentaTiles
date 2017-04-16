@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIStagePanel : MonoBehaviour {
+public class UIStageSelectPanel : MonoBehaviour {
 	public UIStageInfo stageInfoPrefab;
     public ScrollRect stageScrollRectPrefab;
 

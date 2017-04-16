@@ -24,8 +24,8 @@ public class Game : MonoBehaviour {
 	}
 
 	public UIRootPanel rootPanel;
-	public UIStagePanel stagePanel;
-	public UILevelPanel levelPanel;
+	public UIStageSelectPanel stagePanel;
+	public UILevelSelectPanel levelPanel;
 	public UIGamePanel gamePanel;
 	public UISettingPanel settingPanel;
     public AudioSource bgm;
@@ -60,6 +60,11 @@ public class Game : MonoBehaviour {
 		Map.Instance.gameObject.SetActive(true);
 		Map.Instance.Init(stage, level);
 		gamePanel.level.text = "Level - " + level;
+
+		Analytics.CustomEvent("LevelPlay", new Dictionary<string, object> {
+			{"stage", playData.currentStage},
+			{"level", playData.currentStage + "-" + playData.currentLevel}
+		});
 	}
 
 	public void CheckLevelComplete()
@@ -69,23 +74,29 @@ public class Game : MonoBehaviour {
 
 	public IEnumerator _CheckLevelComplete() {
 		if (true == Map.Instance.CheckComplete ()) {
-			Analytics.CustomEvent("LevelComplete", new Dictionary<string, object> {
-				{"stage", Game.Instance.playData.currentStage},
-				{"level", Game.Instance.playData.currentStage + "-" + Game.Instance.playData.currentLevel}
-			});
 			AudioManager.Instance.Play("LevelClear");
-
 			playTime = Time.realtimeSinceStartup - playTime;
-
 			PlayData.StageData stageData = playData.GetCurrentStageData ();
 			if (stageData.clearLevel < playData.currentLevel) {
 				stageData.clearLevel = playData.currentLevel;
 				playData.star += 1;
 				stagePanel.totalStarCount = playData.star;
+
+				Analytics.CustomEvent("LevelComplete", new Dictionary<string, object> {
+					{"stage", playData.currentStage},
+					{"level", playData.currentStage + "-" + playData.currentLevel},
+					{"star", playData.star}
+				});
 			}
 
 			int newOpenWorld = GetNewOpenWorld ();
-
+			if (0 != newOpenWorld) {
+				Analytics.CustomEvent ("OpenWorld_" + newOpenWorld.ToString (), new Dictionary<string, object> {
+					{ "stage", playData.currentStage },
+					{ "level", playData.currentStage + "-" + playData.currentLevel },
+					{ "star", playData.star }
+				});
+			}
 			Config.StageInfo stageInfo = config.FindStageInfo (playData.currentStage);
 			stagePanel.GetStageInfo (stageData.id).SetClearLevel(stageData.clearLevel);
 			if (stageData.clearLevel < stageInfo.totalLevel ) {
