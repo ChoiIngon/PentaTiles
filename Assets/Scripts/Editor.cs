@@ -193,7 +193,7 @@ public class EditorEditor : UnityEditor.Editor
             }
             Debug.Log("success to load map file from " + "\'Assets/Resources/" + data.stage + "_" + data.level + ".asset" + "\'");
         }
-		/*
+
 		if (GUILayout.Button("Convert"))
 		{
 			for (int stage = 101; stage <= 170; stage++) {
@@ -231,7 +231,7 @@ public class EditorEditor : UnityEditor.Editor
 				}
 			}
 		}
-		*/
+
         Map.Instance.blockSlotScale = editor.blockSlotScale;
 
         for (int i = 0; i < Map.Instance.slots.childCount; i++) {
