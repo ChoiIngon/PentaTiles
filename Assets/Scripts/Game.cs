@@ -5,6 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Analytics;
+using Firebase.Analytics;
 
 public class Game : MonoBehaviour {
 	private static Game _instance;  
@@ -53,7 +54,9 @@ public class Game : MonoBehaviour {
 		stagePanel.Init ();
 
 		iTween.RotateBy(background, iTween.Hash("y", 1.0f, "speed", 7.0f, "easetype", iTween.EaseType.linear, "looptype", iTween.LoopType.loop));
-	}
+
+        FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLogin);
+    }
 
 	public void StartLevel(int stage, int level)
 	{
@@ -69,7 +72,12 @@ public class Game : MonoBehaviour {
 			{"stage", playData.currentStage},
 			{"level", playData.currentStage + "-" + playData.currentLevel}
 		});
-	}
+
+        FirebaseAnalytics.LogEvent("LevelPlay", new Parameter[] {
+            new Parameter("stage", playData.currentStage),
+            new Parameter("level", playData.currentStage + "-" + playData.currentLevel)
+        });
+    }
 
 	public void CheckLevelComplete()
 	{
@@ -91,7 +99,13 @@ public class Game : MonoBehaviour {
 					{"level", playData.currentStage + "-" + playData.currentLevel},
 					{"star", playData.star}
 				});
-			}
+
+                FirebaseAnalytics.LogEvent("LevelComplete", new Parameter[] {
+                    new Parameter("stage", playData.currentStage),
+                    new Parameter("level", playData.currentStage + "-" + playData.currentLevel),
+                    new Parameter("star", playData.star)
+                });
+            }
 
 			int newOpenWorld = GetNewOpenWorld ();
 			if (0 != newOpenWorld) {
@@ -100,7 +114,12 @@ public class Game : MonoBehaviour {
 					{ "level", playData.currentStage + "-" + playData.currentLevel },
 					{ "star", playData.star }
 				});
-			}
+                FirebaseAnalytics.LogEvent("OpenWorld_" + newOpenWorld.ToString(), new Parameter[] {
+                    new Parameter("stage", playData.currentStage),
+                    new Parameter("level", playData.currentStage + "-" + playData.currentLevel),
+                    new Parameter("star", playData.star)
+                });
+            }
 			Config.StageInfo stageInfo = config.FindStageInfo (playData.currentStage);
 			stagePanel.GetStageInfo (stageData.id).SetClearLevel(stageData.clearLevel);
 			if (stageData.clearLevel < stageInfo.totalLevel ) {
@@ -143,10 +162,16 @@ public class Game : MonoBehaviour {
 		playData.hint -= 1;
 		playData.Save ();
 		Analytics.CustomEvent("HintUse", new Dictionary<string, object> {
-			{"stage", Game.Instance.playData.currentStage},
-			{"level", Game.Instance.playData.currentStage + "-" + Game.Instance.playData.currentLevel}
+			{"stage", playData.currentStage},
+			{"level", playData.currentStage + "-" + playData.currentLevel}
 		});
-		return true;
+
+        FirebaseAnalytics.LogEvent("HintUse" + new Parameter[] {
+            new Parameter("stage", playData.currentStage),
+            new Parameter("level", playData.currentStage + "-" + playData.currentLevel)
+        });
+
+        return true;
 	}
 
 	//#if UNITY_EDITOR
@@ -157,8 +182,9 @@ public class Game : MonoBehaviour {
 		text += "Stage : " + Map.Instance.stage + ", Level : " + Map.Instance.level + "\n";
 		text += "Mode : " + (true == Map.Instance.editMode ? "Edit" : "Game") + "\n";
 		text += "Map Size :" + Map.Instance.width + " x " + Map.Instance.height + "\n";
-		text += "Ad interval:" + unityAds.showInterval + ", elapsed time:" + (Time.realtimeSinceStartup - unityAds.lastAdShowTime) + "\n";
-		GUI.Label (new Rect (0, 0, 400, 100), text);
+		text += "Ad time: interval" + unityAds.showIntervalTime + ", elapsed:" + (Time.realtimeSinceStartup - unityAds.lastAdShowTime) + "\n";
+        text += "Ad count: interval" + unityAds.showIntervalCount+ ", current:" + unityAds.lastAdShowCount + "\n";
+        GUI.Label (new Rect (0, 0, 400, 100), text);
 	}
 	//#endif
 }

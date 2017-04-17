@@ -1,0 +1,37 @@
+{
+  "project_info": {
+    "project_number": "110373679342",
+    "firebase_url": "https://pentatiles.firebaseio.com",
+    "project_id": "pentatiles",
+    "storage_bucket": "pentatiles.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:110373679342:android:6d7ab6e09939daa9",
+        "android_client_info": {
+          "package_name": "com.kukuta.pentatiles"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEnhcRl3APMr6gBVTGTwly2h7g3_YhO7E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
