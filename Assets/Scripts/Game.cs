@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Analytics;
 using Firebase.Analytics;
+using Firebase.RemoteConfig;
 
 public class Game : MonoBehaviour {
 	private static Game _instance;  
@@ -44,6 +45,22 @@ public class Game : MonoBehaviour {
 	void Start()
 	{
 		unityAds = GetComponent<UnityAds> ();
+		Dictionary<string, object> defaultRemoteConfig = new Dictionary<string, object>();
+		defaultRemoteConfig.Add("ads_interval_count", 3);
+		defaultRemoteConfig.Add("ads_interval_time", 120);
+		defaultRemoteConfig.Add("ads_reward_hint_count", 1);
+		FirebaseRemoteConfig.SetDefaults(defaultRemoteConfig);
+		unityAds.showIntervalCount = (int)FirebaseRemoteConfig.GetValue ("ads_interval_count").LongValue;
+		unityAds.showIntervalTime = (float)FirebaseRemoteConfig.GetValue ("ads_interval_time").DoubleValue;
+		unityAds.rewardHintCount = (int)FirebaseRemoteConfig.GetValue ("ads_reward_hint_count").LongValue;
+		FirebaseRemoteConfig.FetchAsync ().ContinueWith((antecedent) => {
+			Debug.Log(antecedent.IsCompleted.ToString());
+			FirebaseRemoteConfig.ActivateFetched ();
+			unityAds.showIntervalCount = (int)FirebaseRemoteConfig.GetValue ("ads_interval_count").LongValue;
+			unityAds.showIntervalTime = (float)FirebaseRemoteConfig.GetValue ("ads_interval_time").DoubleValue;
+			unityAds.rewardHintCount = (int)FirebaseRemoteConfig.GetValue ("ads_reward_hint_count").LongValue;
+		});
+
 		Map.Instance.editMode = false;
 		Map.Instance.gameObject.SetActive (false);
 
@@ -55,7 +72,7 @@ public class Game : MonoBehaviour {
 
 		iTween.RotateBy(background, iTween.Hash("y", 1.0f, "speed", 7.0f, "easetype", iTween.EaseType.linear, "looptype", iTween.LoopType.loop));
 
-        FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLogin);
+		FirebaseAnalytics.LogEvent (FirebaseAnalytics.EventAppOpen);
     }
 
 	public void StartLevel(int stage, int level)
@@ -166,7 +183,7 @@ public class Game : MonoBehaviour {
 			{"level", playData.currentStage + "-" + playData.currentLevel}
 		});
 
-        FirebaseAnalytics.LogEvent("HintUse" + new Parameter[] {
+        FirebaseAnalytics.LogEvent("HintUse", new Parameter[] {
             new Parameter("stage", playData.currentStage),
             new Parameter("level", playData.currentStage + "-" + playData.currentLevel)
         });
