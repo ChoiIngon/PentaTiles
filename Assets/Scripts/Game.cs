@@ -50,11 +50,12 @@ public class Game : MonoBehaviour {
 		defaultRemoteConfig.Add("ads_interval_time", 120);
 		defaultRemoteConfig.Add("ads_reward_hint_count", 1);
 		FirebaseRemoteConfig.SetDefaults(defaultRemoteConfig);
+
 		unityAds.showIntervalCount = (int)FirebaseRemoteConfig.GetValue ("ads_interval_count").LongValue;
 		unityAds.showIntervalTime = (float)FirebaseRemoteConfig.GetValue ("ads_interval_time").DoubleValue;
 		unityAds.rewardHintCount = (int)FirebaseRemoteConfig.GetValue ("ads_reward_hint_count").LongValue;
-		FirebaseRemoteConfig.FetchAsync ().ContinueWith((antecedent) => {
-			Debug.Log(antecedent.IsCompleted.ToString());
+
+		FirebaseRemoteConfig.FetchAsync (new System.TimeSpan(0, 0, 30)).ContinueWith((antecedent) => {
 			FirebaseRemoteConfig.ActivateFetched ();
 			unityAds.showIntervalCount = (int)FirebaseRemoteConfig.GetValue ("ads_interval_count").LongValue;
 			unityAds.showIntervalTime = (float)FirebaseRemoteConfig.GetValue ("ads_interval_time").DoubleValue;
@@ -199,9 +200,11 @@ public class Game : MonoBehaviour {
 		text += "Stage : " + Map.Instance.stage + ", Level : " + Map.Instance.level + "\n";
 		text += "Mode : " + (true == Map.Instance.editMode ? "Edit" : "Game") + "\n";
 		text += "Map Size :" + Map.Instance.width + " x " + Map.Instance.height + "\n";
-		text += "Ad time: interval" + unityAds.showIntervalTime + ", elapsed:" + (Time.realtimeSinceStartup - unityAds.lastAdShowTime) + "\n";
-        text += "Ad count: interval" + unityAds.showIntervalCount+ ", current:" + unityAds.lastAdShowCount + "\n";
-        GUI.Label (new Rect (0, 0, 400, 100), text);
+		text += "Ads : " + 
+			(int)(Time.realtimeSinceStartup - unityAds.lastAdShowTime) + "/" + unityAds.showIntervalTime + " sec, " +
+			unityAds.lastAdShowCount + "/" + unityAds.showIntervalCount + " count, " +
+			unityAds.rewardHintCount + " hint\n";
+        GUI.Label (new Rect (0, 0, 500, 200), text);
 	}
 	//#endif
 }

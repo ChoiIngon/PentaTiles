@@ -193,7 +193,45 @@ public class EditorEditor : UnityEditor.Editor
             }
             Debug.Log("success to load map file from " + "\'Assets/Resources/" + data.stage + "_" + data.level + ".asset" + "\'");
         }
+		/*
+		if (GUILayout.Button("Convert"))
+		{
+			for (int stage = 101; stage <= 170; stage++) {
+				for (int level = 1; level <= 24; level++) {
+					editor.Init ();
+					MapSaveData data = Resources.Load<MapSaveData> (stage + "_" + level);
+					if (null == data) {
+						Debug.Log (stage + "_" + level + " is skip");
+						continue;
+					}
 
+					Map.Instance.Init(data);
+					editor.blockSlotScale = Map.Instance.blockSlotScale;
+					for (int i = 0; i < Map.Instance.blocks.childCount; i++)
+					{
+						MapBlock block = Map.Instance.blocks.GetChild(i).GetComponent<MapBlock>();
+						editor.blocks.Add(block.id, block);
+						editor.blockID = Mathf.Max (editor.blockID, block.id+1);
+					}
+					Debug.Log("success to load map file from " + "\'Assets/Resources/" + data.stage + "_" + data.level + ".asset" + "\'");
+
+					Map.Instance.stage = stage - 100;
+					Map.Instance.level = level;
+
+					MapSaveData saveData = Map.Instance.GetSaveData();
+					AssetDatabase.CreateAsset(saveData, "Assets/Resources/" + saveData.stage + "_" + saveData.level + ".asset");
+					for (int i = 0; i < saveData.blocks.Length; i++)
+					{
+						AssetDatabase.AddObjectToAsset(saveData.blocks[i], saveData);
+					}
+					AssetDatabase.SaveAssets();
+					AssetDatabase.Refresh();
+
+					Debug.Log("success to save map file to " + "\'Assets/Resources/" + saveData.stage + "_" + saveData.level + ".asset" + "\'");
+				}
+			}
+		}
+		*/
         Map.Instance.blockSlotScale = editor.blockSlotScale;
 
         for (int i = 0; i < Map.Instance.slots.childCount; i++) {
