@@ -3,11 +3,22 @@ using UnityEngine.Analytics;
 #if UNITY_EDITOR
 using UnityEngine.Assertions;
 #endif
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 public static class Quest
 {
+	public enum State
+	{
+		Invalid,
+		StartWait,
+		Started,
+		Complete,
+		Rewared,
+		Max
+	}
+		
     public class Complete
     {
         public string id;
@@ -25,7 +36,7 @@ public static class Quest
         public string key;
         public int goal;
         public int progress;
-        
+	
         public Progress(string name, string type, string key, int goal)
         {
             this.name = name;
@@ -76,6 +87,8 @@ public static class Quest
         {
             if (progress >= goal)
             {
+				Complete complete = new Complete ();
+
                 return true;
             }
             return false;
@@ -126,20 +139,10 @@ public static class Quest
     }
     public class Data
     {
-        public enum State
-        {
-            Invalid,
-            StartWait,
-            Started,
-            Complete,
-            Rewared,
-            Max
-        };
-
         public string id;
         public string name;
         public State state = State.Invalid;
-        
+
         public List<Trigger> triggers = new List<Trigger>();
         public List<Progress> progress = new List<Progress>();
 
@@ -149,7 +152,8 @@ public static class Quest
             {
                 return false;
             }
-            foreach (Trigger trigger in triggers)
+
+			foreach (Trigger trigger in triggers)
             {
                 if (false == trigger.IsAvailable())
                 {
@@ -186,7 +190,7 @@ public static class Quest
                     return false;
                 }
             }
-            state = State.Complete;
+			state = State.Complete;
             return true;
         }
     }
@@ -199,7 +203,6 @@ public static class Quest
     public static ProgressDelegate onProgress;
 
     public static Dictionary<string, UpdateDelegate> updates = new Dictionary<string, UpdateDelegate>();
-    public static Dictionary<string, Complete> completes = new Dictionary<string, Complete>();
     public static Dictionary<string, Data> datas = new Dictionary<string, Data>();
 
     public static void Update(string type, string key)
@@ -255,4 +258,11 @@ public static class Quest
         }
         return null;
     }
+
+	public static void Save()
+	{
+	}
+
+	public static void Load() {
+	}
 }
