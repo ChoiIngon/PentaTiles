@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 4302c7735c33040d89541259bde06674
-timeCreated: 1492248470
+timeCreated: 1492590697
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -30,7 +30,7 @@ TextureImporter:
     21300046: Button_23
     21300048: Button@UnlockedLevel
     21300050: Button_25
-    21300052: Button@HintCount
+    21300052: Button@CurrentLevel
     21300054: Button_27
     21300056: Button@LockedLevel
     21300058: Button_29
@@ -61,7 +61,7 @@ TextureImporter:
     21300108: Button_54
     21300110: Button_55
     21300112: Button_56
-    21300114: Button_57
+    21300114: Button@Achievement
     21300116: Button_58
     21300118: Button_59
     21300120: Button_60
@@ -192,8 +192,9 @@ TextureImporter:
     21300370: Button_0
     21300372: Button@Hint
     21300374: Button_24
-    21300376: Button_26
+    21300376: Button@CurrentLevel
     21300378: Button_28
+    21300380: Button@HintCount
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -601,7 +602,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Button@HintCount
+      name: Button@CurrentLevel
       rect:
         serializedVersion: 2
         x: 966
@@ -1004,7 +1005,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Button_57
+      name: Button@Achievement
       rect:
         serializedVersion: 2
         x: 3090
@@ -2676,7 +2677,7 @@ TextureImporter:
         width: 429
         height: 194
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -2702,20 +2703,20 @@ TextureImporter:
         width: 187
         height: 194
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Button_26
+      name: Button@HintCount
       rect:
         serializedVersion: 2
-        x: 3494
+        x: 3500
         y: 129
         width: 186
         height: 194
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -2728,7 +2729,7 @@ TextureImporter:
         width: 187
         height: 194
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0

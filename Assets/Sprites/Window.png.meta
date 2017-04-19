@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: d2061de8d944d4cb8a7d4e2ad189e739
-timeCreated: 1492316649
+timeCreated: 1492593361
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -62,11 +62,11 @@ TextureImporter:
     21300110: Window_55
     21300112: Window_56
     21300114: Window_57
-    21300116: Window_58
+    21300116: Progress@Outer_
     21300118: Window_59
     21300120: Window_60
     21300122: Window_61
-    21300124: Window_62
+    21300124: Progress@Outer
     21300126: ResultPanel@Star1
     21300128: ResultPanel@Star2
     21300130: ResultPanel@Star3
@@ -75,7 +75,7 @@ TextureImporter:
     21300136: Window_68
     21300138: Window_69
     21300140: Window_70
-    21300142: Window_71
+    21300142: Progress@Gauge
     21300144: Window_72
     21300146: ResultPanel@StarSlot
   serializedVersion: 4
@@ -875,7 +875,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Window_58
+      name: Progress@Outer_
       rect:
         serializedVersion: 2
         x: 3464
@@ -927,7 +927,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Window_62
+      name: Progress@Outer
       rect:
         serializedVersion: 2
         x: 3530
@@ -1044,7 +1044,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Window_71
+      name: Progress@Gauge
       rect:
         serializedVersion: 2
         x: 3493
@@ -1053,7 +1053,7 @@ TextureImporter:
         height: 52
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 10, y: 10, z: 10, w: 10}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2

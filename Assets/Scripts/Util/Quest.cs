@@ -19,12 +19,6 @@ public static class Quest
 		Max
 	}
 		
-    public class Complete
-    {
-        public string id;
-        public int date;
-        public int count;
-    };
     public class Trigger
     {
         public virtual bool IsAvailable() { return true; }
@@ -87,8 +81,6 @@ public static class Quest
         {
             if (progress >= goal)
             {
-				Complete complete = new Complete ();
-
                 return true;
             }
             return false;
