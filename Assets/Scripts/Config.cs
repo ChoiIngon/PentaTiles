@@ -36,7 +36,28 @@ public class Config {
 		public int openStar;
 	}
 
-	public List<StageInfo> stageInfos;
+    [XmlArray("Achievements")]
+    [XmlArrayItem("Achievement")]
+    public List<AchievementInfo> achievementInfos = new List<AchievementInfo>();
+
+    [XmlType("Achievement")]
+    public class AchievementInfo
+    {
+        [XmlAttribute("id")]
+        public string id;
+        [XmlAttribute("name")]
+        public string name;
+        [XmlAttribute("description")]
+        public string description;
+        [XmlAttribute("type")]
+        public string type;
+        [XmlAttribute("key")]
+        public string key;
+        [XmlAttribute("goal")]
+        public int goal;
+    }
+
+    public List<StageInfo> stageInfos;
 	public StageInfo FindStageInfo(int id) {
 		return stageInfos [id - 1];
 	}

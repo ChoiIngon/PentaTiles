@@ -57,4 +57,8 @@
 		<Stage id="32" name="Stage 32" description="block 3 to 5 levels" total_level="24"/>
 	</World>
 
+  <Achievements>
+    <Achievement id="ACHIEVEMENT_LEVEL_COMPLETE_1" name="Starter" description="Clear 1 Level" type="LevelComplete" key="" goal="1"/>
+    <Achievement id="ACHIEVEMENT_LEVEL_COMPLETE_10" name="10 Shoot" description="Clear 10 Level" type="LevelComplete" key="" goal="10"/>
+  </Achievements>
 </Config>

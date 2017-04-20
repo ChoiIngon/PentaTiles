@@ -12,6 +12,14 @@ public class PlayData {
 		public int clearLevel;
 	}
 
+    [System.Serializable]
+    public class AchievementData
+    {
+        public string id;
+        public int progress;
+        public Quest.State state;
+    }
+
 	public int currentStage;
 	public int currentLevel;
 
@@ -20,7 +28,7 @@ public class PlayData {
 
 	public bool[] openWorlds;		// world open state
 	public StageData[] stageDatas;	// each stage progress state
-
+    public AchievementData[] achievementDatas;
 	public StageData GetCurrentStageData() {
 		if (0 >= currentStage || stageDatas.Length < currentStage) {
 			return null;
@@ -73,6 +81,7 @@ public class PlayData {
 				openWorlds [worldInfo.id - 1] = true;
 			}
 		}
+
 		for (int i = 0; i < stageDatas.Length; i++) {
 			if (null == stageDatas[i]) {
 				PlayData.StageData stageData = new PlayData.StageData ();
