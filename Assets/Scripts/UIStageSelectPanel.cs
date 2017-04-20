@@ -23,9 +23,10 @@ public class UIStageSelectPanel : MonoBehaviour {
 
     private void Awake()
     {
-        achievementButton.onClick.AddListener(() =>
-        {
+        achievementButton.onClick.AddListener(() => {
+			AudioManager.Instance.Play("ButtonClick");
             Game.Instance.rootPanel.ScrollScreen(new Vector3(0.0f, -1.0f, 0.0f));
+			Game.Instance.achievementPanel.Sort();
         });
     }
     public void Init () {

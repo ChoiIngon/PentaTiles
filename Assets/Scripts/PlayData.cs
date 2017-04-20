@@ -12,14 +12,6 @@ public class PlayData {
 		public int clearLevel;
 	}
 
-    [System.Serializable]
-    public class AchievementData
-    {
-        public string id;
-        public int progress;
-        public Quest.State state;
-    }
-
 	public int currentStage;
 	public int currentLevel;
 
@@ -28,7 +20,8 @@ public class PlayData {
 
 	public bool[] openWorlds;		// world open state
 	public StageData[] stageDatas;	// each stage progress state
-    public AchievementData[] achievementDatas;
+    
+	public Dictionary<string, Achievement> achievements;
 	public StageData GetCurrentStageData() {
 		if (0 >= currentStage || stageDatas.Length < currentStage) {
 			return null;
@@ -49,8 +42,19 @@ public class PlayData {
 	{
 		Debug.Log ("loaded \'playdata.dat\' from " + Application.persistentDataPath + "/playdata.dat");
 		openWorlds = new bool[Game.Instance.config.worldInfos.Count];
-		stageDatas = new PlayData.StageData[Game.Instance.config.stageInfos.Count];
-
+		stageDatas = new StageData[Game.Instance.config.stageInfos.Count];
+		Quest.Init ();
+		achievements = new Dictionary<string, Achievement> ();
+		foreach (Config.AchievementInfo achievementInfo in Game.Instance.config.achievementInfos) {
+			Achievement achievement = new Achievement (
+				achievementInfo.id, 
+				achievementInfo.name, 
+				achievementInfo.description, 
+				new Quest.Progress("", achievementInfo.type, achievementInfo.key, achievementInfo.goal)
+			);
+			achievements.Add (achievement.id, achievement);
+			Quest.AddQuest (achievement);
+		}
 		PlayData tmpPlayData = null;
 		if (File.Exists (Application.persistentDataPath + "/playdata.dat")) {
 			BinaryFormatter bf = new BinaryFormatter ();
@@ -73,6 +77,14 @@ public class PlayData {
 				if (i < stageDatas.Length) {
 					stageDatas[i] = tmpPlayData.stageDatas[i];
 				}
+			}
+
+			achievements = tmpPlayData.achievements;
+			Quest.Init ();
+			foreach (var itr in achievements) {
+				Achievement achievement = itr.Value;
+				achievement.Start ();
+				Quest.AddQuest (achievement);
 			}
 		}
 

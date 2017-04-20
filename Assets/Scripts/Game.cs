@@ -71,7 +71,7 @@ public class Game : MonoBehaviour {
 
 		rootPanel.rectTransform.anchoredPosition = Vector2.zero;
 		stagePanel.Init ();
-
+		achievementPanel.Init ();
 		iTween.RotateBy(background, iTween.Hash("y", 1.0f, "speed", 7.0f, "easetype", iTween.EaseType.linear, "looptype", iTween.LoopType.loop));
 
 		FirebaseAnalytics.LogEvent (FirebaseAnalytics.EventAppOpen);
@@ -124,6 +124,8 @@ public class Game : MonoBehaviour {
                     new Parameter("level", playData.currentStage + "-" + playData.currentLevel),
                     new Parameter("star", playData.star)
                 });
+
+				Quest.Update ("LevelComplete", "");
             }
 
 			int newOpenWorld = GetNewOpenWorld ();

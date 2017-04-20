@@ -19,10 +19,12 @@ public static class Quest
 		Max
 	}
 		
+	[System.Serializable]
     public class Trigger
     {
         public virtual bool IsAvailable() { return true; }
     }
+	[System.Serializable]
     public class Progress
     {
         public string name;
@@ -129,6 +131,7 @@ public static class Quest
             return false;
         }
     }
+	[System.Serializable]
     public class Data
     {
         public string id;
@@ -158,15 +161,23 @@ public static class Quest
 
         public void Start()
         {
-            if (State.StartWait != state)
-            {
-                return;
-            }
+			if (State.Invalid == state) {
+				return;
+			}
+
+			switch (state) {
+			case State.Complete:
+			case State.Rewared:
+				return;
+			}
+			state = State.Complete;
             foreach (Progress p in progress)
             {
-                p.Start();
+				if (p.progress < p.goal) {
+                	p.Start();
+					state = State.Started;
+				}
             }
-            state = State.Started;
         }
         public bool IsComplete()
         {
@@ -196,6 +207,20 @@ public static class Quest
 
     public static Dictionary<string, UpdateDelegate> updates = new Dictionary<string, UpdateDelegate>();
     public static Dictionary<string, Data> datas = new Dictionary<string, Data>();
+
+	public static void Init()
+	{
+		updates = new Dictionary<string, UpdateDelegate>();
+		datas = new Dictionary<string, Data>();
+	}
+
+	public static void AddQuest(Data data)
+	{
+		if (true == datas.ContainsKey (data.id)) {
+			throw new System.Exception ("duplecated quest(id:" + data.id + ")");
+		}
+		datas.Add (data.id, data);
+	}
 
     public static void Update(string type, string key)
     {
@@ -250,11 +275,4 @@ public static class Quest
         }
         return null;
     }
-
-	public static void Save()
-	{
-	}
-
-	public static void Load() {
-	}
 }

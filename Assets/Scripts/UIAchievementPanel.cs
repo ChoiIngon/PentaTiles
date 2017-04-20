@@ -7,45 +7,32 @@ public class UIAchievementPanel : MonoBehaviour {
     public UIAchievementInfo achievementInfoPrefab;
     public RectTransform outerWindow;
     public Button backButton;
-    Dictionary<string, UIAchievementInfo> achievementInfos;
     private Vector2 targetPosition;
-    
-    private void Start()
-    {
-        achievementInfos = new Dictionary<string, UIAchievementInfo>();
-        backButton.onClick.AddListener(() =>
-        {
-            Game.Instance.rootPanel.ScrollScreen(new Vector3(0.0f, 1.0f, 0.0f));
-        });
-
-       // GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-        //targetPosition = outerWindow.anchoredPosition;
-        //outerWindow.anchoredPosition = new Vector2(0.0f, 1280.0f);
-        //gameObject.SetActive(false);
-    }
-    /*
-    private void OnEnable()
-    {
-        outerWindow.anchoredPosition = new Vector2(0.0f, 1280.0f);
-        SlideIn();
-    }
-
-    public void SlideIn()
-    {
-        Debug.Log("SlideIn");
-        iTween.ValueTo(outerWindow.gameObject, iTween.Hash(
-            "from", outerWindow.anchoredPosition,
-            "to", targetPosition,
-            "time", 0.5f,
-            "onupdatetarget", this.gameObject,
-            "onupdate", "MoveOuterWindow"
-            ));
-    }
-
-    public void MoveOuterWindow(Vector2 position)
-    {
-        outerWindow.anchoredPosition = position;
-        Debug.Log(outerWindow.anchoredPosition);
-    }
-    */
+	public Transform content;
+	public void Init()
+	{
+		backButton.onClick.AddListener(() => {
+			AudioManager.Instance.Play("ButtonClick");
+			Game.Instance.rootPanel.ScrollScreen(new Vector3(0.0f, 1.0f, 0.0f));
+		});
+	}
+	public void Sort()
+	{
+		while(content.childCount > 0) {
+			Transform child = content.GetChild (0);
+			child.transform.SetParent (null);
+			DestroyImmediate (child.gameObject);
+		}
+		List<Achievement> achievements = new List<Achievement> ();
+		foreach (var itr in Game.Instance.playData.achievements) {
+			Achievement achievement = itr.Value;
+			achievements.Add (achievement);
+		}
+		achievements.Sort (Achievement.Compare);
+		foreach (Achievement achievement in achievements) {
+			UIAchievementInfo uiAchievementInfo = GameObject.Instantiate<UIAchievementInfo> (achievementInfoPrefab);
+			uiAchievementInfo.Init (achievement);
+			uiAchievementInfo.transform.SetParent (content, false);
+		}
+	}
 }

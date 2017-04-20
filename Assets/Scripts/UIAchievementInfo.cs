@@ -19,7 +19,7 @@ public class UIAchievementInfo : MonoBehaviour {
 
         Quest.Progress progress = data.GetProgress();
         progressText.text = progress.progress.ToString() + "/" + progress.goal.ToString();
-        progressImage.transform.localScale = new Vector3(progress.progress / progress.goal, 1.0f, 1.0f);
+		progressImage.transform.localScale = new Vector3((float)progress.progress / (float)progress.goal, 1.0f, 1.0f);
 
         if (Quest.State.Complete == data.state)
         {
