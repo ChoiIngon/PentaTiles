@@ -25,12 +25,13 @@ public class Game : MonoBehaviour {
 		}  
 	}
 
-	public UIRootPanel rootPanel;
-	public UIStageSelectPanel stagePanel;
-	public UILevelSelectPanel levelPanel;
-	public UIGamePanel gamePanel;
-	public UISettingPanel settingPanel;
-	public GameObject background;
+	public UIRootPanel          rootPanel;
+	public UIStageSelectPanel   stagePanel;
+	public UILevelSelectPanel   levelPanel;
+	public UIGamePanel          gamePanel;
+	public UISettingPanel       settingPanel;
+    public UIAchievementPanel   achievementPanel;
+	public GameObject           background;
 
     public AudioSource bgm;
 

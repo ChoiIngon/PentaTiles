@@ -12,6 +12,8 @@ public class UIStageSelectPanel : MonoBehaviour {
 	public List<UIStageInfo> stageInfos;
 	public Transform content;
 	public Text totalStarCountText;
+    public Button achievementButton;
+
 
 	public int totalStarCount {
 		set {
@@ -19,8 +21,14 @@ public class UIStageSelectPanel : MonoBehaviour {
 		}
 	}
 
-	// Use this for initialization
-	public void Init () {
+    private void Awake()
+    {
+        achievementButton.onClick.AddListener(() =>
+        {
+            Game.Instance.rootPanel.ScrollScreen(new Vector3(0.0f, -1.0f, 0.0f));
+        });
+    }
+    public void Init () {
 		stageScrollRects = new List<ScrollRect>();
 		stageScrollRects.AddRange (new ScrollRect[Game.Instance.config.worldInfos.Count]);
 		stageInfos = new List<UIStageInfo> ();

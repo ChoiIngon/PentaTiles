@@ -8,16 +8,27 @@ public class UIAchievementInfo : MonoBehaviour {
     public Text description;
     public Text progressText;
     public Image progressImage;
-    
+    public Sprite giftBox;
+    public Sprite hint;
+    Quest.State state;
     public void Init(Achievement data)
     {
         title.text = data.name;
         description.text = data.description;
-    }
+        state = data.state;
 
-    public void SetProgress(Quest.Progress progress)
-    {
+        Quest.Progress progress = data.GetProgress();
         progressText.text = progress.progress.ToString() + "/" + progress.goal.ToString();
         progressImage.transform.localScale = new Vector3(progress.progress / progress.goal, 1.0f, 1.0f);
-    }
+
+        if (Quest.State.Complete == data.state)
+        {
+        }
+        else if (Quest.State.Rewared == data.state)
+        {
+        }
+        else
+        {
+        }
+     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIRootPanel : MonoBehaviour {
-	public float screenWidth;
+    private CanvasScaler canvasScaler;
 	public float scrollTime;
 	public RectTransform rectTransform;
 	private Coroutine scrollScreenCoroutine;
@@ -12,11 +12,12 @@ public class UIRootPanel : MonoBehaviour {
 	// Use this for initialization
 	void Awake()
 	{
-		rectTransform = GetComponent<RectTransform> ();
+        canvasScaler = GetComponentInParent<CanvasScaler>();
+        rectTransform = GetComponent<RectTransform> ();
 		scrollScreenCoroutine = null;
 	}
 
-	public void ScrollScreen(float direction)
+	public void ScrollScreen(Vector3 direction)
 	{
 		if (null != scrollScreenCoroutine) {
 			return;	
@@ -25,20 +26,19 @@ public class UIRootPanel : MonoBehaviour {
 		scrollScreenCoroutine = StartCoroutine (_ScrollScreen (direction));
 	}
 
-	private IEnumerator _ScrollScreen(float direction)
+	private IEnumerator _ScrollScreen(Vector3 direction)
 	{
-		float moveDistance = Mathf.Abs(screenWidth * direction);
-		Vector2 position = rectTransform.anchoredPosition;
-		float originalPosition = position.x;
-		while (0.0f < moveDistance) {
-			float delta = screenWidth * Time.deltaTime / scrollTime;
-			position.x += delta * direction;
-			rectTransform.anchoredPosition = position;
-			moveDistance -= delta;
-			yield return null;
+        Vector2 src = rectTransform.anchoredPosition;
+        Vector2 dest = new Vector2(rectTransform.anchoredPosition.x + canvasScaler.referenceResolution.x * direction.x, rectTransform.anchoredPosition.y + canvasScaler.referenceResolution.y * direction.y);
+
+        float interpolate = 0.0f;
+        while (1.0 > interpolate) {
+            rectTransform.anchoredPosition = Vector2.Lerp(src, dest, interpolate);
+            interpolate += Time.deltaTime / scrollTime;
+            yield return null;
 		}
 
-		rectTransform.anchoredPosition = new Vector2 (originalPosition + screenWidth * direction, rectTransform.anchoredPosition.y);
-		scrollScreenCoroutine = null;
+        rectTransform.anchoredPosition = dest;
+        scrollScreenCoroutine = null;
 	}
 }

@@ -30,7 +30,7 @@ public class UIStageInfo : MonoBehaviour {
 				button.onClick.AddListener(() => {
 					Game.Instance.levelPanel.Init(this.info);
 					Game.Instance.playData.currentStage = info.id;
-					Game.Instance.rootPanel.ScrollScreen(-1.0f);
+					Game.Instance.rootPanel.ScrollScreen(new Vector3(-1.0f, 0.0f, 0.0f));
 					AudioManager.Instance.Play("ButtonClick");
 				});
 			}
