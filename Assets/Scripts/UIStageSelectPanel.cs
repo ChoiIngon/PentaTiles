@@ -30,14 +30,11 @@ public class UIStageSelectPanel : MonoBehaviour {
         });
     }
     public void Init () {
-		stageScrollRects = new List<ScrollRect>();
-		stageScrollRects.AddRange (new ScrollRect[Game.Instance.config.worldInfos.Count]);
-		stageInfos = new List<UIStageInfo> ();
-		stageInfos.AddRange (new UIStageInfo[Game.Instance.config.stageInfos.Count]);
+        totalStarCount = Game.Instance.playData.star;
 
-		totalStarCount = Game.Instance.playData.star;
-
-		for (int i = 0; i < Game.Instance.config.worldInfos.Count; i++) {
+        stageScrollRects = new List<ScrollRect>(new ScrollRect[Game.Instance.config.worldInfos.Count]);
+		stageInfos = new List<UIStageInfo> (new UIStageInfo[Game.Instance.config.stageInfos.Count]);
+        for (int i = 0; i < Game.Instance.config.worldInfos.Count; i++) {
 			ScrollRect stageScrollRect = GameObject.Instantiate<ScrollRect> (stageScrollRectPrefab);
 			stageScrollRect.transform.SetParent (content, false);
 			stageScrollRects[i] = stageScrollRect;

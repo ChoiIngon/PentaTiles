@@ -6,9 +6,9 @@ using System.Xml;
 using System.Xml.Serialization;
 
 public class UIStageInfo : MonoBehaviour {
-	Config.StageInfo info;
-
+	private Config.StageInfo info;
 	private Button button;
+
 	public Text title;
 	public Text description;
 	public Image starImage;
@@ -28,17 +28,17 @@ public class UIStageInfo : MonoBehaviour {
 				title.text = info.name;
 				description.text = info.description;
 				button.onClick.AddListener(() => {
-					Game.Instance.levelPanel.Init(this.info);
+                    AudioManager.Instance.Play("ButtonClick");
+                    Game.Instance.levelPanel.Init(this.info);
 					Game.Instance.playData.currentStage = info.id;
 					Game.Instance.rootPanel.ScrollScreen(new Vector3(-1.0f, 0.0f, 0.0f));
-					AudioManager.Instance.Play("ButtonClick");
 				});
 			}
 			else
 			{
 				panelImage.sprite = closeSprite;
 				title.text = info.name;
-				description.text = "need " + info.openStar + " star to unlock stage";
+				//description.text = "need " + info.openStar + " star to unlock stage";
 				button.onClick.RemoveAllListeners();
 			}
 		}
@@ -47,17 +47,11 @@ public class UIStageInfo : MonoBehaviour {
 	public void Init(Config.StageInfo info)
     {
         this.info = info;
-
-		panelImage = GetComponent<Image>();
+        panelImage = GetComponent<Image>();
         button = GetComponent<Button>();
-
         PlayData.StageData stageData = Game.Instance.playData.stageDatas[info.id - 1];
 		SetClearLevel (stageData.clearLevel);
-
-		open = false;
-		if (Game.Instance.playData.star >= info.openStar) {
-			open = true;
-		}
+		open = stageData.open;
 	}
 
 	public void SetClearLevel(int level) {

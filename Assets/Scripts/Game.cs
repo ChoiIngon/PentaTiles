@@ -119,7 +119,7 @@ public class Game : MonoBehaviour {
 					{"star", playData.star}
 				});
 
-                FirebaseAnalytics.LogEvent("LevelComplete", new Parameter[] {
+                FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelUp, new Parameter[] {
                     new Parameter("stage", playData.currentStage),
                     new Parameter("level", playData.currentStage + "-" + playData.currentLevel),
                     new Parameter("star", playData.star)
@@ -158,12 +158,12 @@ public class Game : MonoBehaviour {
 	private int GetNewOpenWorld()
 	{
 		for (int i = 0; i < playData.openWorlds.Length; i++) {
-			if (false == playData.openWorlds [i] && playData.star >= config.worldInfos [i].openStar) {
+            
+            Config.WorldInfo worldInfo = config.worldInfos[i];
+
+            if (false == playData.openWorlds [i] && playData.star >= worldInfo.openStar) {
 				playData.openWorlds [i] = true;
-				Config.WorldInfo worldInfo = config.worldInfos [i];
-				foreach (Config.StageInfo stageInfo in worldInfo.stageInfos) {
-					stagePanel.GetStageInfo (stageInfo.id).open = true;
-				}
+                stagePanel.GetStageInfo(worldInfo.stageInfos[0].id).open = true;
 				return i + 1;
 			}
 		}

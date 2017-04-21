@@ -6,11 +6,12 @@ using UnityEngine;
 
 [System.Serializable]
 public class PlayData {
-	[System.Serializable]
+    [System.Serializable]
 	public class StageData {
-		public int id;
-		public int clearLevel;
-	}
+		public int id;      // stage id
+		public int clearLevel;   // clear level
+        public bool open;   // whether open or close
+    }
 
 	public int currentStage;
 	public int currentLevel;
@@ -66,6 +67,7 @@ public class PlayData {
 		if (null != tmpPlayData) {
 			hint = tmpPlayData.hint;
 			star = tmpPlayData.star;
+            openWorlds = tmpPlayData.openWorlds;
 			for (int i = 0; i < tmpPlayData.openWorlds.Length; i++) {
 				openWorlds [i] = false;
 				if (i < openWorlds.Length) {

@@ -7,11 +7,8 @@ using System.IO;
 using System.Text;
 
 [XmlRoot("Config")]
-public class Config {		
-	[XmlElement("World")]
-	public List<WorldInfo> worldInfos = new List<WorldInfo>();
-
-	[XmlType("World")]
+public class Config {
+    [XmlType("World")]
 	public class WorldInfo
 	{
 		[XmlAttribute("id")]
@@ -22,7 +19,11 @@ public class Config {
 		public List<StageInfo> stageInfos = new List<StageInfo>();
 	}
 
-	[System.Serializable]
+    [XmlArray("Worlds")]
+    [XmlArrayItem("World")]
+    public List<WorldInfo> worldInfos = new List<WorldInfo>();
+
+    [System.Serializable]
 	public class StageInfo
 	{
 		[XmlAttribute("id")]
@@ -33,12 +34,8 @@ public class Config {
 		public string description;
 		[XmlAttribute("total_level")]
 		public int totalLevel;
-		public int openStar;
-	}
-
-    [XmlArray("Achievements")]
-    [XmlArrayItem("Achievement")]
-    public List<AchievementInfo> achievementInfos = new List<AchievementInfo>();
+    }
+    public List<StageInfo> stageInfos = new List<StageInfo>();
 
     [XmlType("Achievement")]
     public class AchievementInfo
@@ -57,8 +54,26 @@ public class Config {
         public int goal;
     }
 
-    public List<StageInfo> stageInfos;
-	public StageInfo FindStageInfo(int id) {
+    [XmlArray("Achievements")]
+    [XmlArrayItem("Achievement")]
+    public List<AchievementInfo> achievementInfos = new List<AchievementInfo>();
+
+    [XmlArray("Blocks")]
+    [XmlArrayItem("Block")]
+    public List<BlockInfo> blockInfos = new List<BlockInfo>();
+
+    [XmlType("Block")]
+    public class BlockInfo
+    {
+        [XmlAttribute("id")]
+        public string id;
+        [XmlAttribute("stage")]
+        public int stage;
+        [XmlAttribute("level")]
+        public int level;
+    }
+
+    public StageInfo FindStageInfo(int id) {
 		return stageInfos [id - 1];
 	}
 
@@ -69,33 +84,29 @@ public class Config {
 		Config config = serializer.Deserialize (stream) as Config;
 		stream.Close ();
 
-		int worldCount = 0;
-		int stageCount = 0;
+		int worldMaxID = 0;
+		int stageMaxID = 0;
 		foreach (WorldInfo worldInfo in config.worldInfos) {
-			worldCount = Mathf.Max (worldCount, worldInfo.id);
+            worldMaxID = Mathf.Max (worldMaxID, worldInfo.id);
 			foreach (StageInfo stageInfo in worldInfo.stageInfos) {
-				stageCount = Mathf.Max (stageCount, stageInfo.id);
+				stageMaxID = Mathf.Max (stageMaxID, stageInfo.id);
 			}
 		}
 
-		List<WorldInfo> worldInfos = new List<WorldInfo>();
-		worldInfos.AddRange (new WorldInfo[worldCount]);
-		List<StageInfo> stageInfos = new List<StageInfo>();
-		stageInfos.AddRange (new StageInfo[stageCount]);
+		List<WorldInfo> worldInfos = new List<WorldInfo>(new WorldInfo[worldMaxID]);
+		List<StageInfo> stageInfos = new List<StageInfo>(new StageInfo[stageMaxID]);
 
 		foreach (WorldInfo worldInfo in config.worldInfos) {
 			worldInfos [worldInfo.id - 1] = worldInfo;
 			foreach (StageInfo stageInfo in worldInfo.stageInfos) {
 #if UNITY_EDITOR
-				Debug.Assert(0 < stageInfo.id && stageCount >= stageInfo.id, "invalid stage id:" + stageInfo.id);
 				Debug.Assert(null == stageInfos [stageInfo.id - 1], "duplicated stage id:" + stageInfo.id);
 #endif
-				stageInfo.openStar = worldInfo.openStar;
 				stageInfos [stageInfo.id - 1] = stageInfo;
 			}
 		}
 
-		config.worldInfos = worldInfos;
+        config.worldInfos = worldInfos;
 		config.stageInfos = stageInfos;
 		return config;
 	}
