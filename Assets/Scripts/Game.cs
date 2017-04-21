@@ -121,7 +121,7 @@ public class Game : MonoBehaviour {
                 {
                     levelPanel.GetLevelInfo(stageData.clearLevel + 1).Unlock();
                 }
-                else if (stageData.clearLevel == stageInfo.totalLevel)
+                else if (stageData.clearLevel == stageInfo.totalLevel && stageData.id < playData.stageDatas.Length)
                 {
                     playData.stageDatas[stageData.id + 1].open = true;
                     stagePanel.GetStageInfo(stageData.id + 1).open = true;
