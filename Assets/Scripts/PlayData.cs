@@ -67,7 +67,7 @@ public class PlayData {
 		if (null != tmpPlayData) {
 			hint = tmpPlayData.hint;
 			star = tmpPlayData.star;
-            openWorlds = tmpPlayData.openWorlds;
+            
 			for (int i = 0; i < tmpPlayData.openWorlds.Length; i++) {
 				openWorlds [i] = false;
 				if (i < openWorlds.Length) {
@@ -90,19 +90,23 @@ public class PlayData {
 			}
 		}
 
-		foreach (Config.WorldInfo worldInfo in Game.Instance.config.worldInfos) {
-			if (star >= worldInfo.openStar) {
-				openWorlds [worldInfo.id - 1] = true;
-			}
-		}
-
 		for (int i = 0; i < stageDatas.Length; i++) {
 			if (null == stageDatas[i]) {
 				PlayData.StageData stageData = new PlayData.StageData ();
 				stageData.id = i + 1;
 				stageData.clearLevel = 0;
+                stageData.open = false;
 				stageDatas [i] = stageData;
 			}
 		}
-	}
+
+        foreach (Config.WorldInfo worldInfo in Game.Instance.config.worldInfos)
+        {
+            if (star >= worldInfo.openStar)
+            {
+                openWorlds[worldInfo.id - 1] = true;
+                stageDatas[worldInfo.stageInfos[0].id-1].open = true;
+            }
+        }
+    }
 }

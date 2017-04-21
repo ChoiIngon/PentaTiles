@@ -109,11 +109,25 @@ public class Game : MonoBehaviour {
 			playTime = Time.realtimeSinceStartup - playTime;
 			PlayData.StageData stageData = playData.GetCurrentStageData ();
 			if (stageData.clearLevel < playData.currentLevel) {
-				stageData.clearLevel = playData.currentLevel;
-				playData.star += 1;
-				stagePanel.totalStarCount = playData.star;
+                playData.star += 1;
 
-				Analytics.CustomEvent("LevelComplete", new Dictionary<string, object> {
+                stageData.clearLevel = playData.currentLevel;
+
+                stagePanel.totalStarCount = playData.star;
+                stagePanel.GetStageInfo(stageData.id).SetClearLevel(stageData.clearLevel);
+
+                Config.StageInfo stageInfo = config.FindStageInfo(playData.currentStage);
+                if (stageData.clearLevel < stageInfo.totalLevel)
+                {
+                    levelPanel.GetLevelInfo(stageData.clearLevel + 1).Unlock();
+                }
+                else if (stageData.clearLevel == stageInfo.totalLevel)
+                {
+                    playData.stageDatas[stageData.id + 1].open = true;
+                    stagePanel.GetStageInfo(stageData.id + 1).open = true;
+                }
+
+                Analytics.CustomEvent("LevelComplete", new Dictionary<string, object> {
 					{"stage", playData.currentStage},
 					{"level", playData.currentStage + "-" + playData.currentLevel},
 					{"star", playData.star}
@@ -128,6 +142,7 @@ public class Game : MonoBehaviour {
 				Quest.Update ("LevelComplete", "");
             }
 
+            
 			int newOpenWorld = GetNewOpenWorld ();
 			if (0 != newOpenWorld) {
 				Analytics.CustomEvent ("OpenWorld_" + newOpenWorld.ToString (), new Dictionary<string, object> {
@@ -141,13 +156,8 @@ public class Game : MonoBehaviour {
                     new Parameter("star", playData.star)
                 });
             }
-			Config.StageInfo stageInfo = config.FindStageInfo (playData.currentStage);
-			stagePanel.GetStageInfo (stageData.id).SetClearLevel(stageData.clearLevel);
-			if (stageData.clearLevel < stageInfo.totalLevel ) {
-				levelPanel.GetLevelInfo (stageData.clearLevel+1).Unlock ();
-			}
 
-			playData.Save ();
+            playData.Save ();
 
 			yield return new WaitForSeconds (1.0f);
 			yield return StartCoroutine(gamePanel.levelComplete.Open (newOpenWorld));
