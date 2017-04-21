@@ -46,7 +46,22 @@
   </Worlds>
   
   <Blocks>
-    <Block sprite="Gun" stage="1" level="1"/>
+    <Block stage="1" level="1" id="Thumb"/>
+	<Block stage="1" level="3" id="Worm"/>
+	<Block stage="1" level="5" id="Gun"/>
+	<Block stage="1" level="9" id="Two"/>
+	<Block stage="1" level="13" id="HeadSpin"/>
+	<Block stage="1" level="19" id="Key"/>
+	<Block stage="2" level="2" id="L"/>
+	<Block stage="2" level="7" id="Stairway"/>
+	<Block stage="2" level="16" id="Lock"/>
+	<Block stage="5" level="9" id="Lock"/>
+	<Block stage="3" level="2" id="Cross"/>
+	<Block stage="6" level="5" id="Cross"/>
+	<Block stage="3" level="13" id="Flat"/>
+	<Block stage="6" level="20" id="Flat"/>
+	<Block stage="4" level="2" id="Missile"/>
+	<Block stage="5" level="3" id="Missile"/>
   </Blocks>
   
   <Achievements>
