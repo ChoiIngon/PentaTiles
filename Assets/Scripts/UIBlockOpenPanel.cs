@@ -3,29 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIWorldOpenPanel : MonoBehaviour {
+public class UIBlockOpenPanel : MonoBehaviour {
 	public Image image;
 	public Text text;
 	public Sprite[] blockSprites;
 	public Button okButton;
+
+	private Dictionary<string, Sprite> _blockSprites;
+	private RectTransform rectTransform;
 
 	void Start() {
 		okButton.onClick.AddListener (() => {
 			AudioManager.Instance.Play("ButtonClick");
 			gameObject.SetActive(false);
 		});
-	}
-
-	public IEnumerator Open(int world)
-	{
-		if (0 >= world || blockSprites.Length < world) {
-			yield break;
+		_blockSprites = new Dictionary<string, Sprite> ();
+		foreach (Sprite sprite in blockSprites) {
+			_blockSprites.Add (sprite.name, sprite);
 		}
 
+		rectTransform = GetComponent<RectTransform> ();
+	}
+
+	public IEnumerator Open(string blockID)
+	{
+		Map.Instance.enableTouchInput = false;
+		rectTransform.anchoredPosition = Vector2.zero;
 		AudioManager.Instance.Play("LevelClear");
 		gameObject.SetActive (true);
 
-		Sprite sprite = blockSprites [world - 1];
+		Sprite sprite = _blockSprites [blockID];
 		image.rectTransform.sizeDelta = sprite.rect.size;
 		image.sprite = sprite;
 
@@ -35,5 +42,6 @@ public class UIWorldOpenPanel : MonoBehaviour {
 		while (true == gameObject.activeSelf) {
 			yield return null;
 		}
+		Map.Instance.enableTouchInput = true;
 	}
 }

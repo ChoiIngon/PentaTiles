@@ -1,21 +1,21 @@
 fileFormatVersion: 2
 guid: 37a2964db78394d5bb6039cfd8c12ff1
-timeCreated: 1492259840
+timeCreated: 1492786309
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Blocks_0
-    21300002: Blocks_1
-    21300004: Blocks_2
-    21300006: Blocks_3
-    21300008: Blocks_4
-    21300010: Blocks_5
-    21300012: Blocks_6
-    21300014: Blocks_7
-    21300016: Blocks_8
-    21300018: Blocks_9
-    21300020: Blocks_10
-    21300022: Blocks_11
+    21300000: Block_Thumb
+    21300002: Block_Gun
+    21300004: Block_Worm
+    21300006: Block_Key
+    21300008: Block_HeadSpin
+    21300010: Block_L
+    21300012: Block_Two
+    21300014: Block_Lock
+    21300016: Block_Stairway
+    21300018: Block_Cross
+    21300020: Block_Flat
+    21300022: Block_Missile
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -98,7 +98,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Blocks_0
+      name: Block_Thumb
       rect:
         serializedVersion: 2
         x: 51
@@ -106,12 +106,12 @@ TextureImporter:
         width: 128
         height: 192
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Blocks_1
+      name: Block_Gun
       rect:
         serializedVersion: 2
         x: 275
@@ -119,12 +119,12 @@ TextureImporter:
         width: 256
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Blocks_2
+      name: Block_Worm
       rect:
         serializedVersion: 2
         x: 564
@@ -132,12 +132,12 @@ TextureImporter:
         width: 256
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Blocks_3
+      name: Block_Key
       rect:
         serializedVersion: 2
         x: 880
@@ -145,12 +145,12 @@ TextureImporter:
         width: 128
         height: 256
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Blocks_4
+      name: Block_HeadSpin
       rect:
         serializedVersion: 2
         x: 1094
@@ -158,12 +158,12 @@ TextureImporter:
         width: 192
         height: 192
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Blocks_5
+      name: Block_L
       rect:
         serializedVersion: 2
         x: 51
@@ -171,12 +171,12 @@ TextureImporter:
         width: 192
         height: 192
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Blocks_6
+      name: Block_Two
       rect:
         serializedVersion: 2
         x: 275
@@ -184,12 +184,12 @@ TextureImporter:
         width: 192
         height: 192
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Blocks_7
+      name: Block_Lock
       rect:
         serializedVersion: 2
         x: 564
@@ -197,12 +197,12 @@ TextureImporter:
         width: 192
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Blocks_8
+      name: Block_Stairway
       rect:
         serializedVersion: 2
         x: 816
@@ -210,12 +210,12 @@ TextureImporter:
         width: 192
         height: 192
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Blocks_9
+      name: Block_Cross
       rect:
         serializedVersion: 2
         x: 1094
@@ -223,12 +223,12 @@ TextureImporter:
         width: 192
         height: 192
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Blocks_10
+      name: Block_Flat
       rect:
         serializedVersion: 2
         x: 51
@@ -236,12 +236,12 @@ TextureImporter:
         width: 320
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Blocks_11
+      name: Block_Missile
       rect:
         serializedVersion: 2
         x: 404
@@ -249,7 +249,7 @@ TextureImporter:
         width: 192
         height: 192
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0

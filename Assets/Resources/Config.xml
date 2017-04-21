@@ -46,22 +46,22 @@
   </Worlds>
   
   <Blocks>
-    <Block stage="1" level="1" id="Thumb"/>
-	<Block stage="1" level="3" id="Worm"/>
-	<Block stage="1" level="5" id="Gun"/>
-	<Block stage="1" level="9" id="Two"/>
-	<Block stage="1" level="13" id="HeadSpin"/>
-	<Block stage="1" level="19" id="Key"/>
-	<Block stage="2" level="2" id="L"/>
-	<Block stage="2" level="7" id="Stairway"/>
-	<Block stage="2" level="16" id="Lock"/>
-	<Block stage="5" level="9" id="Lock"/>
-	<Block stage="3" level="2" id="Cross"/>
-	<Block stage="6" level="5" id="Cross"/>
-	<Block stage="3" level="13" id="Flat"/>
-	<Block stage="6" level="20" id="Flat"/>
-	<Block stage="4" level="2" id="Missile"/>
-	<Block stage="5" level="3" id="Missile"/>
+    <Block stage="1" level="1" id="Block_Thumb"/>
+	<Block stage="1" level="3" id="Block_Worm"/>
+	<Block stage="1" level="5" id="Block_Gun"/>
+	<Block stage="1" level="9" id="Block_Two"/>
+	<Block stage="1" level="13" id="Block_HeadSpin"/>
+	<Block stage="1" level="19" id="Block_Key"/>
+	<Block stage="2" level="2" id="Block_L"/>
+	<Block stage="2" level="7" id="Block_Stairway"/>
+	<Block stage="2" level="16" id="Block_Lock"/>
+	<Block stage="5" level="9" id="Block_Lock"/>
+	<Block stage="3" level="2" id="Block_Cross"/>
+	<Block stage="6" level="5" id="Block_Cross"/>
+	<Block stage="3" level="13" id="Block_Flat"/>
+	<Block stage="6" level="20" id="Block_Flat"/>
+	<Block stage="4" level="2" id="Block_Missile"/>
+	<Block stage="5" level="3" id="Block_Missile"/>
   </Blocks>
   
   <Achievements>

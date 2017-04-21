@@ -31,6 +31,7 @@ public class Game : MonoBehaviour {
 	public UIGamePanel          gamePanel;
 	public UISettingPanel       settingPanel;
     public UIAchievementPanel   achievementPanel;
+	public UIBlockOpenPanel		blockOpenPanel;
 	public GameObject           background;
 
     public AudioSource bgm;
@@ -100,7 +101,7 @@ public class Game : MonoBehaviour {
         string newOpenBlockID = GetNewOpenBlock();
         if("" != newOpenBlockID && false == playData.openBlocks.ContainsKey(newOpenBlockID)) {
             playData.openBlocks.Add(newOpenBlockID, newOpenBlockID);
-
+			StartCoroutine (blockOpenPanel.Open (newOpenBlockID));
         }
     }
 

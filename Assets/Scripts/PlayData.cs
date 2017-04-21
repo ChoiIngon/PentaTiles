@@ -46,6 +46,7 @@ public class PlayData {
 		Debug.Log ("loaded \'playdata.dat\' from " + Application.persistentDataPath + "/playdata.dat");
 		openWorlds = new bool[Game.Instance.config.worldInfos.Count];
 		stageDatas = new StageData[Game.Instance.config.stageInfos.Count];
+		openBlocks = new Dictionary<string, string> ();
 		Quest.Init ();
 		achievements = new Dictionary<string, Achievement> ();
 		foreach (Config.AchievementInfo achievementInfo in Game.Instance.config.achievementInfos) {
@@ -90,6 +91,7 @@ public class PlayData {
 				achievement.Start ();
 				Quest.AddQuest (achievement);
 			}
+			openBlocks = tmpPlayData.openBlocks;
 		}
 
 		for (int i = 0; i < stageDatas.Length; i++) {
