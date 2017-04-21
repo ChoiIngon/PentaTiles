@@ -23,6 +23,8 @@ public class PlayData {
 	public StageData[] stageDatas;	// each stage progress state
     
 	public Dictionary<string, Achievement> achievements;
+    public Dictionary<string, string> openBlocks;
+
 	public StageData GetCurrentStageData() {
 		if (0 >= currentStage || stageDatas.Length < currentStage) {
 			return null;

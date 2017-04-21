@@ -96,6 +96,12 @@ public class Game : MonoBehaviour {
             new Parameter("stage", playData.currentStage),
             new Parameter("level", playData.currentStage + "-" + playData.currentLevel)
         });
+
+        string newOpenBlockID = GetNewOpenBlock();
+        if("" != newOpenBlockID && false == playData.openBlocks.ContainsKey(newOpenBlockID)) {
+            playData.openBlocks.Add(newOpenBlockID, newOpenBlockID);
+
+        }
     }
 
 	public void CheckLevelComplete()
@@ -143,7 +149,7 @@ public class Game : MonoBehaviour {
             }
 
             
-			int newOpenWorld = GetNewOpenWorld ();
+			int newOpenWorld = GetNewOpenWorld();
 			if (0 != newOpenWorld) {
 				Analytics.CustomEvent ("OpenWorld_" + newOpenWorld.ToString (), new Dictionary<string, object> {
 					{ "stage", playData.currentStage },
@@ -180,6 +186,18 @@ public class Game : MonoBehaviour {
 		return 0;
 	}
 
+    private string GetNewOpenBlock()
+    {
+        for (int i = 0; i < config.blockInfos.Count; i++)
+        {
+            Config.BlockInfo blockInfo = config.blockInfos[i];
+            if (playData.currentStage == blockInfo.stage && playData.currentLevel == blockInfo.level)
+            {
+                return blockInfo.id;
+            }
+        }
+        return "";
+    }
 	public bool UseHint()
 	{
 		if (0 >= playData.hint) {
