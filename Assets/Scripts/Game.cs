@@ -33,7 +33,7 @@ public class Game : MonoBehaviour {
     public UIAchievementPanel   achievementPanel;
 	public UIAchievementCompletePanel achievementCompletePanel;
 	public UIBlockOpenPanel		blockOpenPanel;
-
+	public UIRewardPanel		rewardPanel;
 	public GameObject           background;
 
     public AudioSource bgm;
@@ -214,6 +214,7 @@ public class Game : MonoBehaviour {
 			
 		playData.hint -= 1;
 		playData.Save ();
+		gamePanel.hintCount = playData.hint;
 		Analytics.CustomEvent("HintUse", new Dictionary<string, object> {
 			{"stage", playData.currentStage},
 			{"level", playData.currentStage + "-" + playData.currentLevel}
@@ -225,6 +226,14 @@ public class Game : MonoBehaviour {
         });
 
         return true;
+	}
+
+	public void AddHint(int count)
+	{
+		playData.hint += count;
+		playData.Save ();
+		gamePanel.hintCount = playData.hint;
+		StartCoroutine (rewardPanel.Open ());
 	}
 
 	//#if UNITY_EDITOR

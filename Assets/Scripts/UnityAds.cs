@@ -76,11 +76,8 @@ public class UnityAds : MonoBehaviour {
 		switch (result)	{
 		case ShowResult.Finished:
 		case ShowResult.Skipped:
-			Debug.Log("The ad was successfully shown.");
-			Game.Instance.playData.hint += rewardHintCount;
-			Game.Instance.gamePanel.hintCount = Game.Instance.playData.hint;
-			Game.Instance.playData.Save ();
-			StartCoroutine (rewardPanel.Open ());
+			Debug.Log ("The ad was successfully shown.");
+			Game.Instance.AddHint (rewardHintCount);
 			Analytics.CustomEvent("AdsWatch", new Dictionary<string, object> {
 				{"stage", Game.Instance.playData.currentStage},
 				{"level", Game.Instance.playData.currentStage + "-" +  Game.Instance.playData.currentLevel},

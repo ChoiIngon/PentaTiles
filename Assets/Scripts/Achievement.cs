@@ -78,9 +78,9 @@ public class Achievement : Quest.Data {
 		}
 		else if (Quest.State.Rewared == lhs.state) {
 			if (Quest.State.Started == rhs.state) {
-				return -1;
+				return 1;
 			} else if (Quest.State.Complete == rhs.state) {
-				return -1;
+				return 1;
 			} else if (Quest.State.Rewared == rhs.state) {
 				return 0;
 			}
