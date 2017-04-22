@@ -31,7 +31,9 @@ public class Game : MonoBehaviour {
 	public UIGamePanel          gamePanel;
 	public UISettingPanel       settingPanel;
     public UIAchievementPanel   achievementPanel;
+	public UIAchievementCompletePanel achievementCompletePanel;
 	public UIBlockOpenPanel		blockOpenPanel;
+
 	public GameObject           background;
 
     public AudioSource bgm;
@@ -46,6 +48,7 @@ public class Game : MonoBehaviour {
 
 	void Start()
 	{
+		Quest.onComplete += achievementCompletePanel.Open;
 		unityAds = GetComponent<UnityAds> ();
 		Dictionary<string, object> defaultRemoteConfig = new Dictionary<string, object>();
 		defaultRemoteConfig.Add("ads_interval_count", 3);
@@ -119,7 +122,7 @@ public class Game : MonoBehaviour {
                 playData.star += 1;
 
                 stageData.clearLevel = playData.currentLevel;
-
+				levelPanel.GetLevelInfo(stageData.clearLevel).Unlock();
                 stagePanel.totalStarCount = playData.star;
                 stagePanel.GetStageInfo(stageData.id).SetClearLevel(stageData.clearLevel);
 
@@ -239,4 +242,9 @@ public class Game : MonoBehaviour {
         GUI.Label (new Rect (0, 0, 500, 200), text);
 	}
 	//#endif
+
+
+	public void OnAchievementComplete(Quest.Data quest)
+	{
+	}
 }

@@ -200,7 +200,7 @@ public static class Quest
     
     public delegate void UpdateDelegate(string key);
     public delegate void ProgressDelegate(Progress progress);
-    public delegate void CompleteDelegate(Data quests);
+    public delegate void CompleteDelegate(Data quest);
 
     public static CompleteDelegate onComplete;
     public static ProgressDelegate onProgress;

@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public class UILevelInfo : MonoBehaviour {
 	public Sprite unlockedLevelSprite;
+	public Image starImage;
 
-	Image image;
+	Image buttonImage;
 	Button button;
 	Text text;
 	int stage;
@@ -14,7 +15,7 @@ public class UILevelInfo : MonoBehaviour {
 
 	public void Init(int stage, int level)
 	{
-		image = GetComponent<Image> ();
+		buttonImage = GetComponent<Image> ();
 		button = GetComponent<Button> ();
 		button.onClick.AddListener (() => {
 			Game.Instance.StartLevel(this.stage, this.level);
@@ -26,14 +27,19 @@ public class UILevelInfo : MonoBehaviour {
 		this.stage = stage;
 		this.level = level;
 		button.enabled = false;
+		starImage.gameObject.SetActive (false);
 		text.gameObject.SetActive (false);
 	}
 
 	public void Unlock()
 	{
-		image.sprite = unlockedLevelSprite;
+		buttonImage.sprite = unlockedLevelSprite;
 		text.text = level.ToString (); 
 		button.enabled = true;
 		text.gameObject.SetActive (true);
+		PlayData.StageData stageData = Game.Instance.playData.stageDatas [stage - 1];
+		if (level <= stageData.clearLevel) {
+			starImage.gameObject.SetActive (true);
+		}
 	}
 }
