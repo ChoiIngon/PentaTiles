@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 4302c7735c33040d89541259bde06674
-timeCreated: 1492590697
+timeCreated: 1492954670
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -133,7 +133,7 @@ TextureImporter:
     21300252: Button_126
     21300254: Button_127
     21300256: Button_128
-    21300258: Button_129
+    21300258: Button@Shop
     21300260: Button_130
     21300262: Button_131
     21300264: Button_132
@@ -1941,7 +1941,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Button_129
+      name: Button@Shop
       rect:
         serializedVersion: 2
         x: 1139

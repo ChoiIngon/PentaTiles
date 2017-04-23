@@ -6,19 +6,14 @@ using UnityEngine.UI;
 public class UIAchievementPanel : MonoBehaviour {
     public UIAchievementInfo achievementInfoPrefab;
     public RectTransform outerWindow;
-    public Button backButton;
-	public Transform content;
+    public Transform content;
 
     private List<UIAchievementInfo> uiAchievementInfos;
     private List<Achievement> achievements;
 
     public void Init()
 	{
-		backButton.onClick.AddListener(() => {
-			AudioManager.Instance.Play("ButtonClick");
-			Game.Instance.rootPanel.ScrollScreen(new Vector3(0.0f, 1.0f, 0.0f));
-		});
-        uiAchievementInfos = new List<UIAchievementInfo>();
+		uiAchievementInfos = new List<UIAchievementInfo>();
         achievements = new List<Achievement>();
         foreach (var itr in Game.Instance.playData.achievements)
         {
