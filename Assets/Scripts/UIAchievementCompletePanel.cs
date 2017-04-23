@@ -17,8 +17,10 @@ public class UIAchievementCompletePanel : MonoBehaviour {
 		titles = new List<string> ();
 		rectTransform = GetComponent<RectTransform> ();
 	}
-	
+
+	// onComplete
 	public void Open(Quest.Data achievement) {
+		Game.Instance.stagePanel.newAchievement.SetActive (true);
 		titles.Add (achievement.name);
 		if (null == coroutine) {
 			coroutine = StartCoroutine (_Open ());

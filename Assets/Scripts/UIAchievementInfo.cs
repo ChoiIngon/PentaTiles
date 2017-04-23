@@ -16,8 +16,7 @@ public class UIAchievementInfo : MonoBehaviour {
     Quest.State state;
     public void Init(Achievement data)
     {
-		
-        title.text = data.name;
+		title.text = data.name;
         description.text = data.description;
         state = data.state;
 
@@ -40,6 +39,7 @@ public class UIAchievementInfo : MonoBehaviour {
 				Game.Instance.achievementPanel.Sort();
 			});
 			giftBox.SetActive (true);
+			Game.Instance.stagePanel.newAchievement.SetActive (true);
         }
         else if (Quest.State.Rewared == data.state)
         {
