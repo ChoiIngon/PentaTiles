@@ -29,7 +29,7 @@ public class UnityAds : MonoBehaviour {
 
         lastAdShowTime = Time.realtimeSinceStartup;
         lastAdShowCount = 0;
-        watchCount = 1;
+        watchCount = 0;
 
         string gameID = androidGameID;
 		if (Application.platform == RuntimePlatform.Android) {
@@ -70,29 +70,64 @@ public class UnityAds : MonoBehaviour {
 		var options = new ShowOptions { resultCallback = OnAdsComplete };
 		Advertisement.Show("video", options);
 	}
-
 	private void OnAdsComplete(ShowResult result)
 	{
 		switch (result)	{
 		case ShowResult.Finished:
 		case ShowResult.Skipped:
 			Debug.Log ("The ad was successfully shown.");
+			watchCount++;
 			Game.Instance.AddHint (rewardHintCount);
 			Analytics.CustomEvent("AdsWatch", new Dictionary<string, object> {
 				{"stage", Game.Instance.playData.currentStage},
 				{"level", Game.Instance.playData.currentStage + "-" +  Game.Instance.playData.currentLevel},
-				{"count", watchCount++ } 
+				{"count",  watchCount} 
 			});
-            FirebaseAnalytics.LogEvent("AdsWatch", new Parameter[] {
-                new Parameter("stage", Game.Instance.playData.currentStage),
-                new Parameter("level", Game.Instance.playData.currentStage + "-" +  Game.Instance.playData.currentLevel),
-                new Parameter("count", watchCount++),
+			FirebaseAnalytics.LogEvent("AdsWatch", new Parameter[] {
+				new Parameter("stage", Game.Instance.playData.currentStage),
+				new Parameter("level", Game.Instance.playData.currentStage + "-" +  Game.Instance.playData.currentLevel),
+				new Parameter("count", watchCount),
 				new Parameter("show_result", result.ToString())
-            });
-            break;
-		//case ShowResult.Skipped:
+			});
+			break;
+			//case ShowResult.Skipped:
 			//Debug.Log("The ad was skipped before reaching the end.");
 			//break;
+		case ShowResult.Failed:
+			Debug.LogError("The ad failed to be shown.");
+			break;
+
+		}
+	}
+	public void ShowRewardAds()
+	{
+		lastAdShowTime = Time.realtimeSinceStartup;
+		lastAdShowCount = 0;
+		var options = new ShowOptions { resultCallback = OnRewaredAdsComplete };
+		Advertisement.Show("rewardedVideo", options);
+	}
+	private void OnRewaredAdsComplete(ShowResult result)
+	{
+		switch (result)	{
+		case ShowResult.Finished:
+			Debug.Log ("The ad was successfully shown.");
+			watchCount++;
+			Game.Instance.AddHint (rewardHintCount);
+			Analytics.CustomEvent("RewardedAdsWatch", new Dictionary<string, object> {
+				{"stage", Game.Instance.playData.currentStage},
+				{"level", Game.Instance.playData.currentStage + "-" +  Game.Instance.playData.currentLevel},
+				{"count", watchCount } 
+			});
+			FirebaseAnalytics.LogEvent("RewardedAdsWatch", new Parameter[] {
+				new Parameter("stage", Game.Instance.playData.currentStage),
+				new Parameter("level", Game.Instance.playData.currentStage + "-" +  Game.Instance.playData.currentLevel),
+				new Parameter("count", watchCount),
+				new Parameter("show_result", result.ToString())
+			});
+			break;
+		case ShowResult.Skipped:
+			Debug.Log("The ad was skipped before reaching the end.");
+			break;
 		case ShowResult.Failed:
 			Debug.LogError("The ad failed to be shown.");
 			break;

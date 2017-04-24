@@ -7,6 +7,7 @@ public class UIGamePanel : MonoBehaviour {
 	public Text level;
 	public Button backButton;
 	public Button redoButton;
+	public Button adsButton;
 	public Button hintButton;
 	public Text hintText;
 	public UILevelComplete levelComplete;
@@ -24,6 +25,9 @@ public class UIGamePanel : MonoBehaviour {
 		backButton.onClick.AddListener (() => {
 			Map.Instance.gameObject.SetActive (false);
             levelComplete.gameObject.SetActive(false);
+		});
+		adsButton.onClick.AddListener (() => {
+			Game.Instance.unityAds.ShowRewardAds();
 		});
 		redoButton.onClick.AddListener (() => {
 			Game.Instance.StartLevel(Game.Instance.playData.currentStage, Game.Instance.playData.currentLevel);

@@ -4,40 +4,60 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UILevelInfo : MonoBehaviour {
+	public Sprite lockedLevelSprite;
 	public Sprite unlockedLevelSprite;
 	public Image starImage;
 
 	Image buttonImage;
-	Button button;
+	Button startLevelButton;
 	Text text;
 	int stage;
 	int level;
 
-	public void Init(int stage, int level)
+	public void Awake()
 	{
 		buttonImage = GetComponent<Image> ();
-		button = GetComponent<Button> ();
-		button.onClick.AddListener (() => {
+		startLevelButton = GetComponent<Button> ();
+		startLevelButton.onClick.AddListener (() => {
 			Game.Instance.StartLevel(this.stage, this.level);
 			Game.Instance.rootPanel.ScrollScreen(new Vector3(-1.0f, 0.0f, 0.0f));
 			AudioManager.Instance.Play("ButtonClick");
 		});
 		text = transform.FindChild ("Text").GetComponent<Text> ();
+	}
 
+	public void Init(int stage, int level)
+	{
 		this.stage = stage;
 		this.level = level;
-		button.enabled = false;
+		startLevelButton.enabled = false;
 		starImage.gameObject.SetActive (false);
 		text.gameObject.SetActive (false);
+		buttonImage.sprite = lockedLevelSprite;
+		PlayData.StageData stageData = Game.Instance.playData.GetCurrentStageData ();
+		if (level <= stageData.clearLevel + 1) {
+			Unlock ();
+		}
+
+		if (level <= stageData.clearLevel) {
+			Complete ();
+		}
 	}
 
 	public void Unlock()
 	{
-		buttonImage.sprite = unlockedLevelSprite;
-		text.text = level.ToString (); 
-		button.enabled = true;
-		text.gameObject.SetActive (true);
-		PlayData.StageData stageData = Game.Instance.playData.stageDatas [stage - 1];
+		PlayData.StageData stageData = Game.Instance.playData.GetCurrentStageData();
+		if (level <= stageData.clearLevel + 1) {
+			buttonImage.sprite = unlockedLevelSprite;
+			text.text = level.ToString (); 
+			startLevelButton.enabled = true;
+			text.gameObject.SetActive (true);
+		}
+	}
+
+	public void Complete()
+	{
+		PlayData.StageData stageData = Game.Instance.playData.GetCurrentStageData();
 		if (level <= stageData.clearLevel) {
 			starImage.gameObject.SetActive (true);
 		}

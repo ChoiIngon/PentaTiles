@@ -29,8 +29,8 @@ public class UIStageInfo : MonoBehaviour {
 				description.text = info.description;
 				button.onClick.AddListener(() => {
                     AudioManager.Instance.Play("ButtonClick");
-                    Game.Instance.levelPanel.Init(this.info);
 					Game.Instance.playData.currentStage = info.id;
+					Game.Instance.levelPanel.SetLevelInfos(this.info);
 					Game.Instance.rootPanel.ScrollScreen(new Vector3(-1.0f, 0.0f, 0.0f));
 				});
 			}

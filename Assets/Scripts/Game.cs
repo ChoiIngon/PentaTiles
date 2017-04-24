@@ -41,7 +41,7 @@ public class Game : MonoBehaviour {
 	public Config config;
 	public PlayData playData;
 
-	private UnityAds unityAds;
+	public UnityAds unityAds;
 
 	public float playTime;
 	public int moveCount;
@@ -75,6 +75,7 @@ public class Game : MonoBehaviour {
 
 		rootPanel.rectTransform.anchoredPosition = Vector2.zero;
 		stagePanel.Init ();
+		levelPanel.Init ();
 		achievementPanel.Init ();
 		iTween.RotateBy(background, iTween.Hash("y", 1.0f, "speed", 7.0f, "easetype", iTween.EaseType.linear, "looptype", iTween.LoopType.loop));
 
@@ -119,40 +120,38 @@ public class Game : MonoBehaviour {
 			playTime = Time.realtimeSinceStartup - playTime;
 			PlayData.StageData stageData = playData.GetCurrentStageData ();
 			if (stageData.clearLevel < playData.currentLevel) {
-                playData.star += 1;
+				playData.star += 1;
+				stageData.clearLevel = playData.currentLevel;
 
-                stageData.clearLevel = playData.currentLevel;
-				levelPanel.GetLevelInfo(stageData.clearLevel).Unlock();
-                stagePanel.totalStarCount = playData.star;
-                stagePanel.GetStageInfo(stageData.id).SetClearLevel(stageData.clearLevel);
-
-                Config.StageInfo stageInfo = config.FindStageInfo(playData.currentStage);
-                if (stageData.clearLevel < stageInfo.totalLevel)
-                {
-                    levelPanel.GetLevelInfo(stageData.clearLevel + 1).Unlock();
-                }
-                else if (stageData.clearLevel == stageInfo.totalLevel && stageData.id < playData.stageDatas.Length)
-                {
-                    playData.stageDatas[stageData.id + 1].open = true;
-                    stagePanel.GetStageInfo(stageData.id + 1).open = true;
-                }
-
-                Analytics.CustomEvent("LevelComplete", new Dictionary<string, object> {
-					{"stage", playData.currentStage},
-					{"level", playData.currentStage + "-" + playData.currentLevel},
-					{"star", playData.star}
-				});
-
-                FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelUp, new Parameter[] {
-                    new Parameter("stage", playData.currentStage),
-                    new Parameter("level", playData.currentStage + "-" + playData.currentLevel),
-                    new Parameter("star", playData.star)
-                });
-
+				levelPanel.GetLevelInfo (stageData.clearLevel).Complete ();
+				stagePanel.totalStarCount = playData.star;
+				stagePanel.GetStageInfo (stageData.id).SetClearLevel (stageData.clearLevel);
 				Quest.Update ("LevelComplete", "");
-            }
+			}
 
-            
+			Config.StageInfo stageInfo = config.FindStageInfo(playData.currentStage);
+			if (stageData.clearLevel < stageInfo.totalLevel)
+            {
+                levelPanel.GetLevelInfo(stageData.clearLevel + 1).Unlock();
+            }
+			else if (stageData.clearLevel == stageInfo.totalLevel && stageData.id < playData.stageDatas.Length && false == playData.stageDatas[stageData.id].open)
+			{
+				playData.stageDatas[stageData.id].open = true;
+				stagePanel.GetStageInfo(stageData.id+1).open = true;
+			}
+
+            Analytics.CustomEvent("LevelComplete", new Dictionary<string, object> {
+				{"stage", playData.currentStage},
+				{"level", playData.currentStage + "-" + playData.currentLevel},
+				{"star", playData.star}
+			});
+
+            FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelUp, new Parameter[] {
+                new Parameter("stage", playData.currentStage),
+                new Parameter("level", playData.currentStage + "-" + playData.currentLevel),
+                new Parameter("star", playData.star)
+            });
+
 			int newOpenWorld = GetNewOpenWorld();
 			if (0 != newOpenWorld) {
 				Analytics.CustomEvent ("OpenWorld_" + newOpenWorld.ToString (), new Dictionary<string, object> {
@@ -174,7 +173,6 @@ public class Game : MonoBehaviour {
 			unityAds.Show ();
 		}
 	}
-
 	private int GetNewOpenWorld()
 	{
 		for (int i = 0; i < playData.openWorlds.Length; i++) {
@@ -251,9 +249,4 @@ public class Game : MonoBehaviour {
         GUI.Label (new Rect (0, 0, 500, 200), text);
 	}
 	//#endif
-
-
-	public void OnAchievementComplete(Quest.Data quest)
-	{
-	}
 }
