@@ -34,6 +34,7 @@ public class Game : MonoBehaviour {
 	public UIAchievementCompletePanel achievementCompletePanel;
 	public UIBlockOpenPanel		blockOpenPanel;
 	public UIRewardPanel		rewardPanel;
+	public UIShopPanel 			shopPanel;
 	public GameObject           background;
 
     public AudioSource bgm;
@@ -42,7 +43,7 @@ public class Game : MonoBehaviour {
 	public PlayData playData;
 
 	public UnityAds unityAds;
-
+	public InAppPurchaser inAppPurchaser;
 	public float playTime;
 	public int moveCount;
 
@@ -50,6 +51,7 @@ public class Game : MonoBehaviour {
 	{
 		Quest.onComplete += achievementCompletePanel.Open;
 		unityAds = GetComponent<UnityAds> ();
+		inAppPurchaser = GetComponent<InAppPurchaser> ();
 		Dictionary<string, object> defaultRemoteConfig = new Dictionary<string, object>();
 		defaultRemoteConfig.Add("ads_interval_count", 3);
 		defaultRemoteConfig.Add("ads_interval_time", 120);
@@ -77,6 +79,7 @@ public class Game : MonoBehaviour {
 		stagePanel.Init ();
 		levelPanel.Init ();
 		achievementPanel.Init ();
+		shopPanel.hintCount = playData.hint;
 		iTween.RotateBy(background, iTween.Hash("y", 1.0f, "speed", 7.0f, "easetype", iTween.EaseType.linear, "looptype", iTween.LoopType.loop));
 
 		FirebaseAnalytics.LogEvent (FirebaseAnalytics.EventAppOpen);
@@ -231,9 +234,14 @@ public class Game : MonoBehaviour {
 		playData.hint += count;
 		playData.Save ();
 		gamePanel.hintCount = playData.hint;
+		shopPanel.hintCount = playData.hint;
 		StartCoroutine (rewardPanel.Open ());
 	}
 
+	public void BuyInAppProduct(string id)
+	{
+		inAppPurchaser.BuyProductID (id);
+	}
 	//#if UNITY_EDITOR
 	private void OnGUI()
 	{

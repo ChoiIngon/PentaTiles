@@ -11,18 +11,28 @@ public class InAppPurchaser : MonoBehaviour, IStoreListener
 
     #region 상품ID
     // 상품ID는 구글 개발자 콘솔에 등록한 상품ID와 동일하게 해주세요.
-    public class Product
+    public class Pentatiles
     {
+		public const string RemoveAds = "pentatiles.removeads";
+		public const string Hint_110 =  "pentatiles.hint.110";
+		public const string Hint_55 =   "pentatiles.hint.55";
+		public const string Hint_10 =   "pentatiles.hint.10";
         public class Google
         {
             public const string RemoveAds = "pentatiles.google.removeads";
+			public const string Hint_110 =  "pentatiles.google.hint.110";
+			public const string Hint_55 =   "pentatiles.google.hint.55";
+			public const string Hint_10 =   "pentatiles.google.hint.10";
+
         }
+		public class Apple
+		{
+			public const string RemoveAds = "pentatiles.apple.removeads";
+			public const string Hint_110 = "pentatiles.apple.hint.110";
+			public const string Hint_55 = "pentatiles.apple.hint.55";
+			public const string Hint_10 = "pentatiles.apple.hint.10";
+		}
     }
-    public const string PRODUCT_GOOGLE_REMOVEADS = "pentatiles.google.removeads";
-    public const string productId2 = "gem2";
-    public const string productId3 = "gem3";
-    public const string productId4 = "gem4";
-    public const string productId5 = "gem5";
     #endregion
 
     void Start()
@@ -44,35 +54,26 @@ public class InAppPurchaser : MonoBehaviour, IStoreListener
 
         ConfigurationBuilder builder = ConfigurationBuilder.Instance(module);
 
-        builder.AddProduct(productId1, ProductType.Consumable, new IDs
-        {
-            { productId1, AppleAppStore.Name },
-            { productId1, GooglePlay.Name },
+		builder.AddProduct(Pentatiles.RemoveAds, ProductType.Consumable, new IDs {
+			{ Pentatiles.Google.RemoveAds, GooglePlay.Name },
+			{ Pentatiles.Apple.RemoveAds, AppleAppStore.Name}
         });
+			
+		builder.AddProduct(Pentatiles.Hint_110, ProductType.Consumable, new IDs {
+			{ Pentatiles.Google.Hint_110, GooglePlay.Name },
+			{ Pentatiles.Apple.Hint_110, AppleAppStore.Name }
+		});
 
-        builder.AddProduct(productId2, ProductType.Consumable, new IDs
-        {
-            { productId2, AppleAppStore.Name },
-            { productId2, GooglePlay.Name }, }
-        );
+		builder.AddProduct(Pentatiles.Hint_55, ProductType.Consumable, new IDs {
+			{ Pentatiles.Google.Hint_55, GooglePlay.Name },
+			{ Pentatiles.Apple.Hint_55, AppleAppStore.Name }
+		});
 
-        builder.AddProduct(productId3, ProductType.Consumable, new IDs
-        {
-            { productId3, AppleAppStore.Name },
-            { productId3, GooglePlay.Name },
-        });
+		builder.AddProduct(Pentatiles.Hint_10, ProductType.Consumable, new IDs {
+			{ Pentatiles.Google.Hint_10, GooglePlay.Name },
+			{ Pentatiles.Apple.Hint_10, AppleAppStore.Name }
+		});
 
-        builder.AddProduct(productId4, ProductType.Consumable, new IDs
-        {
-            { productId4, AppleAppStore.Name },
-            { productId4, GooglePlay.Name },
-        });
-
-        builder.AddProduct(productId5, ProductType.Consumable, new IDs
-        {
-            { productId5, AppleAppStore.Name },
-            { productId5, GooglePlay.Name },
-        });
 
         UnityPurchasing.Initialize(this, builder);
     }
@@ -150,35 +151,19 @@ public class InAppPurchaser : MonoBehaviour, IStoreListener
 
         switch (args.purchasedProduct.definition.id)
         {
-            case productId1:
-
-                // ex) gem 10개 지급
-
-                break;
-
-            case productId2:
-
-                // ex) gem 50개 지급
-
-                break;
-
-            case productId3:
-
-                // ex) gem 100개 지급
-
-                break;
-
-            case productId4:
-
-                // ex) gem 300개 지급
-
-                break;
-
-            case productId5:
-
-                // ex) gem 500개 지급
-
-                break;
+		case Pentatiles.RemoveAds:
+			Game.Instance.playData.adsFree = true;
+			Game.Instance.playData.Save ();
+			break;
+		case Pentatiles.Hint_110:
+			Game.Instance.AddHint (110);
+            break;
+		case Pentatiles.Hint_55:
+			Game.Instance.AddHint (55);
+			break;
+		case Pentatiles.Hint_10:
+			Game.Instance.AddHint (10);
+			break;
         }
 
         return PurchaseProcessingResult.Complete;

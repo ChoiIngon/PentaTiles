@@ -50,6 +50,10 @@ public class UnityAds : MonoBehaviour {
 
 	public void Show()
 	{
+		if (true == Game.Instance.playData.adsFree) {
+			return;
+		}
+
         if(false == Advertisement.IsReady())
         {
             return;

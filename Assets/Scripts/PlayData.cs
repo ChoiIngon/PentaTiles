@@ -25,6 +25,7 @@ public class PlayData {
 	public Dictionary<string, Achievement> achievements;
     public Dictionary<string, string> openBlocks;
 
+	public bool adsFree;
 	public StageData GetCurrentStageData() {
 		if (0 >= currentStage || stageDatas.Length < currentStage) {
 			return null;
@@ -47,6 +48,7 @@ public class PlayData {
 		openWorlds = new bool[Game.Instance.config.worldInfos.Count];
 		stageDatas = new StageData[Game.Instance.config.stageInfos.Count];
 		openBlocks = new Dictionary<string, string> ();
+		adsFree = false;
 		Quest.Init ();
 		achievements = new Dictionary<string, Achievement> ();
 		foreach (Config.AchievementInfo achievementInfo in Game.Instance.config.achievementInfos) {
@@ -70,7 +72,7 @@ public class PlayData {
 		if (null != tmpPlayData) {
 			hint = tmpPlayData.hint;
 			star = tmpPlayData.star;
-            
+			adsFree = tmpPlayData.adsFree;
 			for (int i = 0; i < tmpPlayData.openWorlds.Length; i++) {
 				openWorlds [i] = false;
 				if (i < openWorlds.Length) {

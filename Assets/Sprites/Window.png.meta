@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: d2061de8d944d4cb8a7d4e2ad189e739
-timeCreated: 1492593361
+timeCreated: 1493125523
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -56,7 +56,7 @@ TextureImporter:
     21300098: Window_49
     21300100: Window_50
     21300102: ResultPanel@Background
-    21300104: Window_52
+    21300104: Shop@Price
     21300106: StageInfo@Star
     21300108: StagePanel@TotalStars
     21300110: Window_55
@@ -73,7 +73,7 @@ TextureImporter:
     21300132: Window_66
     21300134: Window_67
     21300136: Window_68
-    21300138: Window_69
+    21300138: Icon@Dollar
     21300140: Window_70
     21300142: Progress@Gauge
     21300144: Window_72
@@ -797,7 +797,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Window_52
+      name: Shop@Price
       rect:
         serializedVersion: 2
         x: 2885
@@ -1018,7 +1018,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Window_69
+      name: Icon@Dollar
       rect:
         serializedVersion: 2
         x: 1984
