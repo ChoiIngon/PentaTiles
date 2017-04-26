@@ -50,11 +50,13 @@ public class UIStageInfo : MonoBehaviour {
         panelImage = GetComponent<Image>();
         button = GetComponent<Button>();
         PlayData.StageData stageData = Game.Instance.playData.stageDatas[info.id - 1];
-		SetClearLevel (stageData.clearLevel);
+		clearLevel = stageData.clearLevel;
 		open = stageData.open;
 	}
 
-	public void SetClearLevel(int level) {
-		starText.text = level + "/" + info.totalLevel; 
+	public int clearLevel {
+		set {
+			starText.text = value + "/" + info.totalLevel; 
+		}
 	}
 }

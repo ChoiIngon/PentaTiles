@@ -6,9 +6,8 @@ using UnityEngine.UI;
 public class UILevelComplete : MonoBehaviour {
 	public UIResultPanel resultPanel;
 
-	public IEnumerator Open(int world) {
+	public IEnumerator Open() {
 		gameObject.SetActive (true);
-		resultPanel.gameObject.SetActive (false);
 		yield return StartCoroutine (resultPanel.Open ());
 		gameObject.SetActive (false);
 	}

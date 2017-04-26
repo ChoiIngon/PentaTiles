@@ -80,11 +80,7 @@ public class Game : MonoBehaviour {
 		levelPanel.Init ();
 		achievementPanel.Init ();
         shopPanel.Init();
-    	shopPanel.hintCount = playData.hint;
-        if (true == playData.adsFree)
-        {
-            shopPanel.RemoveProduct(InAppPurchaser.Pentatiles.RemoveAds);
-        }
+    	
 		iTween.RotateBy(background, iTween.Hash("y", 1.0f, "speed", 7.0f, "easetype", iTween.EaseType.linear, "looptype", iTween.LoopType.loop));
 
 		FirebaseAnalytics.LogEvent (FirebaseAnalytics.EventAppOpen);
@@ -127,69 +123,67 @@ public class Game : MonoBehaviour {
 			AudioManager.Instance.Play("LevelClear");
 			playTime = Time.realtimeSinceStartup - playTime;
 			PlayData.StageData stageData = playData.GetCurrentStageData ();
-			if (stageData.clearLevel < playData.currentLevel) {
+			if (playData.currentLevel > stageData.clearLevel) {
 				playData.star += 1;
 				stageData.clearLevel = playData.currentLevel;
 
-				levelPanel.GetLevelInfo (stageData.clearLevel).Complete ();
 				stagePanel.totalStarCount = playData.star;
-				stagePanel.GetStageInfo (stageData.id).SetClearLevel (stageData.clearLevel);
+				stagePanel.GetStageInfo (stageData.id).clearLevel = stageData.clearLevel;
+				levelPanel.GetLevelInfo (stageData.clearLevel).Complete ();
+
 				Quest.Update ("LevelComplete", "");
+
+				Analytics.CustomEvent("LevelComplete", new Dictionary<string, object> {
+					{"stage", playData.currentStage},
+					{"level", playData.currentStage + "-" + playData.currentLevel},
+					{"star", playData.star}
+				});
+
+				FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelUp, new Parameter[] {
+					new Parameter("stage", playData.currentStage),
+					new Parameter("level", playData.currentStage + "-" + playData.currentLevel),
+					new Parameter("star", playData.star)
+				});
 			}
 
 			Config.StageInfo stageInfo = config.FindStageInfo(playData.currentStage);
-			if (stageData.clearLevel < stageInfo.totalLevel)
+			if (playData.currentLevel < stageInfo.totalLevel)
             {
                 levelPanel.GetLevelInfo(stageData.clearLevel + 1).Unlock();
             }
-			else if (stageData.clearLevel == stageInfo.totalLevel && stageData.id < playData.stageDatas.Length && false == playData.stageDatas[stageData.id].open)
+			else if (playData.currentLevel == stageInfo.totalLevel && stageInfo.id < config.stageInfos.Count && false == playData.stageDatas[stageData.id].open)
 			{
 				playData.stageDatas[stageData.id].open = true;
 				stagePanel.GetStageInfo(stageData.id+1).open = true;
 			}
 
-            Analytics.CustomEvent("LevelComplete", new Dictionary<string, object> {
-				{"stage", playData.currentStage},
-				{"level", playData.currentStage + "-" + playData.currentLevel},
-				{"star", playData.star}
-			});
-
-            FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelUp, new Parameter[] {
-                new Parameter("stage", playData.currentStage),
-                new Parameter("level", playData.currentStage + "-" + playData.currentLevel),
-                new Parameter("star", playData.star)
-            });
-
-			int newOpenWorld = GetNewOpenWorld();
-			if (0 != newOpenWorld) {
-				Analytics.CustomEvent ("OpenWorld_" + newOpenWorld.ToString (), new Dictionary<string, object> {
-					{ "stage", playData.currentStage },
-					{ "level", playData.currentStage + "-" + playData.currentLevel },
-					{ "star", playData.star }
-				});
-                FirebaseAnalytics.LogEvent("OpenWorld_" + newOpenWorld.ToString(), new Parameter[] {
-                    new Parameter("stage", playData.currentStage),
-                    new Parameter("level", playData.currentStage + "-" + playData.currentLevel),
-                    new Parameter("star", playData.star)
-                });
-            }
-
-            playData.Save ();
+			GetNewOpenWorld();
+			playData.Save ();
 
 			yield return new WaitForSeconds (1.0f);
-			yield return StartCoroutine(gamePanel.levelComplete.Open (newOpenWorld));
+			yield return StartCoroutine(gamePanel.levelComplete.Open ());
 			unityAds.Show ();
 		}
 	}
 	private int GetNewOpenWorld()
 	{
 		for (int i = 0; i < playData.openWorlds.Length; i++) {
-            
             Config.WorldInfo worldInfo = config.worldInfos[i];
 
             if (false == playData.openWorlds [i] && playData.star >= worldInfo.openStar) {
 				playData.openWorlds [i] = true;
                 stagePanel.GetStageInfo(worldInfo.stageInfos[0].id).open = true;
+
+				Analytics.CustomEvent ("OpenWorld_" + (i + 1).ToString(), new Dictionary<string, object> {
+					{ "stage", playData.currentStage },
+					{ "level", playData.currentStage + "-" + playData.currentLevel },
+					{ "star", playData.star }
+				});
+				FirebaseAnalytics.LogEvent("OpenWorld_" + (i+1).ToString(), new Parameter[] {
+					new Parameter("stage", playData.currentStage),
+					new Parameter("level", playData.currentStage + "-" + playData.currentLevel),
+					new Parameter("star", playData.star)
+				});
 				return i + 1;
 			}
 		}
@@ -247,7 +241,7 @@ public class Game : MonoBehaviour {
 	{
 		inAppPurchaser.BuyProductID (id);
 	}
-	//#if UNITY_EDITOR
+	#if UNITY_EDITOR
 	private void OnGUI()
 	{
 		string text = "";
@@ -261,5 +255,5 @@ public class Game : MonoBehaviour {
 			unityAds.rewardHintCount + " hint\n";
         GUI.Label (new Rect (0, 0, 500, 200), text);
 	}
-	//#endif
+	#endif
 }

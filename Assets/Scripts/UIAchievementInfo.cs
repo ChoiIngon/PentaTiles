@@ -30,7 +30,7 @@ public class UIAchievementInfo : MonoBehaviour {
 		giftBox.SetActive (false);
 		hint.SetActive (false);
 
-        if (Quest.State.Complete == data.state)
+        if (Quest.State.Complete == state)
 		{
 			button.enabled = true;
 			button.onClick.AddListener (() => {
@@ -41,7 +41,7 @@ public class UIAchievementInfo : MonoBehaviour {
 			giftBox.SetActive (true);
 			Game.Instance.stagePanel.newAchievement.SetActive (true);
         }
-        else if (Quest.State.Rewared == data.state)
+        else if (Quest.State.Rewared == state)
         {
 			hint.SetActive (true);
         }

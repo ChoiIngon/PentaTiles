@@ -28,7 +28,11 @@ public class UIShopPanel : MonoBehaviour {
 
             shopProducts.Add(shopProduct.productID, shopProduct);
         }
-        
+		hintCount = Game.Instance.playData.hint;
+		if (true == Game.Instance.playData.adsFree)
+		{
+			RemoveProduct(InAppPurchaser.Pentatiles.RemoveAds);
+		}
     }
 
     public void RemoveProduct(string id)
