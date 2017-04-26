@@ -153,6 +153,8 @@ public class InAppPurchaser : MonoBehaviour, IStoreListener
         {
 		case Pentatiles.RemoveAds:
 			Game.Instance.playData.adsFree = true;
+            Game.Instance.shopPanel.RemoveProduct(InAppPurchaser.Pentatiles.RemoveAds);
+            StartCoroutine(Game.Instance.rewardPanel.Open(UIRewardPanel.RewardType.AdsFree, 0));
 			Game.Instance.playData.Save ();
 			break;
 		case Pentatiles.Hint_110:

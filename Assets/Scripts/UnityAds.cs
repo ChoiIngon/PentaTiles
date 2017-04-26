@@ -22,6 +22,7 @@ public class UnityAds : MonoBehaviour {
     public UIRewardPanel rewardPanel;
 	
 	IEnumerator Start () {
+        Game.Instance.gamePanel.adsButton.gameObject.SetActive(false);
         if (false == Advertisement.isSupported) { // If runtime platform is supported...
 			Debug.Log("advertisement is not supported");
 			yield break;
@@ -44,7 +45,8 @@ public class UnityAds : MonoBehaviour {
 		{
 			yield return new WaitForSeconds(0.5f);
 		}
-		
+
+        Game.Instance.gamePanel.adsButton.gameObject.SetActive(true);
         Debug.Log ("unity ads is ready");
 	}
 
@@ -100,9 +102,13 @@ public class UnityAds : MonoBehaviour {
 		case ShowResult.Failed:
 			Debug.LogError("The ad failed to be shown.");
 			break;
-
 		}
-	}
+
+        if (false == Advertisement.IsReady())
+        {
+            Game.Instance.gamePanel.adsButton.gameObject.SetActive(false);
+        }
+    }
 	public void ShowRewardAds()
 	{
 		lastAdShowTime = Time.realtimeSinceStartup;
@@ -137,5 +143,10 @@ public class UnityAds : MonoBehaviour {
 			break;
 
 		}
-	}
+
+        if (false == Advertisement.IsReady())
+        {
+            Game.Instance.gamePanel.adsButton.gameObject.SetActive(false);
+        }
+    }
 }

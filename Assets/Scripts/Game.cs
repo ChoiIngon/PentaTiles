@@ -79,7 +79,12 @@ public class Game : MonoBehaviour {
 		stagePanel.Init ();
 		levelPanel.Init ();
 		achievementPanel.Init ();
-		shopPanel.hintCount = playData.hint;
+        shopPanel.Init();
+    	shopPanel.hintCount = playData.hint;
+        if (true == playData.adsFree)
+        {
+            shopPanel.RemoveProduct(InAppPurchaser.Pentatiles.RemoveAds);
+        }
 		iTween.RotateBy(background, iTween.Hash("y", 1.0f, "speed", 7.0f, "easetype", iTween.EaseType.linear, "looptype", iTween.LoopType.loop));
 
 		FirebaseAnalytics.LogEvent (FirebaseAnalytics.EventAppOpen);
@@ -235,7 +240,7 @@ public class Game : MonoBehaviour {
 		playData.Save ();
 		gamePanel.hintCount = playData.hint;
 		shopPanel.hintCount = playData.hint;
-		StartCoroutine (rewardPanel.Open ());
+		StartCoroutine (rewardPanel.Open (UIRewardPanel.RewardType.Hint, count));
 	}
 
 	public void BuyInAppProduct(string id)

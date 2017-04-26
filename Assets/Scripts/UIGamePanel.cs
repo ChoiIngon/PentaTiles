@@ -26,7 +26,8 @@ public class UIGamePanel : MonoBehaviour {
 			Map.Instance.gameObject.SetActive (false);
             levelComplete.gameObject.SetActive(false);
 		});
-		adsButton.onClick.AddListener (() => {
+
+        adsButton.onClick.AddListener (() => {
 			Game.Instance.unityAds.ShowRewardAds();
 		});
 		redoButton.onClick.AddListener (() => {
