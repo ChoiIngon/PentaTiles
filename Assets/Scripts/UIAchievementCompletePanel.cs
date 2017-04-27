@@ -21,7 +21,6 @@ public class UIAchievementCompletePanel : MonoBehaviour {
 
 	// onComplete
 	public void Open(Quest.Data achievement) {
-        FirebaseAnalytics.LogEvent("LevelPlay", new Parameter[] {
             new Parameter(FirebaseAnalytics.ParameterAchievementId, achievement.id),
             new Parameter(FirebaseAnalytics.ParameterLevel, Game.Instance.playData.currentStage + "-" + Game.Instance.playData.currentLevel)
         });
