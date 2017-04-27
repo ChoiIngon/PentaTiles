@@ -90,9 +90,9 @@ public class UnityAds : MonoBehaviour {
 				{"count",  watchCount} 
 			});
 			FirebaseAnalytics.LogEvent("AdsWatch", new Parameter[] {
-				new Parameter("stage", Game.Instance.playData.currentStage),
-				new Parameter("level", Game.Instance.playData.currentStage + "-" +  Game.Instance.playData.currentLevel),
-				new Parameter("count", watchCount),
+                new Parameter("stage", Game.Instance.playData.currentStage),
+                new Parameter(FirebaseAnalytics.ParameterLevel, Game.Instance.playData.currentStage + "-" + Game.Instance.playData.currentLevel),
+                new Parameter(FirebaseAnalytics.ParameterQuantity, watchCount),
 				new Parameter("show_result", result.ToString())
 			});
 			break;
@@ -129,11 +129,11 @@ public class UnityAds : MonoBehaviour {
 				{"count", watchCount } 
 			});
 			FirebaseAnalytics.LogEvent("RewardedAdsWatch", new Parameter[] {
-				new Parameter("stage", Game.Instance.playData.currentStage),
-				new Parameter("level", Game.Instance.playData.currentStage + "-" +  Game.Instance.playData.currentLevel),
-				new Parameter("count", watchCount),
-				new Parameter("show_result", result.ToString())
-			});
+                new Parameter("stage", Game.Instance.playData.currentStage),
+                new Parameter(FirebaseAnalytics.ParameterLevel, Game.Instance.playData.currentStage + "-" + Game.Instance.playData.currentLevel),
+                new Parameter(FirebaseAnalytics.ParameterQuantity, watchCount),
+                new Parameter("show_result", result.ToString())
+            });
 			break;
 		case ShowResult.Skipped:
 			Debug.Log("The ad was skipped before reaching the end.");

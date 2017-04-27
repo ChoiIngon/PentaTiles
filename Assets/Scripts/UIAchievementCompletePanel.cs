@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Firebase.Analytics;
 
 public class UIAchievementCompletePanel : MonoBehaviour {
 	public float moveTime;
@@ -20,7 +21,11 @@ public class UIAchievementCompletePanel : MonoBehaviour {
 
 	// onComplete
 	public void Open(Quest.Data achievement) {
-		Game.Instance.stagePanel.newAchievement.SetActive (true);
+        FirebaseAnalytics.LogEvent("LevelPlay", new Parameter[] {
+            new Parameter(FirebaseAnalytics.ParameterAchievementId, achievement.id),
+            new Parameter(FirebaseAnalytics.ParameterLevel, Game.Instance.playData.currentStage + "-" + Game.Instance.playData.currentLevel)
+        });
+        Game.Instance.stagePanel.newAchievement.SetActive (true);
 		titles.Add (achievement.name);
 		if (null == coroutine) {
 			coroutine = StartCoroutine (_Open ());

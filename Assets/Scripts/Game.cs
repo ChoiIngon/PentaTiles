@@ -103,7 +103,7 @@ public class Game : MonoBehaviour {
 
         FirebaseAnalytics.LogEvent("LevelPlay", new Parameter[] {
             new Parameter("stage", playData.currentStage),
-            new Parameter("level", playData.currentStage + "-" + playData.currentLevel)
+            new Parameter(FirebaseAnalytics.ParameterLevel, playData.currentStage + "-" + playData.currentLevel)
         });
 
         string newOpenBlockID = GetNewOpenBlock();
@@ -139,11 +139,11 @@ public class Game : MonoBehaviour {
 					{"star", playData.star}
 				});
 
-				FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelUp, new Parameter[] {
-					new Parameter("stage", playData.currentStage),
-					new Parameter("level", playData.currentStage + "-" + playData.currentLevel),
-					new Parameter("star", playData.star)
-				});
+				FirebaseAnalytics.LogEvent("LevelComplete", new Parameter[] {
+                    new Parameter("stage", playData.currentStage),
+                    new Parameter(FirebaseAnalytics.ParameterLevel, playData.currentStage + "-" + playData.currentLevel),
+                    new Parameter("star", playData.star)
+                });
 			}
 
 			Config.StageInfo stageInfo = config.FindStageInfo(playData.currentStage);
@@ -180,9 +180,9 @@ public class Game : MonoBehaviour {
 					{ "star", playData.star }
 				});
 				FirebaseAnalytics.LogEvent("OpenWorld_" + (i+1).ToString(), new Parameter[] {
-					new Parameter("stage", playData.currentStage),
-					new Parameter("level", playData.currentStage + "-" + playData.currentLevel),
-					new Parameter("star", playData.star)
+                    new Parameter("stage", playData.currentStage),
+                    new Parameter(FirebaseAnalytics.ParameterLevel, playData.currentStage + "-" + playData.currentLevel),
+                    new Parameter("star", playData.star)
 				});
 				return i + 1;
 			}
@@ -222,7 +222,7 @@ public class Game : MonoBehaviour {
 
         FirebaseAnalytics.LogEvent("HintUse", new Parameter[] {
             new Parameter("stage", playData.currentStage),
-            new Parameter("level", playData.currentStage + "-" + playData.currentLevel)
+            new Parameter(FirebaseAnalytics.ParameterLevel, playData.currentStage + "-" + playData.currentLevel)
         });
 
         return true;
