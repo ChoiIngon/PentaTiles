@@ -32,7 +32,10 @@ public class UIResultPanel : MonoBehaviour {
 			{
 				Map.Instance.gameObject.SetActive(false);
 				Game.Instance.playData.currentLevel = 0;
-				Game.Instance.rootPanel.ScrollScreen(new Vector3(1.0f, 0.0f, 0.0f));
+				Game.Instance.levelPanel.gameObject.SetActive(true);
+				Game.Instance.rootPanel.ScrollScreen(new Vector3(1.0f, 0.0f, 0.0f), () => {
+					Game.Instance.gamePanel.gameObject.SetActive(false);
+				});
 			}
 		});
 	}
