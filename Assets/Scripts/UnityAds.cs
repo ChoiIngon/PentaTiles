@@ -22,7 +22,6 @@ public class UnityAds : MonoBehaviour {
     public UIRewardPanel rewardPanel;
 	
 	IEnumerator Start () {
-        Game.Instance.gamePanel.adsButton.gameObject.SetActive(false);
         if (false == Advertisement.isSupported) { // If runtime platform is supported...
 			Debug.Log("advertisement is not supported");
 			yield break;
@@ -41,15 +40,19 @@ public class UnityAds : MonoBehaviour {
 
 		Debug.Log ("initialize unity ads(game_id:" + gameID +")");
 		Advertisement.Initialize (gameID); //, enableTestMode); // ...initialize.
+		yield return StartCoroutine(ActivateRewardAds());
+	}
+
+	private IEnumerator ActivateRewardAds()
+	{
+		Game.Instance.gamePanel.adsButton.gameObject.SetActive(false);
 		while (!Advertisement.isInitialized || !Advertisement.IsReady())
 		{
 			yield return new WaitForSeconds(0.5f);
 		}
-
-        Game.Instance.gamePanel.adsButton.gameObject.SetActive(true);
-        Debug.Log ("unity ads is ready");
+		Game.Instance.gamePanel.adsButton.gameObject.SetActive(true);
+		Debug.Log ("unity ads is ready");
 	}
-
 	public void Show()
 	{
 		if (true == Game.Instance.playData.adsFree) {
@@ -104,10 +107,7 @@ public class UnityAds : MonoBehaviour {
 			break;
 		}
 
-        if (false == Advertisement.IsReady())
-        {
-            Game.Instance.gamePanel.adsButton.gameObject.SetActive(false);
-        }
+		StartCoroutine(ActivateRewardAds());
     }
 	public void ShowRewardAds()
 	{
@@ -144,9 +144,6 @@ public class UnityAds : MonoBehaviour {
 
 		}
 
-        if (false == Advertisement.IsReady())
-        {
-            Game.Instance.gamePanel.adsButton.gameObject.SetActive(false);
-        }
+		StartCoroutine(ActivateRewardAds());
     }
 }

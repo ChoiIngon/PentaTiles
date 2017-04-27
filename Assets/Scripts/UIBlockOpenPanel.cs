@@ -23,6 +23,7 @@ public class UIBlockOpenPanel : MonoBehaviour {
 		}
 
 		rectTransform = GetComponent<RectTransform> ();
+		gameObject.SetActive (false);
 	}
 
 	public IEnumerator Open(string blockID)

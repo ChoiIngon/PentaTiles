@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class UIShopPanel : MonoBehaviour {
 	public Text hintCountText;
     public Transform content;
-
+	public Button backButton;
     public int hintCount {
 		set {
 			hintCountText.text = value.ToString ();
@@ -33,6 +33,14 @@ public class UIShopPanel : MonoBehaviour {
 		{
 			RemoveProduct(InAppPurchaser.Pentatiles.RemoveAds);
 		}
+		backButton.onClick.AddListener (() => {
+			AudioManager.Instance.Play("ButtonClick");
+			Game.Instance.stagePanel.gameObject.SetActive(true);
+			Game.Instance.rootPanel.ScrollScreen(new Vector3(0.0f, -1.0f, 0.0f), () => {
+				gameObject.SetActive(false);
+			});
+		});
+		gameObject.SetActive (false);
     }
 
     public void RemoveProduct(string id)

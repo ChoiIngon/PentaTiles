@@ -65,17 +65,31 @@
   </Blocks>
   
   <Achievements>
-    <Achievement id="ACHIEVEMENT_COLLECT_STAR_1" name="Starter" description="Collect 1 Star" type="LevelComplete" key="" goal="1"/>
-    <Achievement id="ACHIEVEMENT_COLLECT_STAR_10" name="10 Stars" description="Collect 10 Stars" type="LevelComplete" key="" goal="10"/>
-    <Achievement id="ACHIEVEMENT_COLLECT_STAR_20" name="20 Stars" description="Collect 20 Stars" type="LevelComplete" key="" goal="20"/>
-    <Achievement id="ACHIEVEMENT_COLLECT_STAR_30" name="30 Stars" description="Collect 30 Stars" type="LevelComplete" key="" goal="30"/>
-    <Achievement id="ACHIEVEMENT_COLLECT_STAR_50" name="50 Stars" description="Collect 50 Stars" type="LevelComplete" key="" goal="50"/>
-    <Achievement id="ACHIEVEMENT_COLLECT_STAR_100" name="100 Stars" description="Collect 100 Stars" type="LevelComplete" key="" goal="100"/>
-    <Achievement id="ACHIEVEMENT_COLLECT_STAR_150" name="150 Stars" description="Collect 150 Stars" type="LevelComplete" key="" goal="150"/>
-    <Achievement id="ACHIEVEMENT_COLLECT_STAR_200" name="200 Stars" description="Collect 200 Stars" type="LevelComplete" key="" goal="200"/>
-    <Achievement id="ACHIEVEMENT_COLLECT_STAR_300" name="300 Stars" description="Collect 300 Stars" type="LevelComplete" key="" goal="300"/>
-    <Achievement id="ACHIEVEMENT_COLLECT_STAR_500" name="500 Stars" description="Collect 500 Stars" type="LevelComplete" key="" goal="500"/>
-    <Achievement id="ACHIEVEMENT_COLLECT_STAR_700" name="700 Stars" description="Collect 700 Stars" type="LevelComplete" key="" goal="700"/>
-    <Achievement id="ACHIEVEMENT_COLLECT_STAR_1000" name="1000 Stars" description="Collect 1000 Stars" type="LevelComplete" key="" goal="1000"/>
+    <Achievement id="ACHIEVEMENT_COLLECT_STAR_1" name="Starter" description="Collect 1 Star" type="LevelCompleteCount" key="" goal="1"/>
+    <Achievement id="ACHIEVEMENT_COLLECT_STAR_10" name="10 Stars" description="Collect 10 Stars" type="LevelCompleteCount" key="" goal="10"/>
+    <Achievement id="ACHIEVEMENT_COLLECT_STAR_20" name="20 Stars" description="Collect 20 Stars" type="LevelCompleteCount" key="" goal="20"/>
+    <Achievement id="ACHIEVEMENT_COLLECT_STAR_30" name="30 Stars" description="Collect 30 Stars" type="LevelCompleteCount" key="" goal="30"/>
+    <Achievement id="ACHIEVEMENT_COLLECT_STAR_50" name="50 Stars" description="Collect 50 Stars" type="LevelCompleteCount" key="" goal="50"/>
+    <Achievement id="ACHIEVEMENT_COLLECT_STAR_100" name="100 Stars" description="Collect 100 Stars" type="LevelCompleteCount" key="" goal="100"/>
+    <Achievement id="ACHIEVEMENT_COLLECT_STAR_150" name="150 Stars" description="Collect 150 Stars" type="LevelCompleteCount" key="" goal="150"/>
+    <Achievement id="ACHIEVEMENT_COLLECT_STAR_200" name="200 Stars" description="Collect 200 Stars" type="LevelCompleteCount" key="" goal="200"/>
+    <Achievement id="ACHIEVEMENT_COLLECT_STAR_300" name="300 Stars" description="Collect 300 Stars" type="LevelCompleteCount" key="" goal="300"/>
+    <Achievement id="ACHIEVEMENT_COLLECT_STAR_500" name="500 Stars" description="Collect 500 Stars" type="LevelCompleteCount" key="" goal="500"/>
+    <Achievement id="ACHIEVEMENT_COLLECT_STAR_700" name="700 Stars" description="Collect 700 Stars" type="LevelCompleteCount" key="" goal="700"/>
+    <Achievement id="ACHIEVEMENT_COLLECT_STAR_1000" name="1000 Stars" description="Collect 1000 Stars" type="LevelCompleteCount" key="" goal="1000"/>
+    <Achievement id="ACHIEVEMENT_COLLECT_STAR_1500" name="1500 Stars" description="Collect 1500 Stars" type="LevelCompleteCount" key="" goal="1500"/>
+
+    <Achievement id="ACHIEVEMENT_OPEN_BLOCK_THUMB" name="'Thumb' Block" description="Open 'Thumb' Block" type="BlockOpen" key="Block_Thumb" goal="1"/>
+    <Achievement id="ACHIEVEMENT_OPEN_BLOCK_WORM" name="'Worm' Block" description="Open 'Worm' Block" type="BlockOpen" key="Block_Worm" goal="1"/>
+    <Achievement id="ACHIEVEMENT_OPEN_BLOCK_GUN" name="'Gun' Block" description="Open 'Gun' Block" type="BlockOpen" key="Block_Gun" goal="1"/>
+    <Achievement id="ACHIEVEMENT_OPEN_BLOCK_TWO" name="'2' Block" description="Open '2' Block" type="BlockOpen" key="Block_Two" goal="1"/>
+    <Achievement id="ACHIEVEMENT_OPEN_BLOCK_HEADSPIN" name="'Head Spin' Block" description="Open 'Head Spin' Block" type="BlockOpen" key="Block_HeadSpin" goal="1"/>
+    <Achievement id="ACHIEVEMENT_OPEN_BLOCK_KEY" name="'Key' Block" description="Open 'Key' Block" type="BlockOpen" key="Block_Key" goal="1"/>
+    <Achievement id="ACHIEVEMENT_OPEN_BLOCK_L" name="'L' Block" description="Open 'L' Block" type="BlockOpen" key="Block_L" goal="1"/>
+    <Achievement id="ACHIEVEMENT_OPEN_BLOCK_STAIRWAY" name="'Stairway' Block" description="Open 'Stairway' Block" type="BlockOpen" key="Block_Stairway" goal="1"/>
+    <Achievement id="ACHIEVEMENT_OPEN_BLOCK_LOCK" name="'Lock' Block" description="Open 'Lock' Block" type="BlockOpen" key="Block_Lock" goal="1"/>
+	<Achievement id="ACHIEVEMENT_OPEN_BLOCK_CROSS" name="'Cross' Block" description="Open 'Cross' Block" type="BlockOpen" key="Block_Cross" goal="1"/>
+	<Achievement id="ACHIEVEMENT_OPEN_BLOCK_FLAT" name="'Flat' Block" description="Open 'Flat' Block" type="BlockOpen" key="Block_Flat" goal="1"/>
+	<Achievement id="ACHIEVEMENT_OPEN_BLOCK_MISSILE" name="'Missile' Block" description="Open 'Missile' Block" type="BlockOpen" key="Block_Missile" goal="1"/>
   </Achievements>
 </Config>

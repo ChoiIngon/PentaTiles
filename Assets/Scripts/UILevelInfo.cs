@@ -19,9 +19,12 @@ public class UILevelInfo : MonoBehaviour {
 		buttonImage = GetComponent<Image> ();
 		startLevelButton = GetComponent<Button> ();
 		startLevelButton.onClick.AddListener (() => {
-			Game.Instance.StartLevel(this.stage, this.level);
-			Game.Instance.rootPanel.ScrollScreen(new Vector3(-1.0f, 0.0f, 0.0f));
 			AudioManager.Instance.Play("ButtonClick");
+			Game.Instance.gamePanel.gameObject.SetActive(true);
+			Game.Instance.rootPanel.ScrollScreen(new Vector3(-1.0f, 0.0f, 0.0f), () => {
+				Game.Instance.StartLevel(this.stage, this.level);
+				Game.Instance.levelPanel.gameObject.SetActive(false);
+			});
 		});
 		text = transform.FindChild ("Text").GetComponent<Text> ();
 	}

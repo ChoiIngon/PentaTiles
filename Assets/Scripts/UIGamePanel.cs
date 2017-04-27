@@ -23,8 +23,13 @@ public class UIGamePanel : MonoBehaviour {
 	}
 	void Start () {
 		backButton.onClick.AddListener (() => {
+			AudioManager.Instance.Play("ButtonClick");
 			Map.Instance.gameObject.SetActive (false);
-            levelComplete.gameObject.SetActive(false);
+			levelComplete.gameObject.SetActive(false);
+			Game.Instance.levelPanel.gameObject.SetActive(true);
+			Game.Instance.rootPanel.ScrollScreen(new Vector3(1.0f, 0.0f, 0.0f), () => {
+				gameObject.SetActive(false);
+			});
 		});
 
         adsButton.onClick.AddListener (() => {
@@ -49,5 +54,6 @@ public class UIGamePanel : MonoBehaviour {
 			}
 		});
         levelComplete.gameObject.SetActive (false);
+		gameObject.SetActive (false);
 	}
 }

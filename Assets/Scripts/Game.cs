@@ -131,7 +131,7 @@ public class Game : MonoBehaviour {
 				stagePanel.GetStageInfo (stageData.id).clearLevel = stageData.clearLevel;
 				levelPanel.GetLevelInfo (stageData.clearLevel).Complete ();
 
-				Quest.Update ("LevelComplete", "");
+				Quest.Update (Achievement.Type.LevelCompleteCount, "");
 
 				Analytics.CustomEvent("LevelComplete", new Dictionary<string, object> {
 					{"stage", playData.currentStage},
@@ -197,6 +197,7 @@ public class Game : MonoBehaviour {
             Config.BlockInfo blockInfo = config.blockInfos[i];
             if (playData.currentStage == blockInfo.stage && playData.currentLevel == blockInfo.level)
             {
+				Quest.Update (Achievement.Type.BlockOpen, blockInfo.id);
                 return blockInfo.id;
             }
         }

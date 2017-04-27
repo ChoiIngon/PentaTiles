@@ -17,16 +17,16 @@ public class UIRootPanel : MonoBehaviour {
 		scrollScreenCoroutine = null;
 	}
 
-	public void ScrollScreen(Vector3 direction)
+	public void ScrollScreen(Vector3 direction, System.Action callback = null)
 	{
 		if (null != scrollScreenCoroutine) {
 			return;	
 		}
 
-		scrollScreenCoroutine = StartCoroutine (_ScrollScreen (direction));
+		scrollScreenCoroutine = StartCoroutine (_ScrollScreen (direction, callback));
 	}
 
-	private IEnumerator _ScrollScreen(Vector3 direction)
+	private IEnumerator _ScrollScreen(Vector3 direction, System.Action callback)
 	{
         Vector2 src = rectTransform.anchoredPosition;
         Vector2 dest = new Vector2(rectTransform.anchoredPosition.x + canvasScaler.referenceResolution.x * direction.x, rectTransform.anchoredPosition.y + canvasScaler.referenceResolution.y * direction.y);
@@ -40,5 +40,8 @@ public class UIRootPanel : MonoBehaviour {
 
         rectTransform.anchoredPosition = dest;
         scrollScreenCoroutine = null;
+		if (null != callback) {
+			callback ();
+		}
 	}
 }

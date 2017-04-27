@@ -17,12 +17,14 @@ public class UIAchievementCompletePanel : MonoBehaviour {
 	void Start () {
 		titles = new List<string> ();
 		rectTransform = GetComponent<RectTransform> ();
+		gameObject.SetActive (false);
 	}
 
 	// onComplete
 	public void Open(Quest.Data achievement) {
-            new Parameter(FirebaseAnalytics.ParameterAchievementId, achievement.id),
-            new Parameter(FirebaseAnalytics.ParameterLevel, Game.Instance.playData.currentStage + "-" + Game.Instance.playData.currentLevel)
+		gameObject.SetActive (true);
+		FirebaseAnalytics.LogEvent("AchievementComplete", new Parameter[] {
+            new Parameter(FirebaseAnalytics.ParameterAchievementId, achievement.id)
         });
         Game.Instance.stagePanel.newAchievement.SetActive (true);
 		titles.Add (achievement.name);
@@ -33,6 +35,7 @@ public class UIAchievementCompletePanel : MonoBehaviour {
 
 	public IEnumerator _Open()
 	{
+		
 		while (0 < titles.Count) {
 			title.text = "'" + titles [0] + "' complete";
 			float interpolate = 0.0f;
@@ -55,5 +58,6 @@ public class UIAchievementCompletePanel : MonoBehaviour {
 			titles.RemoveAt (0);
 		}
 		coroutine = null;
+		gameObject.SetActive (false);
 	}
 }

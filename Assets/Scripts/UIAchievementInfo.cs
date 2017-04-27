@@ -39,7 +39,6 @@ public class UIAchievementInfo : MonoBehaviour {
 				Game.Instance.achievementPanel.Sort();
 			});
 			giftBox.SetActive (true);
-			Game.Instance.stagePanel.newAchievement.SetActive (true);
         }
         else if (Quest.State.Rewared == state)
         {
