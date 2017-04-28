@@ -23,7 +23,7 @@ public class UIAchievementCompletePanel : MonoBehaviour {
 	// onComplete
 	public void Open(Quest.Data achievement) {
 		gameObject.SetActive (true);
-		FirebaseAnalytics.LogEvent("AchievementComplete", new Parameter[] {
+		FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventUnlockAchievement, new Parameter[] {
             new Parameter(FirebaseAnalytics.ParameterAchievementId, achievement.id)
         });
         Game.Instance.stagePanel.newAchievement.SetActive (true);
