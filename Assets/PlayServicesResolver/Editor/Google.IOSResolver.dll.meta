@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: d05dc40af42d4e3a8dad17d4faf508a8
+guid: e8f792e0b2534d6fac5bd3aa3b844f1a
 labels:
 - gvh
 - gvh_teditor
-- gvh_v1.2.9.0
-timeCreated: 1492439389
-licenseType: Free
+- gvh_v1.2.14.0
+timeCreated: 1473798236
+licenseType: Pro
 PluginImporter:
   serializedVersion: 2
   iconMap: {}
@@ -23,7 +23,7 @@ PluginImporter:
       first:
         Editor: Editor
       second:
-        enabled: 1
+        enabled: 0
         settings:
           DefaultValueInitialized: true
     data:
