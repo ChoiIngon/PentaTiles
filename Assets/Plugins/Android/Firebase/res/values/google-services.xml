@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="firebase_database_url" translatable="false">https://pentatiles.firebaseio.com</string>
+  <string name="gcm_defaultSenderId" translatable="false">110373679342</string>
+  <string name="google_storage_bucket" translatable="false">pentatiles.appspot.com</string>
+  <string name="google_api_key" translatable="false">AIzaSyAEnhcRl3APMr6gBVTGTwly2h7g3_YhO7E</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAEnhcRl3APMr6gBVTGTwly2h7g3_YhO7E</string>
+  <string name="google_app_id" translatable="false">1:110373679342:android:6d7ab6e09939daa9</string>
+</resources>
