@@ -132,7 +132,7 @@ public class Game : MonoBehaviour {
 				stagePanel.GetStageInfo (stageData.id).clearLevel = stageData.clearLevel;
 				levelPanel.GetLevelInfo (stageData.clearLevel).Complete ();
 
-				Quest.Update (Achievement.Type.LevelCompleteCount, "");
+				Quest.Update (Achievement.Type.StarCollectCount, "");
 
 				Analytics.CustomEvent("LevelComplete", new Dictionary<string, object> {
 					{"stage", playData.currentStage},
@@ -147,6 +147,7 @@ public class Game : MonoBehaviour {
                 });
 			}
 
+			int rewardCount = 0;
 			Config.StageInfo stageInfo = config.FindStageInfo(playData.currentStage);
 			if (playData.currentLevel < stageInfo.totalLevel)
             {
@@ -154,6 +155,7 @@ public class Game : MonoBehaviour {
             }
 			else if (playData.currentLevel == stageInfo.totalLevel && stageInfo.id < config.stageInfos.Count && false == playData.stageDatas[stageData.id].open)
 			{
+				rewardCount = 1;
 				playData.stageDatas[stageData.id].open = true;
 				stagePanel.GetStageInfo(stageData.id+1).open = true;
 			}
@@ -163,6 +165,9 @@ public class Game : MonoBehaviour {
 
 			yield return new WaitForSeconds (1.0f);
 			yield return StartCoroutine(gamePanel.levelComplete.Open ());
+			if (0 < rewardCount) {
+				AddHint (rewardCount);
+			}
 			unityAds.Show ();
 		}
 	}

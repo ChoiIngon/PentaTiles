@@ -7,7 +7,7 @@ using UnityEngine;
 public class Achievement : Quest.Data { 
 	public class Type {
 		public const string QuestCompleteCount = "QuestCompleteCount";
-		public const string LevelCompleteCount = "LevelCompleteCount";
+		public const string StarCollectCount = "StarCollectCount";
 		public const string StageCompleteCount = "StageCompleteCount";
 		public const string AdsWatchCount = "AdsWatchCount";
 		public const string WorldOpen = "WorldOpen";
