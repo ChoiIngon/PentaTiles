@@ -34,6 +34,7 @@ public class Config {
 		public string description;
 		[XmlAttribute("total_level")]
 		public int totalLevel;
+		public int world;
     }
     public List<StageInfo> stageInfos = new List<StageInfo>();
 
@@ -102,6 +103,7 @@ public class Config {
 #if UNITY_EDITOR
 				Debug.Assert(null == stageInfos [stageInfo.id - 1], "duplicated stage id:" + stageInfo.id);
 #endif
+				stageInfo.world = worldInfo.id;
 				stageInfos [stageInfo.id - 1] = stageInfo;
 			}
 		}

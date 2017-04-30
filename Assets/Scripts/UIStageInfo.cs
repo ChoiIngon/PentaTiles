@@ -41,7 +41,6 @@ public class UIStageInfo : MonoBehaviour {
 			{
 				panelImage.sprite = closeSprite;
 				title.text = info.name;
-				//description.text = "need " + info.openStar + " star to unlock stage";
 				button.onClick.RemoveAllListeners();
 			}
 		}
@@ -54,6 +53,11 @@ public class UIStageInfo : MonoBehaviour {
         button = GetComponent<Button>();
         PlayData.StageData stageData = Game.Instance.playData.stageDatas[info.id - 1];
 		clearLevel = stageData.clearLevel;
+		description.text = "clear previous stage";
+		Config.WorldInfo worldInfo = Game.Instance.config.worldInfos [info.world - 1];
+		if (info.id == worldInfo.stageInfos [0].id) {
+			description.text = "collect " + worldInfo.openStar + " stars";
+		}
 		open = stageData.open;
 	}
 

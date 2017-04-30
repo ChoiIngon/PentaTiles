@@ -189,7 +189,7 @@ public class Map : MonoBehaviour {
 	{
 		float blinkTime = 1.5f;
 		const float max = 0.8f;
-		const float min = 0.4f;
+		const float min = 0.2f;
 		float alpha = max;
 
 		while (true) {
