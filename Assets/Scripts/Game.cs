@@ -46,9 +46,10 @@ public class Game : MonoBehaviour {
 	public InAppPurchaser inAppPurchaser;
 	public float playTime;
 	public int moveCount;
-
+	public Text versionText;
 	void Start()
 	{
+		versionText.text = "Ver : " + Application.version;
 		Quest.onComplete += achievementCompletePanel.Open;
 		unityAds = GetComponent<UnityAds> ();
 		inAppPurchaser = GetComponent<InAppPurchaser> ();

@@ -8,8 +8,7 @@ public class MapTile : MonoBehaviour {
 	[HideInInspector] public Block block;
 	[HideInInspector] public SpriteRenderer spriteRenderer;
 
-	public Color activeColor;
-	public Color deactiveColor;
+	public Color color;
 
 	public void Init(int id) {
 		spriteRenderer = GetComponent<SpriteRenderer> ();
@@ -18,7 +17,7 @@ public class MapTile : MonoBehaviour {
 
 		this.id = id;
 		if (0 != id) {
-			spriteRenderer.color = activeColor;
+			spriteRenderer.color = color;
 		} else {
 			//spriteRenderer.color = deactiveColor;
 			gameObject.SetActive(false);

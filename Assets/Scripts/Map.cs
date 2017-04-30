@@ -142,7 +142,7 @@ public class Map : MonoBehaviour {
 		enableTouchInput = false;
 
 		foreach (MapTile mapTile in mapTiles) {
-			mapTile.spriteRenderer.color = mapTile.activeColor;
+			mapTile.spriteRenderer.color = mapTile.color;
 		}
 
 		foreach (MapBlock mapBlock in mapBlocks) {

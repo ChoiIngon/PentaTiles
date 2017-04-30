@@ -16,14 +16,15 @@ public class BlockTile : MonoBehaviour {
     public TouchInput touchInput;
     [HideInInspector]
     public MapTile mapTile;
+	public BoxCollider boxCollier;
 
 	public bool enableTouchInput {
 		set {
 			touchInput.enabled = value;
-			GetComponent<BoxCollider> ().enabled = value;
+			boxCollier.enabled = value;
 		}
 	}
-
+		
 	public void Init (Block block) {
         this.block = block;
 		transform.SetParent (block.transform, false);
@@ -52,6 +53,8 @@ public class BlockTile : MonoBehaviour {
 			}
 			block.OnDrop(block.transform.position + delta);
 		};
+
+		boxCollier = GetComponent<BoxCollider> ();
     }
 
     void OnTriggerStay(Collider coll) {
@@ -65,12 +68,17 @@ public class BlockTile : MonoBehaviour {
 			if (true == coll.bounds.Contains(transform.position)) {
 				markedMapTile.blockTile = this;
 				mapTile = markedMapTile;
-				mapTile.spriteRenderer.color = tileSprite.color / 2;
+				foreach (BlockTile blockTile in block.blockTiles) {
+					if (null == blockTile.mapTile) {
+						return;
+					}
+				}
+				mapTile.spriteRenderer.color = tileSprite.color;
 			}
 			else 
 			{
 				if (this == markedMapTile.blockTile) {
-					markedMapTile.spriteRenderer.color = markedMapTile.activeColor;
+					markedMapTile.spriteRenderer.color = markedMapTile.color;
 				}
 				if (markedMapTile == mapTile) {
 					mapTile = null;
@@ -86,10 +94,24 @@ public class BlockTile : MonoBehaviour {
 				return;
 			}
 			if (this == markedMapTile.blockTile) {
-				markedMapTile.spriteRenderer.color = markedMapTile.activeColor;
+				markedMapTile.spriteRenderer.color = markedMapTile.color;
 			}
 			if (markedMapTile == mapTile) {
 				mapTile = null;
+			}
+
+			bool clearColor = false;
+			foreach (BlockTile blockTile in block.blockTiles) {
+				if (null == blockTile.mapTile) {
+					clearColor = true;
+				}
+			}
+			if (true == clearColor) {
+				foreach (BlockTile blockTile in block.blockTiles) {
+					if (null != blockTile.mapTile) {
+						blockTile.mapTile.spriteRenderer.color = markedMapTile.color;
+					}
+				}
 			}
 		}
 	}

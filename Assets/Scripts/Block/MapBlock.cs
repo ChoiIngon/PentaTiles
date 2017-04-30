@@ -4,13 +4,23 @@ using UnityEngine;
 
 public class MapBlock : Block {
 	[ReadOnly] public Vector3 initPosition;
+	[ReadOnly] public Vector3 clickDeltaPosition;
 	[ReadOnly] public SlotBlock slot;
 	[ReadOnly] public HintBlock hint;
 	[ReadOnly] public List<MapTile> mapTiles;
-
+	[ReadOnly] public int mapTileCount;
+	public Vector3 colliderSize {
+		set {
+			foreach (BlockTile blockTile in blockTiles)
+			{
+				blockTile.boxCollier.size = value;
+			}
+		}
+	}
 	public override void Init(BlockSaveData saveData)
 	{
 		base.Init (saveData);
+
 		sortingOrder = (int)Block.SortingOrder.Idle;
 		mapTiles = new List<MapTile>();
 
@@ -26,9 +36,16 @@ public class MapBlock : Block {
 		}
 
 		transform.position = slot.transform.position;
+		float minY = float.MaxValue;
+		foreach (BlockTile blockTile in blockTiles) {
+			minY = Mathf.Min (minY, blockTile.transform.position.y);
+		}
+		clickDeltaPosition = transform.position;
+		clickDeltaPosition.y = Mathf.Abs(transform.position.y - minY);
+		colliderSize = new Vector3(2.0f, 2.0f, 1.0f);
 		transform.localScale = slot.transform.localScale;
 		initPosition = transform.position;
-
+		mapTileCount = 0;
 		if (true == Map.Instance.editMode && null != hint)
 		{
 			transform.position = hint.transform.position;
@@ -39,11 +56,12 @@ public class MapBlock : Block {
 
 	public override void OnClick(Vector3 position) {
 		if (false == Map.Instance.editMode) {
+			AudioManager.Instance.Play ("BlockSelect");
+			colliderSize = Vector3.one;
 			transform.localScale = Vector3.one;
-			transform.position = new Vector3 (transform.position.x, transform.position.y + 1.5f, transform.position.z);
+			transform.position = new Vector3 (transform.position.x, position.y + clickDeltaPosition.y + 2.0f, transform.position.z);
 			sortingOrder = (int)SortingOrder.Select;
 			outline = true;
-			AudioManager.Instance.Play ("BlockSelect");
 		}
 #if UNITY_EDITOR
 		else {
@@ -84,8 +102,8 @@ public class MapBlock : Block {
 		if (true == returnToSlotPosition) {
 			initPosition = slot.transform.position;
 			iTween.MoveTo (gameObject, slot.transform.position, 0.5f);
+			colliderSize = new Vector3(2.0f, 2.0f, 1.0f);
 			transform.localScale = slot.transform.localScale;
-
 			foreach(MapTile mapTile in mapTiles)
 			{
 				mapTile.block = null;
@@ -117,6 +135,7 @@ public class MapBlock : Block {
 			if (null == blockTile.mapTile) {
 				iTween.MoveTo (gameObject, initPosition, 0.2f);
 				if (initPosition == slot.transform.position) {
+					colliderSize = new Vector3(2.0f, 2.0f, 1.0f);
 					transform.localScale = slot.transform.localScale;
 				}
 				AudioManager.Instance.Play("BlockOut");
@@ -127,6 +146,7 @@ public class MapBlock : Block {
 			if (false == Map.Instance.editMode && 0 == mapTile.id) {
 				iTween.MoveTo (gameObject, initPosition, 0.2f);
 				if (initPosition == slot.transform.position) {
+					colliderSize = new Vector3(2.0f, 2.0f, 1.0f);
 					transform.localScale = slot.transform.localScale;
 				}
 				AudioManager.Instance.Play("BlockOut");
@@ -135,6 +155,7 @@ public class MapBlock : Block {
 			if (null != mapTile.block && this != mapTile.block) {
 				iTween.MoveTo (gameObject, initPosition, 0.2f);
 				if (initPosition == slot.transform.position) {
+					colliderSize = new Vector3(2.0f, 2.0f, 1.0f);
 					transform.localScale = slot.transform.localScale;
 				}
 				AudioManager.Instance.Play("BlockOut");
