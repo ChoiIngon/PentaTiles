@@ -2,87 +2,90 @@
   <Worlds>
     <!-- comment -->
     <World id="1" open_star="0">
-      <Stage id="1" name="Stage 1" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="2" name="Stage 2" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="3" name="Stage 3" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="4" name="Stage 4" description="block 3 to 5 levels" total_level="24"/>
+      <Stage id="1" name="Rookie 1" description="block 3 to 5 levels" total_level="24"/>
+      <Stage id="2" name="Rookie 2" description="block 3 to 5 levels" total_level="24"/>
+      <Stage id="3" name="Rookie 3" description="block 3 to 5 levels" total_level="24"/>
+      <Stage id="4" name="Rookie 4" description="block 3 to 5 levels" total_level="24"/>
     </World>
     <World id="2" open_star="10">
-      <Stage id="5" name="Stage 5" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="6" name="Stage 6" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="7" name="Stage 7" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="8" name="Stage 8" description="block 3 to 5 levels" total_level="24"/>
+      <Stage id="5" name="Novice 1" description="block 4 to 6 levels" total_level="24"/>
+      <Stage id="6" name="Novice 2" description="block 4 to 6 levels" total_level="24"/>
+      <Stage id="7" name="Novice 3" description="block 4 to 6 levels" total_level="24"/>
+      <Stage id="8" name="Novice 4" description="block 4 to 6 levels" total_level="24"/>
     </World>
     <World id="3" open_star="77">
-      <Stage id="9" name="Stage 9" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="10" name="Stage 10" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="11" name="Stage 11" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="12" name="Stage 12" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="13" name="Stage 13" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="14" name="Stage 14" description="block 3 to 5 levels" total_level="24"/>
+      <Stage id="9" name="Intermediate 1" description="block 4 to 7 levels" total_level="24"/>
+      <Stage id="10" name="Intermediate 2" description="block 4 to 7 levels" total_level="24"/>
+      <Stage id="11" name="Intermediate 3" description="block 4 to 7 levels" total_level="24"/>
+      <Stage id="12" name="Intermediate 4" description="block 4 to 7 levels" total_level="24"/>
+      <Stage id="13" name="Intermediate 5" description="block 4 to 7 levels" total_level="24"/>
+      <Stage id="14" name="Intermediate 6" description="block 4 to 7 levels" total_level="24"/>
     </World>
     <World id="4" open_star="111">
-      <Stage id="15" name="Stage 15" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="16" name="Stage 16" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="17" name="Stage 17" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="18" name="Stage 18" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="19" name="Stage 19" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="20" name="Stage 20" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="21" name="Stage 21" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="22" name="Stage 22" description="block 3 to 5 levels" total_level="24"/>
+      <Stage id="15" name="Advanced 1" description="block 5 to 7 levels" total_level="24"/>
+      <Stage id="16" name="Advanced 2" description="block 5 to 7 levels" total_level="24"/>
+      <Stage id="17" name="Advanced 3" description="block 5 to 7 levels" total_level="24"/>
+      <Stage id="18" name="Advanced 4" description="block 5 to 7 levels" total_level="24"/>
+      <Stage id="19" name="Advanced 5" description="block 5 to 7 levels" total_level="24"/>
+      <Stage id="20" name="Advanced 6" description="block 5 to 7 levels" total_level="24"/>
+      <Stage id="21" name="Advanced 7" description="block 5 to 7 levels" total_level="24"/>
+      <Stage id="22" name="Advanced 8" description="block 5 to 7 levels" total_level="24"/>
     </World>
     <World id="5" open_star="222">
-      <Stage id="23" name="Stage 23" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="24" name="Stage 24" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="25" name="Stage 25" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="26" name="Stage 26" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="27" name="Stage 27" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="28" name="Stage 28" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="29" name="Stage 29" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="30" name="Stage 30" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="31" name="Stage 31" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="32" name="Stage 32" description="block 3 to 5 levels" total_level="24"/>
+      <Stage id="23" name="Mavin 1" description="block 5 to 8 levels" total_level="24"/>
+      <Stage id="24" name="Mavin 2" description="block 5 to 8 levels" total_level="24"/>
+      <Stage id="25" name="Mavin 3" description="block 5 to 8 levels" total_level="24"/>
+      <Stage id="26" name="Mavin 4" description="block 5 to 8 levels" total_level="24"/>
+      <Stage id="27" name="Mavin 5" description="block 5 to 8 levels" total_level="24"/>
+      <Stage id="28" name="Mavin 6" description="block 5 to 8 levels" total_level="24"/>
+      <Stage id="29" name="Mavin 7" description="block 5 to 8 levels" total_level="24"/>
+      <Stage id="30" name="Mavin 8" description="block 5 to 8 levels" total_level="24"/>
+      <Stage id="31" name="Mavin 9" description="block 5 to 8 levels" total_level="24"/>
+      <Stage id="32" name="Mavin 10" description="block 5 to 8 levels" total_level="24"/>
     </World>
     <World id="6" open_star="333">
-      <Stage id="33" name="Stage 33" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="34" name="Stage 34" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="35" name="Stage 35" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="36" name="Stage 36" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="37" name="Stage 37" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="38" name="Stage 38" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="39" name="Stage 39" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="40" name="Stage 40" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="41" name="Stage 41" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="42" name="Stage 42" description="block 3 to 5 levels" total_level="24"/>
+      <Stage id="33" name="Specialist 1" description="block 6 to 8 levels" total_level="24"/>
+      <Stage id="34" name="Specialist 2" description="block 6 to 8 levels" total_level="24"/>
+      <Stage id="35" name="Specialist 3" description="block 6 to 8 levels" total_level="24"/>
+      <Stage id="36" name="Specialist 4" description="block 6 to 8 levels" total_level="24"/>
+      <Stage id="37" name="Specialist 5" description="block 6 to 8 levels" total_level="24"/>
+      <Stage id="38" name="Specialist 6" description="block 6 to 8 levels" total_level="24"/>
+      <Stage id="39" name="Specialist 7" description="block 6 to 8 levels" total_level="24"/>
+      <Stage id="40" name="Specialist 8" description="block 6 to 8 levels" total_level="24"/>
+      <Stage id="41" name="Specialist 9" description="block 6 to 8 levels" total_level="24"/>
+      <Stage id="42" name="Specialist 10" description="block 6 to 8 levels" total_level="24"/>
     </World>
     <World id="7" open_star="555">
-      <Stage id="43" name="Stage 43" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="44" name="Stage 44" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="45" name="Stage 45" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="46" name="Stage 46" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="47" name="Stage 47" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="48" name="Stage 48" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="49" name="Stage 49" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="50" name="Stage 50" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="51" name="Stage 51" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="52" name="Stage 52" description="block 3 to 5 levels" total_level="24"/>
+      <Stage id="43" name="Expert 1" description="block 6 to 9 levels" total_level="24"/>
+      <Stage id="44" name="Expert 2" description="block 6 to 9 levels" total_level="24"/>
+      <Stage id="45" name="Expert 3" description="block 6 to 9 levels" total_level="24"/>
+      <Stage id="46" name="Expert 4" description="block 6 to 9 levels" total_level="24"/>
+      <Stage id="47" name="Expert 5" description="block 6 to 9 levels" total_level="24"/>
+      <Stage id="48" name="Expert 6" description="block 6 to 9 levels" total_level="24"/>
+      <Stage id="49" name="Expert 7" description="block 6 to 9 levels" total_level="24"/>
+      <Stage id="50" name="Expert 8" description="block 6 to 9 levels" total_level="24"/>
+      <Stage id="51" name="Expert 9" description="block 6 to 9 levels" total_level="24"/>
+      <Stage id="52" name="Expert 10" description="block 6 to 9 levels" total_level="24"/>
     </World>
     <World id="8" open_star="777">
-      <Stage id="53" name="Stage 53" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="54" name="Stage 54" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="55" name="Stage 55" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="56" name="Stage 56" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="57" name="Stage 57" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="58" name="Stage 58" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="59" name="Stage 59" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="60" name="Stage 60" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="61" name="Stage 61" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="62" name="Stage 62" description="block 3 to 5 levels" total_level="24"/>
+      <Stage id="53" name="Proficient 1" description="block 7 to 9 levels" total_level="24"/>
+      <Stage id="54" name="Proficient 2" description="block 7 to 9 levels" total_level="24"/>
+      <Stage id="55" name="Proficient 3" description="block 7 to 9 levels" total_level="24"/>
+      <Stage id="56" name="Proficient 4" description="block 7 to 9 levels" total_level="24"/>
+      <Stage id="57" name="Proficient 5" description="block 7 to 9 levels" total_level="24"/>
+      <Stage id="58" name="Proficient 6" description="block 7 to 9 levels" total_level="24"/>
+      <Stage id="59" name="Proficient 7" description="block 7 to 9 levels" total_level="24"/>
+      <Stage id="60" name="Proficient 8" description="block 7 to 9 levels" total_level="24"/>
+      <Stage id="61" name="Proficient 9" description="block 7 to 9 levels" total_level="24"/>
+      <Stage id="62" name="Proficient 10" description="block 7 to 9 levels" total_level="24"/>
     </World>
     <World id="9" open_star="999">
-      <Stage id="63" name="Stage 63" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="64" name="Stage 64" description="block 3 to 5 levels" total_level="24"/>
-      <Stage id="65" name="Stage 65" description="block 3 to 5 levels" total_level="24"/>
+      <Stage id="63" name="Master 1" description="block 7 to 10 levels" total_level="24"/>
+      <Stage id="64" name="Master 2" description="block 7 to 10 levels" total_level="24"/>
+      <Stage id="65" name="Master 3" description="block 7 to 10 levels" total_level="24"/>
+      <Stage id="66" name="Master 4" description="block 7 to 10 levels" total_level="24"/>
+      <Stage id="67" name="Master 5" description="block 7 to 10 levels" total_level="24"/>
+      <Stage id="68" name="Master 6" description="block 7 to 10 levels" total_level="24"/>
     </World>
   </Worlds>
   
