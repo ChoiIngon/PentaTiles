@@ -51,16 +51,7 @@ public class PlayData {
 		adsFree = false;
 		Quest.Init ();
 		achievements = new Dictionary<string, Achievement> ();
-		foreach (Config.AchievementInfo achievementInfo in Game.Instance.config.achievementInfos) {
-			Achievement achievement = new Achievement (
-				achievementInfo.id, 
-				achievementInfo.name, 
-				achievementInfo.description, 
-				new Quest.Progress("", achievementInfo.type, achievementInfo.key, achievementInfo.goal)
-			);
-			achievements.Add (achievement.id, achievement);
-			Quest.AddQuest (achievement);
-		}
+
 		PlayData tmpPlayData = null;
 		if (File.Exists (Application.persistentDataPath + "/playdata.dat")) {
 			BinaryFormatter bf = new BinaryFormatter ();
@@ -87,13 +78,26 @@ public class PlayData {
 			}
 
 			achievements = tmpPlayData.achievements;
-			Quest.Init ();
 			foreach (var itr in achievements) {
 				Achievement achievement = itr.Value;
 				achievement.Start ();
 				Quest.AddQuest (achievement);
 			}
 			openBlocks = tmpPlayData.openBlocks;
+		}
+
+
+		foreach (Config.AchievementInfo achievementInfo in Game.Instance.config.achievementInfos) {
+			if (null == Quest.Find (achievementInfo.id)) {
+				Achievement achievement = new Achievement (
+					achievementInfo.id, 
+					achievementInfo.name, 
+					achievementInfo.description, 
+					new Quest.Progress("", achievementInfo.type, achievementInfo.key, achievementInfo.goal)
+				);
+				achievements.Add (achievement.id, achievement);
+				Quest.AddQuest (achievement);
+			}
 		}
 
 		for (int i = 0; i < stageDatas.Length; i++) {

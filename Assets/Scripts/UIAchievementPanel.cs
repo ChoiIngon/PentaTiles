@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class UIAchievementPanel : MonoBehaviour {
     public UIAchievementInfo achievementInfoPrefab;
     public RectTransform outerWindow;
+	public ScrollRect scrollRect;
     public Transform content;
 	public Button backButton;
     private List<UIAchievementInfo> uiAchievementInfos;
@@ -42,5 +43,6 @@ public class UIAchievementPanel : MonoBehaviour {
         {
             uiAchievementInfos[i].Init(achievements[i]);
 		}
+		scrollRect.verticalNormalizedPosition = 1.0f;
 	}
 }

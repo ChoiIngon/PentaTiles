@@ -10,6 +10,7 @@ public class Achievement : Quest.Data {
 		public const string StarCollectCount = "StarCollectCount";
 		public const string StageCompleteCount = "StageCompleteCount";
 		public const string AdsWatchCount = "AdsWatchCount";
+		public const string AdsRemove = "AdsRemove";
 		public const string WorldOpen = "WorldOpen";
 		public const string BlockOpen = "BlockOpen";
 	}
@@ -30,6 +31,12 @@ public class Achievement : Quest.Data {
 	{
 		return progress [0];
 	}
+
+	public void SetProgress(Quest.Progress progress)
+	{
+		
+	}
+
 	public override string ToString ()
 	{
 		return "Achievement:{id:" + id + ", name:" + name + ", description:" + description + ", progress/goal:" + GetProgress().progress + "/" + GetProgress().goal +"}";
@@ -59,7 +66,7 @@ public class Achievement : Quest.Data {
 				} else if (lhsProgress < rhsProgress) {
 					return 1;
 				} else {
-					return 0;
+					return lhs.id.CompareTo (rhs.id);
 				}
 			} else if (Quest.State.Complete == rhs.state) {
 				return 1;
@@ -71,7 +78,7 @@ public class Achievement : Quest.Data {
 			if (Quest.State.Started == rhs.state) {
 				return -1;
 			} else if (Quest.State.Complete == rhs.state) {
-				return 0;
+				return lhs.id.CompareTo (rhs.id);
 			} else if (Quest.State.Rewared == rhs.state) {
 				return -1;
 			}
@@ -82,7 +89,7 @@ public class Achievement : Quest.Data {
 			} else if (Quest.State.Complete == rhs.state) {
 				return 1;
 			} else if (Quest.State.Rewared == rhs.state) {
-				return 0;
+				return lhs.id.CompareTo (rhs.id);
 			}
 		}
 

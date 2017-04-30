@@ -158,6 +158,7 @@ public class Game : MonoBehaviour {
 				rewardCount = 1;
 				playData.stageDatas[stageData.id].open = true;
 				stagePanel.GetStageInfo(stageData.id+1).open = true;
+				Quest.Update (Achievement.Type.StageCompleteCount, "");
 			}
 
 			GetNewOpenWorld();

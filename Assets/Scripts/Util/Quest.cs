@@ -222,7 +222,7 @@ public static class Quest
 		datas.Add (data.id, data);
 	}
 
-    public static void Update(string type, string key)
+    public static void Update(string type, string key = "")
     {
         if (false == updates.ContainsKey(type))
         {

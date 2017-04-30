@@ -123,17 +123,18 @@ public class UnityAds : MonoBehaviour {
 			Debug.Log ("The ad was successfully shown.");
 			watchCount++;
 			Game.Instance.AddHint (rewardHintCount);
-			Analytics.CustomEvent("RewardedAdsWatch", new Dictionary<string, object> {
-				{"stage", Game.Instance.playData.currentStage},
-				{"level", Game.Instance.playData.currentStage + "-" +  Game.Instance.playData.currentLevel},
-				{"count", watchCount } 
+			Analytics.CustomEvent ("RewardedAdsWatch", new Dictionary<string, object> {
+				{ "stage", Game.Instance.playData.currentStage },
+				{ "level", Game.Instance.playData.currentStage + "-" + Game.Instance.playData.currentLevel },
+				{ "count", watchCount } 
 			});
-			FirebaseAnalytics.LogEvent("RewardedAdsWatch", new Parameter[] {
-                new Parameter("stage", Game.Instance.playData.currentStage),
-                new Parameter(FirebaseAnalytics.ParameterLevel, Game.Instance.playData.currentStage + "-" + Game.Instance.playData.currentLevel),
-                new Parameter(FirebaseAnalytics.ParameterQuantity, watchCount),
-                new Parameter("show_result", result.ToString())
-            });
+			FirebaseAnalytics.LogEvent ("RewardedAdsWatch", new Parameter[] {
+				new Parameter ("stage", Game.Instance.playData.currentStage),
+				new Parameter (FirebaseAnalytics.ParameterLevel, Game.Instance.playData.currentStage + "-" + Game.Instance.playData.currentLevel),
+				new Parameter (FirebaseAnalytics.ParameterQuantity, watchCount),
+				new Parameter ("show_result", result.ToString ())
+			});
+			Quest.Update (Achievement.Type.AdsWatchCount, "");
 			break;
 		case ShowResult.Skipped:
 			Debug.Log("The ad was skipped before reaching the end.");

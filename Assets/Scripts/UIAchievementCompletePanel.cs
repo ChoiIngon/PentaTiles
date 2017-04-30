@@ -26,11 +26,14 @@ public class UIAchievementCompletePanel : MonoBehaviour {
 		FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventUnlockAchievement, new Parameter[] {
             new Parameter(FirebaseAnalytics.ParameterAchievementId, achievement.id)
         });
+
         Game.Instance.stagePanel.newAchievement.SetActive (true);
 		titles.Add (achievement.name);
 		if (null == coroutine) {
 			coroutine = StartCoroutine (_Open ());
 		}
+
+		Quest.Update (Achievement.Type.QuestCompleteCount, "");
 	}
 
 	public IEnumerator _Open()
