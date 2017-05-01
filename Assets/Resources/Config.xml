@@ -153,6 +153,13 @@
 	<Achievement id="ACHIEVEMENT_QUEST_COMPLETE_20" name="Quest Specialist" description="Complete 20 quests" type="QuestCompleteCount" key="" goal="20"/>
 	<Achievement id="ACHIEVEMENT_QUEST_COMPLETE_30" name="Quest Expert" description="Complete 30 quests" type="QuestCompleteCount" key="" goal="30"/>
 
+	<Achievement id="ACHIEVEMENT_HINT_USE_1" name="Sage" description="Use Hint 1 time" type="HintUseCount" key="" goal="1"/>
+	<Achievement id="ACHIEVEMENT_HINT_USE_10" name="Wise Man" description="Use Hint 10 times" type="HintUseCount" key="" goal="10"/>
+	<Achievement id="ACHIEVEMENT_HINT_USE_50" name="Hint Lover" description="Use Hint 50 times" type="HintUseCount" key="" goal="50"/>
+	<Achievement id="ACHIEVEMENT_HINT_USE_100" name="Hint Mania" description="Use Hint 100 times" type="HintUseCount" key="" goal="100"/>
+	<Achievement id="ACHIEVEMENT_HINT_USE_200" name="Hint Master" description="Use Hint 200 times" type="HintUseCount" key="" goal="200"/>
+	<Achievement id="ACHIEVEMENT_HINT_USE_300" name="Hint Holic" description="Use Hint 300 times" type="HintUseCount" key="" goal="300"/>
+	<Achievement id="ACHIEVEMENT_HINT_USE_500" name="Hint Addict" description="Use Hint 500 times" type="HintUseCount" key="" goal="500"/>
 	<!--
 	<Achievement id="ACHIEVEMENT_QUEST_COMPLETE_50" name="Quest Mania" description="Complete 50 quests" type="QuestCompleteCount" key="" goal="50"/>
 	<Achievement id="ACHIEVEMENT_QUEST_COMPLETE_75" name="Quest Master" description="Complete 75 quests" type="QuestCompleteCount" key="" goal="75"/>

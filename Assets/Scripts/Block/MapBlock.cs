@@ -179,14 +179,13 @@ public class MapBlock : Block {
 			mapTiles.Add (mapTile);
 		}
 
-		Game.Instance.moveCount++;
-
 		initPosition = position;
 		transform.position = position;
 		if (true == Map.Instance.editMode) {
 			hint.transform.position = transform.position;
 		}
 		if (false == Map.Instance.editMode) {
+			Game.Instance.moveCount++;
 			Game.Instance.CheckLevelComplete ();
 		}
 		AudioManager.Instance.Play("BlockDrop");
