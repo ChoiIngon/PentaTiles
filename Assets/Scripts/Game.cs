@@ -249,21 +249,4 @@ public class Game : MonoBehaviour {
 	{
 		inAppPurchaser.BuyProductID (id);
 	}
-	#if UNITY_EDITOR
-	private void OnGUI()
-	{
-		string text = "";
-		text += "Platform : " + Application.platform.ToString () + "\n";
-		text += "Stage : " + Map.Instance.stage + ", Level : " + Map.Instance.level + "\n";
-		text += "Mode : " + (true == Map.Instance.editMode ? "Edit" : "Game") + "\n";
-		text += "Map Size :" + Map.Instance.width + " x " + Map.Instance.height + "\n";
-		if (false == Map.Instance.editMode) {
-			text += "Ads : " +
-			(int)(Time.realtimeSinceStartup - unityAds.lastAdShowTime) + "/" + unityAds.showIntervalTime + " sec, " +
-			unityAds.lastAdShowCount + "/" + unityAds.showIntervalCount + " count, " +
-			unityAds.rewardHintCount + " hint\n";
-		}
-        GUI.Label (new Rect (0, 0, 500, 200), text);
-	}
-	#endif
 }

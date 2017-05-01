@@ -247,5 +247,24 @@ public class Map : MonoBehaviour {
 		}
 		return saveData;
 	}
+
+	#if UNITY_EDITOR
+	private void OnGUI()
+	{
+		string text = "";
+		text += "Platform : " + Application.platform.ToString () + "\n";
+		text += "Stage : " + Map.Instance.stage + ", Level : " + Map.Instance.level + "\n";
+		text += "Mode : " + (true == Map.Instance.editMode ? "Edit" : "Game") + "\n";
+		text += "Map Size :" + Map.Instance.width + " x " + Map.Instance.height + "\n";
+		if (false == Map.Instance.editMode) {
+			text += "Ads : " +
+				(int)(Time.realtimeSinceStartup - Game.Instance.unityAds.lastAdShowTime) + "/" + Game.Instance.unityAds.showIntervalTime + " sec, " +
+				Game.Instance.unityAds.lastAdShowCount + "/" + Game.Instance.unityAds.showIntervalCount + " count, " +
+				Game.Instance.unityAds.rewardHintCount + " hint\n";
+		}
+		GUI.Label (new Rect (0, 0, 500, 200), text);
+	}
+	#endif
+
 }
 
