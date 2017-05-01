@@ -42,7 +42,9 @@ public class MapBlock : Block {
 		}
 		clickDeltaPosition = transform.position;
 		clickDeltaPosition.y = Mathf.Abs(transform.position.y - minY);
-		colliderSize = new Vector3(2.0f, 2.0f, 1.0f);
+		if (false == Map.Instance.enabled) {
+			colliderSize = new Vector3 (2.0f, 2.0f, 1.0f);
+		}
 		transform.localScale = slot.transform.localScale;
 		initPosition = transform.position;
 		mapTileCount = 0;

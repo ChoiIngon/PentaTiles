@@ -13,7 +13,7 @@ public class Achievement : Quest.Data {
 		public const string AdsRemove = "AdsRemove";
 		public const string WorldOpen = "WorldOpen";
 		public const string BlockOpen = "BlockOpen";
-		public const string HintUse = "HintUse";
+		public const string HintUseCount = "HintUseCount";
 	}
 
 	public string description;

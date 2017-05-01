@@ -223,6 +223,7 @@ public class Game : MonoBehaviour {
 		playData.hint -= 1;
 		playData.Save ();
 		gamePanel.hintCount = playData.hint;
+		Quest.Update (Achievement.Type.HintUseCount, "");
 		Analytics.CustomEvent("HintUse", new Dictionary<string, object> {
 			{"stage", playData.currentStage},
 			{"level", playData.currentStage + "-" + playData.currentLevel}
