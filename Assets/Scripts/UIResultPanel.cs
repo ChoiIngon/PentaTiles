@@ -10,8 +10,7 @@ public class UIResultPanel : MonoBehaviour {
 	public Text title;
 	public GameObject star;
 
-	public Text time;
-	public Text move;
+	public Text messageText;
 
 	// Use this for initialization
 	void Start () {
@@ -56,8 +55,17 @@ public class UIResultPanel : MonoBehaviour {
 			title.text = "Stage Complete";
 		}
 
-		time.text = string.Format("{0:00}:{1:00}",(Game.Instance.playTime/60)%60,Game.Instance.playTime%60);
-		move.text = Game.Instance.moveCount.ToString();
+		string[] message = {
+			"great!",
+			"awesome!",
+			"amazing!",
+			"fantastic!",
+			"brilliant!",
+			"stunning!",
+			"wonderful!",
+			"mavelous!"
+		};
+		messageText.text = message [Random.Range (0, message.Length)];
 
 		iTween.ScaleTo (gameObject, Vector3.one, 0.5f);
 		iTween.ScaleTo(star, iTween.Hash("scale", Vector3.one, "delay", 0.5f, "time", 0.2f));
