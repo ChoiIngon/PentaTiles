@@ -122,8 +122,10 @@ public class Game : MonoBehaviour {
 	public IEnumerator _CheckLevelComplete() {
 		if (true == Map.Instance.CheckComplete ()) {
 			AudioManager.Instance.Play("LevelClear");
+			int rewardCount = 0;
 			playTime = Time.realtimeSinceStartup - playTime;
 			PlayData.StageData stageData = playData.GetCurrentStageData ();
+
 			if (playData.currentLevel > stageData.clearLevel) {
 				playData.star += 1;
 				stageData.clearLevel = playData.currentLevel;
@@ -134,31 +136,31 @@ public class Game : MonoBehaviour {
 
 				Quest.Update (Achievement.Type.StarCollectCount, "");
 
+				Config.StageInfo stageInfo = config.FindStageInfo(stageData.id);
+				if (playData.currentLevel < stageInfo.totalLevel)
+				{
+					levelPanel.GetLevelInfo(stageData.clearLevel + 1).Unlock();
+				}
+				else if (playData.currentLevel == stageInfo.totalLevel)
+				{
+					rewardCount = 1;
+					Quest.Update (Achievement.Type.StageCompleteCount, "");
+					if (stageInfo.id < config.stageInfos.Count) {
+						playData.GetStageData(stageData.id + 1).open = true;
+						stagePanel.GetStageInfo(stageData.id+1).open = true;
+					}
+				}
+
 				Analytics.CustomEvent("LevelComplete", new Dictionary<string, object> {
 					{"stage", playData.currentStage},
 					{"level", playData.currentStage + "-" + playData.currentLevel},
 					{"star", playData.star}
 				});
-
 				FirebaseAnalytics.LogEvent("LevelComplete", new Parameter[] {
                     new Parameter("stage", playData.currentStage),
                     new Parameter(FirebaseAnalytics.ParameterLevel, playData.currentStage + "-" + playData.currentLevel),
                     new Parameter("star", playData.star)
                 });
-			}
-
-			int rewardCount = 0;
-			Config.StageInfo stageInfo = config.FindStageInfo(playData.currentStage);
-			if (playData.currentLevel < stageInfo.totalLevel)
-            {
-                levelPanel.GetLevelInfo(stageData.clearLevel + 1).Unlock();
-            }
-			else if (playData.currentLevel == stageInfo.totalLevel && stageInfo.id < config.stageInfos.Count && false == playData.stageDatas[stageData.id].open)
-			{
-				rewardCount = 1;
-				playData.stageDatas[stageData.id].open = true;
-				stagePanel.GetStageInfo(stageData.id+1).open = true;
-				Quest.Update (Achievement.Type.StageCompleteCount, "");
 			}
 
 			GetNewOpenWorld();

@@ -63,6 +63,7 @@ public static class Quest
             if ("" == this.key || this.key == key)
             {
                 progress++;
+				progress = Mathf.Min (progress, goal);
             }
         }
 

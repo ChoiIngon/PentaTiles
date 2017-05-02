@@ -59,6 +59,10 @@ public class UnityAds : MonoBehaviour {
 			return;
 		}
 
+		if (2 <= Game.Instance.playData.openWorlds.Length && false == Game.Instance.playData.openWorlds [1]) {
+			return;
+		}
+
         if(false == Advertisement.IsReady())
         {
             return;

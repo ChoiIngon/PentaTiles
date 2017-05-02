@@ -27,12 +27,15 @@ public class PlayData {
 
 	public bool adsFree;
 	public StageData GetCurrentStageData() {
-		if (0 >= currentStage || stageDatas.Length < currentStage) {
-			return null;
-		}
-		return stageDatas [currentStage - 1];
+		return GetStageData (currentStage);
 	}
 
+	public StageData GetStageData(int id) {
+		if (0 >= id || stageDatas.Length < id) {
+			return null;
+		}
+		return stageDatas [id - 1];
+	}
 	public void Save()
 	{
 		Debug.Log ("saved \'playdata.dat\' to " + Application.persistentDataPath + "/playdata.dat");
