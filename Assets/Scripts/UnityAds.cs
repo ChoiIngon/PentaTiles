@@ -63,6 +63,10 @@ public class UnityAds : MonoBehaviour {
 			return;
 		}
 
+		if (100 <= Game.Instance.playData.hint) {
+			return;
+		}
+
         if(false == Advertisement.IsReady())
         {
             return;
@@ -85,70 +89,39 @@ public class UnityAds : MonoBehaviour {
 	}
 	private void OnAdsComplete(ShowResult result)
 	{
-		switch (result)	{
-		case ShowResult.Finished:
-		case ShowResult.Skipped:
-			Debug.Log ("The ad was successfully shown.");
-			watchCount++;
-			Game.Instance.AddHint (rewardHintCount);
-			Analytics.CustomEvent("AdsWatch", new Dictionary<string, object> {
-				{"stage", Game.Instance.playData.currentStage},
-				{"level", Game.Instance.playData.currentStage + "-" +  Game.Instance.playData.currentLevel},
-				{"count",  watchCount} 
-			});
-			FirebaseAnalytics.LogEvent("AdsWatch", new Parameter[] {
-                new Parameter("stage", Game.Instance.playData.currentStage),
-                new Parameter(FirebaseAnalytics.ParameterLevel, Game.Instance.playData.currentStage + "-" + Game.Instance.playData.currentLevel),
-                new Parameter(FirebaseAnalytics.ParameterQuantity, watchCount),
-				new Parameter("show_result", result.ToString())
-			});
-			break;
-			//case ShowResult.Skipped:
-			//Debug.Log("The ad was skipped before reaching the end.");
-			//break;
-		case ShowResult.Failed:
-			Debug.LogError("The ad failed to be shown.");
-			break;
-		}
+		watchCount++;
+		Analytics.CustomEvent("AdsWatch", new Dictionary<string, object> {
+			{"stage", Game.Instance.playData.currentStage},
+			{"level", Game.Instance.playData.currentStage + "-" +  Game.Instance.playData.currentLevel},
+			{"count",  watchCount} 
+		});
+		FirebaseAnalytics.LogEvent("AdsWatch", new Parameter[] {
+			new Parameter("stage", Game.Instance.playData.currentStage),
+			new Parameter(FirebaseAnalytics.ParameterLevel, Game.Instance.playData.currentStage + "-" + Game.Instance.playData.currentLevel),
+			new Parameter(FirebaseAnalytics.ParameterQuantity, watchCount),
+			new Parameter("show_result", result.ToString())
+		});
 
 		StartCoroutine(ActivateRewardAds());
+
+		if (ShowResult.Failed == result) {
+			return;
+		}
+
+		Game.Instance.AddHint (rewardHintCount);
+
+		if (ShowResult.Finished == result) {
+			Quest.Update (Achievement.Type.AdsWatchCount, "");
+		}
+	
+
     }
 	public void ShowRewardAds()
 	{
 		lastAdShowTime = Time.realtimeSinceStartup;
 		lastAdShowCount = 0;
-		var options = new ShowOptions { resultCallback = OnRewaredAdsComplete };
+		var options = new ShowOptions { resultCallback = OnAdsComplete };
 		Advertisement.Show("rewardedVideo", options);
 	}
-	private void OnRewaredAdsComplete(ShowResult result)
-	{
-		switch (result)	{
-		case ShowResult.Finished:
-			Debug.Log ("The ad was successfully shown.");
-			watchCount++;
-			Game.Instance.AddHint (rewardHintCount);
-			Analytics.CustomEvent ("RewardedAdsWatch", new Dictionary<string, object> {
-				{ "stage", Game.Instance.playData.currentStage },
-				{ "level", Game.Instance.playData.currentStage + "-" + Game.Instance.playData.currentLevel },
-				{ "count", watchCount } 
-			});
-			FirebaseAnalytics.LogEvent ("RewardedAdsWatch", new Parameter[] {
-				new Parameter ("stage", Game.Instance.playData.currentStage),
-				new Parameter (FirebaseAnalytics.ParameterLevel, Game.Instance.playData.currentStage + "-" + Game.Instance.playData.currentLevel),
-				new Parameter (FirebaseAnalytics.ParameterQuantity, watchCount),
-				new Parameter ("show_result", result.ToString ())
-			});
-			Quest.Update (Achievement.Type.AdsWatchCount, "");
-			break;
-		case ShowResult.Skipped:
-			Debug.Log("The ad was skipped before reaching the end.");
-			break;
-		case ShowResult.Failed:
-			Debug.LogError("The ad failed to be shown.");
-			break;
 
-		}
-
-		StartCoroutine(ActivateRewardAds());
-    }
 }
