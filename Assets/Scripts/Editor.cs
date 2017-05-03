@@ -194,6 +194,29 @@ public class EditorEditor : UnityEditor.Editor
             Debug.Log("success to load map file from " + "\'Assets/Resources/" + data.stage + "_" + data.level + ".asset" + "\'");
         }
 
+		if (GUILayout.Button ("Check Map Validation")) {
+			for (int stage = 1; stage <= 70; stage++) {
+				for (int level = 1; level <= 24; level++) {
+					MapSaveData data = Resources.Load<MapSaveData> (stage + "_" + level);
+					if (null == data) {
+						Debug.Log (stage + "-" + level + " is null");
+						return;
+					}
+					Map.Instance.Init (data);
+
+					int count = 0;
+					foreach (MapTile mapTile in Map.Instance.mapTiles) {
+						if (0 != mapTile.id) {
+							count++;
+						}
+					}
+					if (0 != count % 5) {
+						Debug.Log (stage + "-" + level + " is wrong");
+					}
+				}
+			}
+			Debug.Log ("complete vaidation check");
+		}
         Map.Instance.blockSlotScale = editor.blockSlotScale;
 
         for (int i = 0; i < Map.Instance.slots.childCount; i++) {
