@@ -1,10 +1,10 @@
 fileFormatVersion: 2
 guid: 4302c7735c33040d89541259bde06674
-timeCreated: 1492954670
+timeCreated: 1493908443
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Button@Next
+    21300000: Button@StartPlay
     21300002: Button_1
     21300004: Button_2
     21300006: Button_3
@@ -49,7 +49,7 @@ TextureImporter:
     21300084: Button_42
     21300086: Button_43
     21300088: Button_44
-    21300090: Button@Next
+    21300090: Button@StartPlay
     21300092: Button_46
     21300094: Button_47
     21300096: Button_48
@@ -65,7 +65,7 @@ TextureImporter:
     21300116: Button_58
     21300118: Button_59
     21300120: Button_60
-    21300122: Button@Back
+    21300122: Button_61
     21300124: Button_62
     21300126: Button_63
     21300128: Button_64
@@ -177,7 +177,7 @@ TextureImporter:
     21300340: Button_170
     21300342: Button_171
     21300344: Button_172
-    21300346: Button_173
+    21300346: Button@Back
     21300348: Button_174
     21300350: Button_175
     21300352: Button_176
@@ -849,7 +849,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Button@Next
+      name: Button@StartPlay
       rect:
         serializedVersion: 2
         x: 194
@@ -1057,7 +1057,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Button@Back
+      name: Button_61
       rect:
         serializedVersion: 2
         x: 194
@@ -2513,7 +2513,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Button_173
+      name: Button@Back
       rect:
         serializedVersion: 2
         x: 194

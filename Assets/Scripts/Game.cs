@@ -24,7 +24,7 @@ public class Game : MonoBehaviour {
 			return _instance;  
 		}  
 	}
-
+	public UITitlePanel			titlePanel;
 	public UIRootPanel          rootPanel;
 	public UIStageSelectPanel   stagePanel;
 	public UILevelSelectPanel   levelPanel;
@@ -47,7 +47,7 @@ public class Game : MonoBehaviour {
 	public float playTime;
 	public int moveCount;
 	public Text versionText;
-	void Start()
+	IEnumerator Start()
 	{
 		versionText.text = "Ver : " + Application.version;
 		Quest.onComplete += achievementCompletePanel.Open;
@@ -81,7 +81,10 @@ public class Game : MonoBehaviour {
 		levelPanel.Init ();
 		achievementPanel.Init ();
         shopPanel.Init();
-    	
+		rootPanel.gameObject.SetActive (false);
+
+		yield return StartCoroutine (titlePanel.Init ());
+
 		iTween.RotateBy(background, iTween.Hash("y", 1.0f, "speed", 7.0f, "easetype", iTween.EaseType.linear, "looptype", iTween.LoopType.loop));
 
 		FirebaseAnalytics.LogEvent (FirebaseAnalytics.EventAppOpen);

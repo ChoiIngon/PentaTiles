@@ -195,7 +195,7 @@ public class EditorEditor : UnityEditor.Editor
         }
 
 		if (GUILayout.Button ("Check Map Validation")) {
-			for (int stage = 1; stage <= 70; stage++) {
+			for (int stage = 1; stage <= 72; stage++) {
 				for (int level = 1; level <= 24; level++) {
 					MapSaveData data = Resources.Load<MapSaveData> (stage + "_" + level);
 					if (null == data) {
