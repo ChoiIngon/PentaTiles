@@ -86,6 +86,10 @@
       <Stage id="66" name="Master 4" description="block 7 to 10 levels" total_level="24"/>
       <Stage id="67" name="Master 5" description="block 7 to 10 levels" total_level="24"/>
       <Stage id="68" name="Master 6" description="block 7 to 10 levels" total_level="24"/>
+      <Stage id="69" name="Master 7" description="block 7 to 10 levels" total_level="24"/>
+      <Stage id="70" name="Master 8" description="block 7 to 10 levels" total_level="24"/>
+      <Stage id="71" name="Master 9" description="block 7 to 10 levels" total_level="24"/>
+      <Stage id="72" name="Master 10" description="block 7 to 10 levels" total_level="24"/>
     </World>
   </Worlds>
   
