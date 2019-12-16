@@ -22,7 +22,7 @@ public class UnityAds : MonoBehaviour {
     public UIRewardPanel rewardPanel;
 	
 	IEnumerator Start () {
-        if (false == Advertisement.isSupported) { // If runtime platform is supported...
+        if (false == UnityEngine.Advertisements.Advertisement.isSupported) { // If runtime platform is supported...
 			Debug.Log("advertisement is not supported");
 			yield break;
 		}
@@ -39,14 +39,14 @@ public class UnityAds : MonoBehaviour {
 		}
 
 		Debug.Log ("initialize unity ads(game_id:" + gameID +")");
-		Advertisement.Initialize (gameID); //, enableTestMode); // ...initialize.
+		UnityEngine.Advertisements.Advertisement.Initialize (gameID); //, enableTestMode); // ...initialize.
 		yield return StartCoroutine(ActivateRewardAds());
 	}
 
 	private IEnumerator ActivateRewardAds()
 	{
 		Game.Instance.gamePanel.adsButton.gameObject.SetActive(false);
-		while (!Advertisement.isInitialized || !Advertisement.IsReady())
+		while (!UnityEngine.Advertisements.Advertisement.isInitialized || !UnityEngine.Advertisements.Advertisement.IsReady())
 		{
 			yield return new WaitForSeconds(0.5f);
 		}
@@ -67,7 +67,7 @@ public class UnityAds : MonoBehaviour {
 			return;
 		}
 
-        if(false == Advertisement.IsReady())
+        if(false == UnityEngine.Advertisements.Advertisement.IsReady())
         {
             return;
         }
@@ -85,7 +85,7 @@ public class UnityAds : MonoBehaviour {
 		lastAdShowTime = Time.realtimeSinceStartup;
         lastAdShowCount = 0;
 		var options = new ShowOptions { resultCallback = OnAdsComplete };
-		Advertisement.Show("video", options);
+		UnityEngine.Advertisements.Advertisement.Show("video", options);
 	}
 	private void OnAdsComplete(ShowResult result)
 	{
@@ -121,7 +121,7 @@ public class UnityAds : MonoBehaviour {
 		lastAdShowTime = Time.realtimeSinceStartup;
 		lastAdShowCount = 0;
 		var options = new ShowOptions { resultCallback = OnAdsComplete };
-		Advertisement.Show("rewardedVideo", options);
+		UnityEngine.Advertisements.Advertisement.Show("rewardedVideo", options);
 	}
 
 }
