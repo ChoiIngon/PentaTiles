@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters.Binary; 
-using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Analytics;
@@ -45,6 +43,7 @@ public class Game : MonoBehaviour {
 	public float playTime;
 	public int moveCount;
 	public Text versionText;
+
 	IEnumerator Start()
 	{
 		versionText.text = "Ver : " + Application.version;
@@ -91,13 +90,7 @@ public class Game : MonoBehaviour {
 			{"level", playData.currentStage + "-" + playData.currentLevel}
 		});
 
-		/*
-        FirebaseAnalytics.LogEvent("LevelPlay", new Parameter[] {
-            new Parameter("stage", playData.currentStage),
-            new Parameter(FirebaseAnalytics.ParameterLevel, playData.currentStage + "-" + playData.currentLevel)
-        });
-		*/
-        string newOpenBlockID = GetNewOpenBlock();
+		string newOpenBlockID = GetNewOpenBlock();
         if("" != newOpenBlockID && false == playData.openBlocks.ContainsKey(newOpenBlockID)) {
             playData.openBlocks.Add(newOpenBlockID, newOpenBlockID);
 			StartCoroutine (blockOpenPanel.Open (newOpenBlockID));
@@ -180,13 +173,6 @@ public class Game : MonoBehaviour {
 					{ "level", playData.currentStage + "-" + playData.currentLevel },
 					{ "star", playData.star }
 				});
-				/*
-				FirebaseAnalytics.LogEvent("OpenWorld_" + (i+1).ToString(), new Parameter[] {
-                    new Parameter("stage", playData.currentStage),
-                    new Parameter(FirebaseAnalytics.ParameterLevel, playData.currentStage + "-" + playData.currentLevel),
-                    new Parameter("star", playData.star)
-				});
-				*/
 				return i + 1;
 			}
 		}

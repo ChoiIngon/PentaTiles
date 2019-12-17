@@ -94,14 +94,7 @@ public class UnityAds : MonoBehaviour {
 			{"level", Game.Instance.playData.currentStage + "-" +  Game.Instance.playData.currentLevel},
 			{"count",  watchCount} 
 		});
-		/*
-		FirebaseAnalytics.LogEvent("AdsWatch", new Parameter[] {
-			new Parameter("stage", Game.Instance.playData.currentStage),
-			new Parameter(FirebaseAnalytics.ParameterLevel, Game.Instance.playData.currentStage + "-" + Game.Instance.playData.currentLevel),
-			new Parameter(FirebaseAnalytics.ParameterQuantity, watchCount),
-			new Parameter("show_result", result.ToString())
-		});
-		*/
+
 		StartCoroutine(ActivateRewardAds());
 
 		if (ShowResult.Failed == result) {
