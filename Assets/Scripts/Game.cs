@@ -5,8 +5,6 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Analytics;
-using Firebase.Analytics;
-using Firebase.RemoteConfig;
 
 public class Game : MonoBehaviour {
 	private static Game _instance;  
@@ -51,24 +49,12 @@ public class Game : MonoBehaviour {
 	{
 		versionText.text = "Ver : " + Application.version;
 		Quest.onComplete += achievementCompletePanel.Open;
-		unityAds = GetComponent<UnityAds> ();
 		inAppPurchaser = GetComponent<InAppPurchaser> ();
-		Dictionary<string, object> defaultRemoteConfig = new Dictionary<string, object>();
-		defaultRemoteConfig.Add("ads_interval_count", 3);
-		defaultRemoteConfig.Add("ads_interval_time", 120);
-		defaultRemoteConfig.Add("ads_reward_hint_count", 1);
-		FirebaseRemoteConfig.SetDefaults(defaultRemoteConfig);
 
-		unityAds.showIntervalCount = (int)FirebaseRemoteConfig.GetValue ("ads_interval_count").LongValue;
-		unityAds.showIntervalTime = (float)FirebaseRemoteConfig.GetValue ("ads_interval_time").DoubleValue;
-		unityAds.rewardHintCount = (int)FirebaseRemoteConfig.GetValue ("ads_reward_hint_count").LongValue;
-
-		FirebaseRemoteConfig.FetchAsync (new System.TimeSpan(0, 0, 30)).ContinueWith((antecedent) => {
-			FirebaseRemoteConfig.ActivateFetched ();
-			unityAds.showIntervalCount = (int)FirebaseRemoteConfig.GetValue ("ads_interval_count").LongValue;
-			unityAds.showIntervalTime = (float)FirebaseRemoteConfig.GetValue ("ads_interval_time").DoubleValue;
-			unityAds.rewardHintCount = (int)FirebaseRemoteConfig.GetValue ("ads_reward_hint_count").LongValue;
-		});
+		unityAds = GetComponent<UnityAds> ();
+		unityAds.showIntervalCount = 3;
+		unityAds.showIntervalTime = 120;
+		unityAds.rewardHintCount = 1;
 
 		Map.Instance.editMode = false;
 		Map.Instance.gameObject.SetActive (false);
@@ -87,7 +73,7 @@ public class Game : MonoBehaviour {
 
 		iTween.RotateBy(background, iTween.Hash("y", 1.0f, "speed", 7.0f, "easetype", iTween.EaseType.linear, "looptype", iTween.LoopType.loop));
 
-		FirebaseAnalytics.LogEvent (FirebaseAnalytics.EventAppOpen);
+		//FirebaseAnalytics.LogEvent (FirebaseAnalytics.EventAppOpen);
     }
 
 	public void StartLevel(int stage, int level)
@@ -105,11 +91,12 @@ public class Game : MonoBehaviour {
 			{"level", playData.currentStage + "-" + playData.currentLevel}
 		});
 
+		/*
         FirebaseAnalytics.LogEvent("LevelPlay", new Parameter[] {
             new Parameter("stage", playData.currentStage),
             new Parameter(FirebaseAnalytics.ParameterLevel, playData.currentStage + "-" + playData.currentLevel)
         });
-
+		*/
         string newOpenBlockID = GetNewOpenBlock();
         if("" != newOpenBlockID && false == playData.openBlocks.ContainsKey(newOpenBlockID)) {
             playData.openBlocks.Add(newOpenBlockID, newOpenBlockID);
@@ -159,11 +146,13 @@ public class Game : MonoBehaviour {
 					{"level", playData.currentStage + "-" + playData.currentLevel},
 					{"star", playData.star}
 				});
+				/*
 				FirebaseAnalytics.LogEvent("LevelComplete", new Parameter[] {
                     new Parameter("stage", playData.currentStage),
                     new Parameter(FirebaseAnalytics.ParameterLevel, playData.currentStage + "-" + playData.currentLevel),
                     new Parameter("star", playData.star)
                 });
+				*/
 			}
 
 			GetNewOpenWorld();
@@ -191,11 +180,13 @@ public class Game : MonoBehaviour {
 					{ "level", playData.currentStage + "-" + playData.currentLevel },
 					{ "star", playData.star }
 				});
+				/*
 				FirebaseAnalytics.LogEvent("OpenWorld_" + (i+1).ToString(), new Parameter[] {
                     new Parameter("stage", playData.currentStage),
                     new Parameter(FirebaseAnalytics.ParameterLevel, playData.currentStage + "-" + playData.currentLevel),
                     new Parameter("star", playData.star)
 				});
+				*/
 				return i + 1;
 			}
 		}
@@ -233,12 +224,12 @@ public class Game : MonoBehaviour {
 			{"stage", playData.currentStage},
 			{"level", playData.currentStage + "-" + playData.currentLevel}
 		});
-
+		/*
         FirebaseAnalytics.LogEvent("HintUse", new Parameter[] {
             new Parameter("stage", playData.currentStage),
             new Parameter(FirebaseAnalytics.ParameterLevel, playData.currentStage + "-" + playData.currentLevel)
         });
-
+		*/
         return true;
 	}
 

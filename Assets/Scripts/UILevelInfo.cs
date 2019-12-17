@@ -26,7 +26,7 @@ public class UILevelInfo : MonoBehaviour {
 				Game.Instance.levelPanel.gameObject.SetActive(false);
 			});
 		});
-		text = transform.FindChild ("Text").GetComponent<Text> ();
+		text = transform.Find ("Text").GetComponent<Text> ();
 	}
 
 	public void Init(int stage, int level)

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Firebase.Analytics;
 
 public class UIAchievementCompletePanel : MonoBehaviour {
 	public float moveTime;
@@ -23,10 +22,7 @@ public class UIAchievementCompletePanel : MonoBehaviour {
 	// onComplete
 	public void Open(Quest.Data achievement) {
 		gameObject.SetActive (true);
-		FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventUnlockAchievement, new Parameter[] {
-            new Parameter(FirebaseAnalytics.ParameterAchievementId, achievement.id)
-        });
-
+		
         Game.Instance.stagePanel.newAchievement.SetActive (true);
 		titles.Add (achievement.name);
 		if (null == coroutine) {

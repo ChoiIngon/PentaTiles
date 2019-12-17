@@ -116,7 +116,7 @@ public class Map : MonoBehaviour {
 		}
 
 		{
-			Transform blockSlots = transform.FindChild("BlockSlots");
+			Transform blockSlots = transform.Find("BlockSlots");
 			Vector3 position = blockSlots.position;
 			position.x = 0.0f;
 			blockSlots.transform.position = position;

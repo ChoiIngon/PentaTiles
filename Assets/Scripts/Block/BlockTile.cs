@@ -28,8 +28,8 @@ public class BlockTile : MonoBehaviour {
 	public void Init (Block block) {
         this.block = block;
 		transform.SetParent (block.transform, false);
-		tileSprite = transform.FindChild ("TileSprite").GetComponent<SpriteRenderer> ();
-		outlineSprite = transform.FindChild ("OutlineSprite").GetComponent<SpriteRenderer>();
+		tileSprite = transform.Find ("TileSprite").GetComponent<SpriteRenderer> ();
+		outlineSprite = transform.Find ("OutlineSprite").GetComponent<SpriteRenderer>();
 		outlineSprite.gameObject.SetActive (false);
 
 		touchInput = GetComponent<TouchInput> ();

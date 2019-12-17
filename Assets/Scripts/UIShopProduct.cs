@@ -13,8 +13,8 @@ public class UIShopProduct : MonoBehaviour {
 	private Button button;
 	// Use this for initialization
 	void Start () {
-		productNameText = transform.FindChild ("Name").GetComponent<Text>();
-		productPriceText = transform.FindChild ("Price/Text").GetComponent<Text> ();
+		productNameText = transform.Find ("Name").GetComponent<Text>();
+		productPriceText = transform.Find ("Price/Text").GetComponent<Text> ();
 		button = GetComponent<Button> ();
 
 		productNameText.text = productName;
