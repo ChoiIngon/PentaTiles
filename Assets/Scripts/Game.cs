@@ -71,8 +71,6 @@ public class Game : MonoBehaviour {
 		yield return StartCoroutine (titlePanel.Init ());
 
 		iTween.RotateBy(background, iTween.Hash("y", 1.0f, "speed", 7.0f, "easetype", iTween.EaseType.linear, "looptype", iTween.LoopType.loop));
-
-		//FirebaseAnalytics.LogEvent (FirebaseAnalytics.EventAppOpen);
     }
 
 	public void StartLevel(int stage, int level)
@@ -139,13 +137,6 @@ public class Game : MonoBehaviour {
 					{"level", playData.currentStage + "-" + playData.currentLevel},
 					{"star", playData.star}
 				});
-				/*
-				FirebaseAnalytics.LogEvent("LevelComplete", new Parameter[] {
-                    new Parameter("stage", playData.currentStage),
-                    new Parameter(FirebaseAnalytics.ParameterLevel, playData.currentStage + "-" + playData.currentLevel),
-                    new Parameter("star", playData.star)
-                });
-				*/
 			}
 
 			GetNewOpenWorld();
@@ -210,12 +201,6 @@ public class Game : MonoBehaviour {
 			{"stage", playData.currentStage},
 			{"level", playData.currentStage + "-" + playData.currentLevel}
 		});
-		/*
-        FirebaseAnalytics.LogEvent("HintUse", new Parameter[] {
-            new Parameter("stage", playData.currentStage),
-            new Parameter(FirebaseAnalytics.ParameterLevel, playData.currentStage + "-" + playData.currentLevel)
-        });
-		*/
         return true;
 	}
 
