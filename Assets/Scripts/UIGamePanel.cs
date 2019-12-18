@@ -34,6 +34,11 @@ public class UIGamePanel : MonoBehaviour {
 
         adsButton.onClick.AddListener (() => {
 			Game.Instance.unityAds.ShowRewardAds();
+			StartCoroutine(Game.Instance.advertisement.Show(Advertisement.PlacementType.Rewarded, () =>
+			{
+				Game.Instance.AddHint(Game.Instance.advertisement.reward_count);
+				Quest.Update(Achievement.Type.AdsWatchCount, "");
+			}));
 		});
 		redoButton.onClick.AddListener (() => {
 			Game.Instance.StartLevel(Game.Instance.playData.currentStage, Game.Instance.playData.currentLevel);

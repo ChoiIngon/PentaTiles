@@ -39,6 +39,7 @@ public class Game : MonoBehaviour {
 	public PlayData playData;
 
 	public UnityAds unityAds;
+	public Advertisement advertisement;
 	public InAppPurchaser inAppPurchaser;
 	public float playTime;
 	public int moveCount;
@@ -54,6 +55,8 @@ public class Game : MonoBehaviour {
 		unityAds.showIntervalCount = 3;
 		unityAds.showIntervalTime = 120;
 		unityAds.rewardHintCount = 1;
+
+		advertisement = GetComponent<Advertisement>();
 
 		Map.Instance.editMode = false;
 		Map.Instance.gameObject.SetActive (false);

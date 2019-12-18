@@ -11,10 +11,14 @@ public class Advertisement : MonoBehaviour
 	public string unity_android_game_id = "1370767"; // Set this value from the inspector.
 	public string unity_ios_game_id = "1370772"; // Set this value from the inspector.
 
-	public float showIntervalTime = 120;
-	public int showIntervalCount = 3;
-	public int rewardHintCount = 1;
+	public int interval_time = 120;
+	public int interval_count = 3;
+	public int reward_count = 1;
 
+	[ReadOnly]
+	public int requestCount = 0;
+	[ReadOnly]
+	public float lastAdsShowTime;
 	public enum PlacementType
 	{
 		Invalid,
@@ -30,6 +34,35 @@ public class Advertisement : MonoBehaviour
 		public abstract IEnumerator Show(System.Action onSuccess);
 	}
 
+	public abstract class InterstitialAdvertisement : AdvertisementImpl
+	{
+		public override bool IsReady()
+		{
+			if (true == Game.Instance.playData.adsFree)
+			{
+				return false;
+			}
+
+			if (2 <= Game.Instance.playData.openWorlds.Length && false == Game.Instance.playData.openWorlds[1])
+			{
+				return false;
+			}
+
+			if (Game.Instance.advertisement.requestCount++ < Game.Instance.advertisement.interval_count)
+			{
+				return false;
+			}
+
+			if (Time.realtimeSinceStartup - Game.Instance.advertisement.lastAdsShowTime < Game.Instance.advertisement.interval_time)
+			{
+				return false;
+			}
+
+			Game.Instance.advertisement.lastAdsShowTime = Time.realtimeSinceStartup;
+			Game.Instance.advertisement.requestCount = 0;
+			return true;
+		}
+	}
 	public class FacebookRewardAdvertisement : AdvertisementImpl
 	{
 		private AudienceNetwork.RewardedVideoAd rewarded_video;
@@ -150,7 +183,6 @@ public class Advertisement : MonoBehaviour
 			rewarded_video.LoadAd();
 		}
 	}
-
 	public class AdMobBannerAdvertisement : AdvertisementImpl
 	{
 		private BannerView banner_view;
@@ -175,7 +207,6 @@ public class Advertisement : MonoBehaviour
 			yield break;
 		}
 	}
-
 	public class AdMobRewardAdvertisement : AdvertisementImpl
 	{
 		private RewardedAd rewarded_ad;
@@ -267,7 +298,7 @@ public class Advertisement : MonoBehaviour
 			reward = true;
 		}
 	}
-	public class AdMobAdvertisement : AdvertisementImpl
+	public class AdMobInterstitialAdvertisement : InterstitialAdvertisement
 	{
 		private GoogleMobileAds.Api.InterstitialAd interstitial;
 		//private string ad_unit_id = "ca-app-pub-5331343349322603/2888119077";
@@ -281,6 +312,10 @@ public class Advertisement : MonoBehaviour
 
 		public override bool IsReady()
 		{
+			if (false == base.IsReady())
+			{
+				return false;
+			}
 #if UNITY_EDITOR
 			return false;
 #else
@@ -402,7 +437,7 @@ public class Advertisement : MonoBehaviour
 			}
 		}
 	}
-	public class UnityAdvertisement : AdvertisementImpl
+	public class UnityInterstitialAdvertisement : InterstitialAdvertisement
 	{
 		private bool complete;
 		private const string placement_id = "video";
@@ -413,31 +448,10 @@ public class Advertisement : MonoBehaviour
 
 		public override bool IsReady()
 		{
-			if (true == Game.Instance.playData.adsFree)
+			if (false == base.IsReady())
 			{
 				return false;
 			}
-
-			if (2 <= Game.Instance.playData.openWorlds.Length && false == Game.Instance.playData.openWorlds[1])
-			{
-				return false;
-			}
-
-			if (100 <= Game.Instance.playData.hint)
-			{
-				return false;
-			}
-/*
-			if (lastAdShowCount++ < showIntervalCount)
-			{
-				return false;
-			}
-
-			if (Time.realtimeSinceStartup - lastAdShowTime < showIntervalTime)
-			{
-				return;
-			}
-			*/
 			return UnityEngine.Advertisements.Advertisement.isInitialized && UnityEngine.Advertisements.Advertisement.IsReady();
 		}
 
@@ -486,8 +500,8 @@ public class Advertisement : MonoBehaviour
 			},
 			{
 				PlacementType.Video, new List<AdvertisementImpl>() {
-				//	new AdMobAdvertisement(),
-					new UnityAdvertisement(),
+					new AdMobInterstitialAdvertisement(),
+					new UnityInterstitialAdvertisement(),
 				}
 			},
 			{
