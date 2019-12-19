@@ -4,22 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Analytics;
 
-public class Game : MonoBehaviour {
-	private static Game _instance;  
-	public static Game Instance {  
-		get {  
-			if (!_instance) {  
-				_instance = (Game)GameObject.FindObjectOfType(typeof(Game));  
-				if (!_instance) {  
-					GameObject container = new GameObject();  
-					container.name = "Game";  
-					_instance = container.AddComponent<Game>();  
-				}  
-			}
-
-			return _instance;  
-		}  
-	}
+public class Game : Util.MonoSingleton<Game>
+{
 	public UITitlePanel			titlePanel;
 	public UIRootPanel          rootPanel;
 	public UIStageSelectPanel   stagePanel;
@@ -31,6 +17,7 @@ public class Game : MonoBehaviour {
 	public UIBlockOpenPanel		blockOpenPanel;
 	public UIRewardPanel		rewardPanel;
 	public UIShopPanel 			shopPanel;
+	public GameObject			touchBlockPanel;
 	public GameObject           background;
 
     public AudioSource bgm;
@@ -38,7 +25,6 @@ public class Game : MonoBehaviour {
 	public Config config;
 	public PlayData playData;
 
-	public UnityAds unityAds;
 	public Advertisement advertisement;
 	public InAppPurchaser inAppPurchaser;
 	public float playTime;
@@ -50,11 +36,6 @@ public class Game : MonoBehaviour {
 		versionText.text = "Ver : " + Application.version;
 		Quest.onComplete += achievementCompletePanel.Open;
 		inAppPurchaser = GetComponent<InAppPurchaser> ();
-
-		unityAds = GetComponent<UnityAds> ();
-		unityAds.showIntervalCount = 3;
-		unityAds.showIntervalTime = 120;
-		unityAds.rewardHintCount = 1;
 
 		advertisement = GetComponent<Advertisement>();
 
@@ -70,6 +51,7 @@ public class Game : MonoBehaviour {
 		achievementPanel.Init ();
         shopPanel.Init();
 		rootPanel.gameObject.SetActive (false);
+		touchBlockPanel.gameObject.SetActive(false);
 
 		yield return StartCoroutine (titlePanel.Init ());
 
@@ -150,7 +132,24 @@ public class Game : MonoBehaviour {
 			if (0 < rewardCount) {
 				AddHint (rewardCount);
 			}
-			unityAds.Show ();
+
+			if (true == playData.adsFree)
+			{
+				yield break;
+			}
+
+			if (advertisement.requestCount++ < advertisement.interval_count)
+			{
+				yield break;
+			}
+
+			if (Time.realtimeSinceStartup - advertisement.lastAdsShowTime < advertisement.interval_time)
+			{
+				yield break;
+			}
+			advertisement.Show(Advertisement.PlacementType.Interstitial);
+			advertisement.requestCount = 0;
+			advertisement.lastAdsShowTime = Time.realtimeSinceStartup;
 		}
 	}
 	private int GetNewOpenWorld()
@@ -213,6 +212,7 @@ public class Game : MonoBehaviour {
 		playData.Save ();
 		gamePanel.hintCount = playData.hint;
 		shopPanel.hintCount = playData.hint;
+		rewardPanel.gameObject.SetActive(true);
 		StartCoroutine (rewardPanel.Open (UIRewardPanel.RewardType.Hint, count));
 	}
 

@@ -258,9 +258,9 @@ public class Map : MonoBehaviour {
 		text += "Map Size :" + Map.Instance.width + " x " + Map.Instance.height + "\n";
 		if (false == Map.Instance.editMode) {
 			text += "Ads : " +
-				(int)(Time.realtimeSinceStartup - Game.Instance.unityAds.lastAdShowTime) + "/" + Game.Instance.unityAds.showIntervalTime + " sec, " +
-				Game.Instance.unityAds.lastAdShowCount + "/" + Game.Instance.unityAds.showIntervalCount + " count, " +
-				Game.Instance.unityAds.rewardHintCount + " hint\n";
+				(int)(Time.realtimeSinceStartup - Game.Instance.advertisement.lastAdsShowTime) + "/" + Game.Instance.advertisement.interval_time + " sec, " +
+				Game.Instance.advertisement.requestCount + "/" + Game.Instance.advertisement.interval_count + " count, " +
+				Game.Instance.advertisement.reward_count + " hint\n";
 		}
 		GUI.Label (new Rect (0, 0, 500, 200), text);
 	}

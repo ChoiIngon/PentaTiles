@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Analytics;
 
 public class UIGamePanel : MonoBehaviour {
 	public Text level;
@@ -33,12 +34,16 @@ public class UIGamePanel : MonoBehaviour {
 		});
 
         adsButton.onClick.AddListener (() => {
-			Game.Instance.unityAds.ShowRewardAds();
-			StartCoroutine(Game.Instance.advertisement.Show(Advertisement.PlacementType.Rewarded, () =>
+			//Game.Instance.unityAds.ShowRewardAds();
+			Game.Instance.advertisement.Show(Advertisement.PlacementType.Rewarded, () =>
 			{
+				Analytics.CustomEvent("AdsWatch", new Dictionary<string, object> {
+					{ "stage", Game.Instance.playData.currentStage},
+					{ "level", Game.Instance.playData.currentStage + "-" +  Game.Instance.playData.currentLevel},
+				});
 				Game.Instance.AddHint(Game.Instance.advertisement.reward_count);
 				Quest.Update(Achievement.Type.AdsWatchCount, "");
-			}));
+			});
 		});
 		redoButton.onClick.AddListener (() => {
 			Game.Instance.StartLevel(Game.Instance.playData.currentStage, Game.Instance.playData.currentLevel);

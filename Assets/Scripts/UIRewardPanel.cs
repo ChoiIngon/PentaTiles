@@ -38,8 +38,6 @@ public class UIRewardPanel : MonoBehaviour {
 		AudioManager.Instance.Play("LevelClear");
 		Map.Instance.enableTouchInput = false;
 
-		gameObject.SetActive (true);
-
         rewardIconImage.sprite = rewardIconSprites[(int)rewardType];
 
         switch (rewardType)

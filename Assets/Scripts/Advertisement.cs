@@ -11,8 +11,8 @@ public class Advertisement : MonoBehaviour
 	public string unity_android_game_id = "1370767"; // Set this value from the inspector.
 	public string unity_ios_game_id = "1370772"; // Set this value from the inspector.
 
-	public int interval_time = 120;
-	public int interval_count = 3;
+	public int interval_time = 90;
+	public int interval_count = 5;
 	public int reward_count = 1;
 
 	[ReadOnly]
@@ -23,7 +23,7 @@ public class Advertisement : MonoBehaviour
 	{
 		Invalid,
 		Banner,
-		Video,
+		Interstitial,
 		Rewarded,
 	}
 
@@ -34,35 +34,6 @@ public class Advertisement : MonoBehaviour
 		public abstract IEnumerator Show(System.Action onSuccess);
 	}
 
-	public abstract class InterstitialAdvertisement : AdvertisementImpl
-	{
-		public override bool IsReady()
-		{
-			if (true == Game.Instance.playData.adsFree)
-			{
-				return false;
-			}
-
-			if (2 <= Game.Instance.playData.openWorlds.Length && false == Game.Instance.playData.openWorlds[1])
-			{
-				return false;
-			}
-
-			if (Game.Instance.advertisement.requestCount++ < Game.Instance.advertisement.interval_count)
-			{
-				return false;
-			}
-
-			if (Time.realtimeSinceStartup - Game.Instance.advertisement.lastAdsShowTime < Game.Instance.advertisement.interval_time)
-			{
-				return false;
-			}
-
-			Game.Instance.advertisement.lastAdsShowTime = Time.realtimeSinceStartup;
-			Game.Instance.advertisement.requestCount = 0;
-			return true;
-		}
-	}
 	public class FacebookRewardAdvertisement : AdvertisementImpl
 	{
 		private AudienceNetwork.RewardedVideoAd rewarded_video;
@@ -128,7 +99,7 @@ public class Advertisement : MonoBehaviour
 
 		private void LoadAd()
 		{
-			rewarded_video = new AudienceNetwork.RewardedVideoAd("445801979415468_445805622748437");
+			rewarded_video = new AudienceNetwork.RewardedVideoAd("1207191189476556_1207193282809680");
 			rewarded_video.Register(game_object);
 			rewarded_video.RewardedVideoAdDidLoad = () =>
 			{
@@ -189,8 +160,8 @@ public class Advertisement : MonoBehaviour
 
 		public override void Init()
 		{
-			//string ad_unit_id = "ca-app-pub-5331343349322603/3144107668";
-			string ad_unit_id = "ca-app-pub-3940256099942544/6300978111";
+			string ad_unit_id = "ca-app-pub-5331343349322603/3144107668";
+			//string ad_unit_id = "ca-app-pub-3940256099942544/6300978111";
 			banner_view = new BannerView(ad_unit_id, GoogleMobileAds.Api.AdSize.Banner, GoogleMobileAds.Api.AdPosition.Bottom);
 			AdRequest request = new AdRequest.Builder().Build();
 			banner_view.LoadAd(request);
@@ -210,8 +181,8 @@ public class Advertisement : MonoBehaviour
 	public class AdMobRewardAdvertisement : AdvertisementImpl
 	{
 		private RewardedAd rewarded_ad;
-		//private string ad_unit_id = "ca-app-pub-5331343349322603/5159059190";
-		private string ad_unit_id = "ca-app-pub-3940256099942544/5224354917";
+		private string ad_unit_id = "ca-app-pub-5331343349322603/5751650207";
+		//private string ad_unit_id = "ca-app-pub-3940256099942544/5224354917";
 		private bool complete;
 		private bool reward;
 		
@@ -298,11 +269,11 @@ public class Advertisement : MonoBehaviour
 			reward = true;
 		}
 	}
-	public class AdMobInterstitialAdvertisement : InterstitialAdvertisement
+	public class AdMobInterstitialAdvertisement : AdvertisementImpl
 	{
 		private GoogleMobileAds.Api.InterstitialAd interstitial;
-		//private string ad_unit_id = "ca-app-pub-5331343349322603/2888119077";
-		private string ad_unit_id = "ca-app-pub-3940256099942544/1033173712";
+		private string ad_unit_id = "ca-app-pub-5331343349322603/9414836697";
+		//private string ad_unit_id = "ca-app-pub-3940256099942544/1033173712";
 		private bool complete;
 
 		public override void Init()
@@ -312,10 +283,6 @@ public class Advertisement : MonoBehaviour
 
 		public override bool IsReady()
 		{
-			if (false == base.IsReady())
-			{
-				return false;
-			}
 #if UNITY_EDITOR
 			return false;
 #else
@@ -437,7 +404,7 @@ public class Advertisement : MonoBehaviour
 			}
 		}
 	}
-	public class UnityInterstitialAdvertisement : InterstitialAdvertisement
+	public class UnityInterstitialAdvertisement : AdvertisementImpl
 	{
 		private bool complete;
 		private const string placement_id = "video";
@@ -448,10 +415,6 @@ public class Advertisement : MonoBehaviour
 
 		public override bool IsReady()
 		{
-			if (false == base.IsReady())
-			{
-				return false;
-			}
 			return UnityEngine.Advertisements.Advertisement.isInitialized && UnityEngine.Advertisements.Advertisement.IsReady();
 		}
 
@@ -499,15 +462,15 @@ public class Advertisement : MonoBehaviour
 				}
 			},
 			{
-				PlacementType.Video, new List<AdvertisementImpl>() {
+				PlacementType.Interstitial, new List<AdvertisementImpl>() {
 					new AdMobInterstitialAdvertisement(),
 					new UnityInterstitialAdvertisement(),
 				}
 			},
 			{
 				PlacementType.Rewarded, new List<AdvertisementImpl>() {
-					//new FacebookRewardAdvertisement(gameObject),
-					//new AdMobRewardAdvertisement(),
+					new FacebookRewardAdvertisement(gameObject),
+					new AdMobRewardAdvertisement(),
 					new UnityRewardAdvertisement(),
 				}
 			}
@@ -537,16 +500,23 @@ public class Advertisement : MonoBehaviour
 		}
 	}
 
-	public IEnumerator Show(PlacementType placementType, System.Action onSuccess = null)
+	public void Show(PlacementType placementType, System.Action onSuccess = null)
 	{
 		List<AdvertisementImpl> impls = advertisement_impls[placementType];
-		foreach(AdvertisementImpl impl in impls)
+		foreach (AdvertisementImpl impl in impls)
 		{
 			if (true == impl.IsReady())
 			{
-				yield return impl.Show(onSuccess);
+				StartCoroutine(ShowCoroutine(impl, onSuccess));
 				break;
 			}
 		}
+	}
+
+	private IEnumerator ShowCoroutine(AdvertisementImpl impl, System.Action onSuccess)
+	{
+		Game.Instance.touchBlockPanel.gameObject.SetActive(true);
+		yield return impl.Show(onSuccess);
+		Game.Instance.touchBlockPanel.gameObject.SetActive(false);
 	}
 }
